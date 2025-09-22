@@ -84,7 +84,7 @@ function render_admin_layout($options = []) {
 
         <?php if (is_debug()): ?>
         <!-- Отладочная информация -->
-        <div class="fixed bottom-4 left-4 bg-black text-white text-xs p-2 rounded opacity-50 z-50">
+        <div class="fixed bottom-4 right-4 bg-black text-white text-xs p-2 rounded opacity-50 z-50">
             Debug: <?php echo get_current_language(); ?> | 
             User: <?php echo $current_user['username']; ?> (<?php echo $current_user['role']; ?>) |
             Memory: <?php echo round(memory_get_usage() / 1024 / 1024, 2); ?>MB
@@ -184,9 +184,9 @@ function get_admin_menu_items($active_menu = 'dashboard', $current_user = null) 
 function render_admin_sidebar($menu_items, $current_user) {
     ?>
     <!-- Mobile Sidebar -->
-    <div id="mobile-sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-admin-sidebar transform -translate-x-full transition-transform duration-300 ease-in-out lg:hidden">
+    <div id="mobile-sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-admin-sidebar transform -translate-x-full transition-transform duration-300 ease-in-out lg:hidden flex flex-col">
         <!-- Logo -->
-        <div class="flex items-center justify-between h-16 px-4 bg-black bg-opacity-20">
+        <div class="flex items-center justify-between h-16 px-4 bg-black bg-opacity-20 flex-shrink-0">
             <div class="flex items-center space-x-2">
                 <div class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
                     <?php echo get_icon('building', 'w-5 h-5'); ?>
@@ -199,8 +199,8 @@ function render_admin_sidebar($menu_items, $current_user) {
         </div>
 
         <!-- Navigation -->
-        <nav class="mt-8 px-4">
-            <div class="space-y-1">
+        <nav class="mt-8 px-4 flex-1 flex flex-col">
+            <div class="space-y-1 flex-1">
                 <?php foreach ($menu_items as $key => $item): ?>
                     <a 
                         href="<?php echo htmlspecialchars($item['url']); ?>" 
@@ -211,39 +211,18 @@ function render_admin_sidebar($menu_items, $current_user) {
                     </a>
                 <?php endforeach; ?>
             </div>
-        </nav>
-
-        <!-- User Info -->
-        <div class="absolute bottom-0 w-full p-4">
-            <div class="bg-black bg-opacity-20 rounded-lg p-3">
-                <div class="flex items-center space-x-3">
-                    <div class="flex-shrink-0">
-                        <div class="w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center">
-                            <span class="text-white text-sm font-medium">
-                                <?php echo strtoupper(substr($current_user['username'], 0, 1)); ?>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <p class="text-sm font-medium text-white truncate">
-                            <?php echo htmlspecialchars($current_user['username']); ?>
-                        </p>
-                        <p class="text-xs text-gray-300 truncate">
-                            <?php echo htmlspecialchars($current_user['role']); ?>
-                        </p>
-                    </div>
-                    <div class="flex-shrink-0">
-                        <a 
-                            href="logout.php" 
-                            class="text-gray-300 hover:text-white transition-colors duration-200"
-                            title="<?php echo __('auth.logout', 'Выйти'); ?>"
-                        >
-                            <?php echo get_icon('logout'); ?>
-                        </a>
-                    </div>
-                </div>
+            
+            <!-- Logout Button -->
+            <div class="mt-6 mb-4">
+                <a 
+                    href="logout.php" 
+                    class="sidebar-item flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-gray-300 hover:text-white hover:bg-red-600"
+                >
+                    <?php echo get_icon('logout'); ?>
+                    <span class="ml-3"><?php echo __('auth.logout', 'Выйти'); ?></span>
+                </a>
             </div>
-        </div>
+        </nav>
     </div>
 
     <!-- Desktop Sidebar -->
