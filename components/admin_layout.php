@@ -226,9 +226,9 @@ function render_admin_sidebar($menu_items, $current_user) {
     </div>
 
     <!-- Desktop Sidebar -->
-    <div class="hidden lg:block fixed inset-y-0 left-0 z-50 w-64 bg-admin-sidebar">
+    <div class="hidden lg:block fixed inset-y-0 left-0 z-50 w-64 bg-admin-sidebar flex flex-col">
         <!-- Logo -->
-        <div class="flex items-center justify-center h-16 px-4 bg-black bg-opacity-20">
+        <div class="flex items-center justify-center h-16 px-4 bg-black bg-opacity-20 flex-shrink-0">
             <div class="flex items-center space-x-2">
                 <div class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
                     <?php echo get_icon('building', 'w-5 h-5'); ?>
@@ -237,8 +237,38 @@ function render_admin_sidebar($menu_items, $current_user) {
             </div>
         </div>
 
+        <!-- User Info -->
+        <div class="px-4 py-3 bg-black bg-opacity-10 flex-shrink-0">
+            <div class="flex items-center space-x-3">
+                <div class="flex-shrink-0">
+                    <div class="w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center">
+                        <span class="text-white text-sm font-medium">
+                            <?php echo strtoupper(substr($current_user['username'], 0, 1)); ?>
+                        </span>
+                    </div>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-white truncate">
+                        <?php echo htmlspecialchars($current_user['username']); ?>
+                    </p>
+                    <p class="text-xs text-gray-300 truncate">
+                        <?php echo htmlspecialchars($current_user['role']); ?>
+                    </p>
+                </div>
+                <div class="flex-shrink-0">
+                    <a 
+                        href="logout.php" 
+                        class="text-gray-300 hover:text-white transition-colors duration-200"
+                        title="<?php echo __('auth.logout', 'Выйти'); ?>"
+                    >
+                        <?php echo get_icon('logout'); ?>
+                    </a>
+                </div>
+            </div>
+        </div>
+
         <!-- Navigation -->
-        <nav class="mt-8 px-4">
+        <nav class="flex-1 px-4 py-4 overflow-y-auto">
             <div class="space-y-1">
                 <?php foreach ($menu_items as $key => $item): ?>
                     <a 
@@ -251,38 +281,6 @@ function render_admin_sidebar($menu_items, $current_user) {
                 <?php endforeach; ?>
             </div>
         </nav>
-
-        <!-- User Info -->
-        <div class="absolute bottom-0 w-full p-4">
-            <div class="bg-black bg-opacity-20 rounded-lg p-3">
-                <div class="flex items-center space-x-3">
-                    <div class="flex-shrink-0">
-                        <div class="w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center">
-                            <span class="text-white text-sm font-medium">
-                                <?php echo strtoupper(substr($current_user['username'], 0, 1)); ?>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <p class="text-sm font-medium text-white truncate">
-                            <?php echo htmlspecialchars($current_user['username']); ?>
-                        </p>
-                        <p class="text-xs text-gray-300 truncate">
-                            <?php echo htmlspecialchars($current_user['role']); ?>
-                        </p>
-                    </div>
-                    <div class="flex-shrink-0">
-                        <a 
-                            href="logout.php" 
-                            class="text-gray-300 hover:text-white transition-colors duration-200"
-                            title="<?php echo __('auth.logout', 'Выйти'); ?>"
-                        >
-                            <?php echo get_icon('logout'); ?>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
     <?php
 }
