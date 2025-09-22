@@ -327,7 +327,10 @@ switch ($action) {
         $featured_filter = $_GET['featured'] ?? '';
         
         if (!empty($search)) {
-            $filters['title LIKE'] = "%{$search}%";
+            $filters['_search'] = [
+                'field' => 'title',
+                'value' => $search
+            ];
         }
         if (!empty($status_filter)) {
             $filters['status'] = $status_filter;

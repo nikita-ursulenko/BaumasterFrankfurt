@@ -23,15 +23,9 @@ class Database {
      * Инициализация подключения к БД
      */
     private function init_database() {
-        try {
-            if (DB_TYPE === 'sqlite') {
-                $this->init_sqlite();
-            } else {
-                $this->use_json = true;
-                $this->init_json_storage();
-            }
-        } catch (Exception $e) {
-            write_log("Database init error: " . $e->getMessage(), 'ERROR');
+        if (DB_TYPE === 'sqlite') {
+            $this->init_sqlite();
+        } else {
             $this->use_json = true;
             $this->init_json_storage();
         }
@@ -50,7 +44,12 @@ class Database {
         $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         
         // Создание таблиц при первом запуске
-        $this->create_tables();
+        try {
+            $this->create_tables();
+        } catch (Exception $e) {
+            write_log("Error creating tables: " . $e->getMessage(), 'ERROR');
+            // Продолжаем работу, таблицы могут уже существовать
+        }
     }
     
     /**
@@ -77,8 +76,7 @@ class Database {
                     password VARCHAR(255) NOT NULL,
                     role VARCHAR(20) DEFAULT 'editor',
                     status VARCHAR(20) DEFAULT 'active',
-                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
                 )
             ",
             
@@ -98,8 +96,7 @@ class Database {
                     status VARCHAR(20) DEFAULT 'active',
                     priority INTEGER DEFAULT 0,
                     category VARCHAR(50) DEFAULT 'general',
-                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
                 )
             ",
             
@@ -125,8 +122,7 @@ class Database {
                     sort_order INTEGER DEFAULT 0,
                     meta_title VARCHAR(255),
                     meta_description TEXT,
-                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
                 )
             ",
             
@@ -149,8 +145,7 @@ class Database {
                     admin_notes TEXT,
                     ip_address VARCHAR(45),
                     user_agent TEXT,
-                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
                 )
             ",
             
@@ -174,8 +169,7 @@ class Database {
                     featured INTEGER DEFAULT 0,
                     sort_order INTEGER DEFAULT 0,
                     published_at DATETIME,
-                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
                 )
             ",
             
@@ -202,8 +196,7 @@ class Database {
                     setting_type VARCHAR(20) DEFAULT 'text',
                     category VARCHAR(50) DEFAULT 'general',
                     description TEXT,
-                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
                 )
             "
         ];
@@ -807,8 +800,17 @@ class Database {
         if (!empty($where)) {
             $data = array_filter($data, function($row) use ($where) {
                 foreach ($where as $key => $value) {
-                    if (!isset($row[$key]) || $row[$key] != $value) {
-                        return false;
+                    if ($key === '_search' && is_array($value)) {
+                        // Обработка поиска
+                        $search_field = $value['field'];
+                        $search_value = $value['value'];
+                        if (!isset($row[$search_field]) || stripos($row[$search_field], $search_value) === false) {
+                            return false;
+                        }
+                    } else {
+                        if (!isset($row[$key]) || $row[$key] != $value) {
+                            return false;
+                        }
                     }
                 }
                 return true;
