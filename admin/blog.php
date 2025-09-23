@@ -556,7 +556,16 @@ ob_start();
                             'rows' => 3,
                             'value' => $current_post['excerpt'] ?? ''
                         ]); ?>
-                        
+
+                        <!-- Slug (URL) -->
+                        <?php render_input_field([
+                            'name' => 'slug',
+                            'label' => __('blog.slug', 'URL статьи (slug)'),
+                            'placeholder' => __('blog.slug_placeholder', 'url-statii'),
+                            'help' => __('blog.slug_help', 'Автоматически генерируется из заголовка. Только латиница, цифры и дефисы.'),
+                            'value' => $current_post['slug'] ?? ''
+                        ]); ?>
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Категория -->
                             <div class="space-y-2">
@@ -714,7 +723,14 @@ ob_start();
                         'text' => __('common.cancel', 'Отмена'),
                         'variant' => 'secondary'
                     ]); ?>
-                    
+
+                    <?php render_button([
+                        'type' => 'button',
+                        'text' => __('blog.preview', 'Предварительный просмотр'),
+                        'variant' => 'secondary',
+                        'onclick' => 'previewPost()'
+                    ]); ?>
+
                     <?php render_button([
                         'type' => 'submit',
                         'text' => $action === 'create' ? __('blog.create_button', 'Создать статью') : __('blog.update_button', 'Обновить статью'),
@@ -735,7 +751,141 @@ render_admin_layout([
     'page_title' => $page_title,
     'page_description' => $page_description,
     'active_menu' => $active_menu,
-    'content' => $page_content
+    'content' => $page_content,
+    'additional_js' => '
+    <script>
+    // Автоматическая генерация slug из заголовка
+    function generateSlugFromTitle() {
+        const titleInput = document.querySelector(\'input[name="title"]\');
+        const slugInput = document.querySelector(\'input[name="slug"]\');
+        if (titleInput && slugInput && !slugInput.value) {
+            const title = titleInput.value;
+            const slug = title.toLowerCase()
+                .replace(/[^a-zа-яё0-9\s-]/g, \'\')
+                .replace(/[\s_-]+/g, \'-\')
+                .replace(/^-+|-+$/g, \'\');
+            slugInput.value = slug;
+        }
+    }
+
+    // Валидация формы перед отправкой
+    function validateForm() {
+        const title = document.querySelector(\'input[name="title"]\').value.trim();
+        const content = document.querySelector(\'textarea[name="content"]\').value.trim();
+        const category = document.querySelector(\'select[name="category"]\').value;
+
+        let errors = [];
+
+        if (title.length < 5) {
+            errors.push(\'Заголовок должен содержать минимум 5 символов\');
+        }
+
+        if (title.length > 100) {
+            errors.push(\'Заголовок не должен превышать 100 символов\');
+        }
+
+        if (content.length < 50) {
+            errors.push(\'Содержание должно содержать минимум 50 символов\');
+        }
+
+        if (!category) {
+            errors.push(\'Необходимо выбрать категорию\');
+        }
+
+        if (errors.length > 0) {
+            alert(\'Ошибки валидации:\\n\' + errors.join(\'\\n\'));
+            return false;
+        }
+
+        return true;
+    }
+
+    // Добавляем обработчики событий
+    document.addEventListener(\'DOMContentLoaded\', function() {
+        const titleInput = document.querySelector(\'input[name="title"]\');
+        const form = document.querySelector(\'form\');
+
+        if (titleInput) {
+            titleInput.addEventListener(\'blur\', generateSlugFromTitle);
+        }
+
+        if (form) {
+            form.addEventListener(\'submit\', function(e) {
+                if (!validateForm()) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+        }
+    });
+
+    function previewPost() {
+        const form = document.querySelector("form");
+        const formData = new FormData(form);
+
+        // Собираем данные формы
+        const postData = {
+            title: formData.get("title") || "",
+            excerpt: formData.get("excerpt") || "",
+            content: formData.get("content") || "",
+            category: formData.get("category") || "tips",
+            tags: formData.get("tags") || "",
+            featured_image: formData.get("featured_image") || "",
+            meta_title: formData.get("meta_title") || "",
+            meta_description: formData.get("meta_description") || "",
+            keywords: formData.get("keywords") || ""
+        };
+
+        // Создаем HTML для предварительного просмотра
+        const previewHtml = `
+            <!DOCTYPE html>
+            <html lang="ru">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Предварительный просмотр: ${postData.title}</title>
+                <link href="https://cdn.tailwindcss.com" rel="stylesheet">
+                <style>
+                    body { font-family: system-ui, -apple-system, sans-serif; }
+                    .prose { max-width: none; }
+                    .prose img { max-width: 100%; height: auto; }
+                </style>
+            </head>
+            <body class="bg-gray-50">
+                <div class="max-w-4xl mx-auto py-8 px-4">
+                    <div class="bg-white rounded-lg shadow-lg p-8">
+                        <div class="mb-6 pb-6 border-b border-gray-200">
+                            <span class="inline-flex px-3 py-1 text-sm font-medium rounded-full bg-accent-blue/10 text-accent-blue mb-4">
+                                ${postData.category === "tips" ? "Советы" : postData.category === "faq" ? "FAQ" : postData.category === "news" ? "Новости" : "Руководства"}
+                            </span>
+                            <h1 class="text-3xl font-bold text-gray-900 mb-4">${postData.title}</h1>
+                            ${postData.excerpt ? `<p class="text-xl text-gray-600 mb-6">${postData.excerpt}</p>` : ""}
+                        </div>
+
+                        <div class="prose prose-lg max-w-none">
+                            ${postData.content}
+                        </div>
+
+                        ${postData.tags ? `
+                        <div class="mt-8 pt-8 border-t border-gray-200">
+                            <div class="flex flex-wrap gap-2">
+                                ${postData.tags.split(",").map(tag => tag.trim()).filter(tag => tag).map(tag => `<span class="inline-flex px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-full">#${tag}</span>`).join("")}
+                            </div>
+                        </div>
+                        ` : ""}
+                    </div>
+                </div>
+            </body>
+            </html>
+        `;
+
+        // Открываем новое окно с предварительным просмотром
+        const previewWindow = window.open("", "post-preview", "width=1200,height=800,scrollbars=yes,resizable=yes");
+        previewWindow.document.write(previewHtml);
+        previewWindow.document.close();
+    }
+    </script>
+    '
 ]);
 ?>
 
