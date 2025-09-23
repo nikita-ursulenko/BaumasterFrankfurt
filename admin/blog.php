@@ -6,6 +6,7 @@
 
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/../database.php';
+require_once UI_PATH . 'base.php';
 require_once COMPONENTS_PATH . 'admin_layout.php';
 
 // Настройки страницы
@@ -605,33 +606,35 @@ ob_start();
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Категория -->
-                            <div class="space-y-2">
-                                <label for="category" class="block text-sm font-medium text-gray-700">
-                                    <?php echo __('blog.category', 'Категория'); ?>
-                                    <span class="text-red-500">*</span>
-                                </label>
-                                <select id="category" name="category" required 
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition duration-200">
-                                    <option value="tips" <?php echo ($current_post['category'] ?? '') === 'tips' ? 'selected' : ''; ?>><?php echo __('blog.category_tips', 'Советы'); ?></option>
-                                    <option value="faq" <?php echo ($current_post['category'] ?? '') === 'faq' ? 'selected' : ''; ?>><?php echo __('blog.category_faq', 'FAQ'); ?></option>
-                                    <option value="news" <?php echo ($current_post['category'] ?? '') === 'news' ? 'selected' : ''; ?>><?php echo __('blog.category_news', 'Новости'); ?></option>
-                                    <option value="guides" <?php echo ($current_post['category'] ?? '') === 'guides' ? 'selected' : ''; ?>><?php echo __('blog.category_guides', 'Руководства'); ?></option>
-                                </select>
-                            </div>
+                            <?php render_dropdown_field([
+                                'name' => 'category',
+                                'id' => 'category',
+                                'label' => __('blog.category', 'Категория'),
+                                'placeholder' => __('blog.category_placeholder', 'Выберите категорию'),
+                                'value' => $current_post['category'] ?? '',
+                                'options' => [
+                                    ['value' => 'tips', 'text' => __('blog.category_tips', 'Советы')],
+                                    ['value' => 'faq', 'text' => __('blog.category_faq', 'FAQ')],
+                                    ['value' => 'news', 'text' => __('blog.category_news', 'Новости')],
+                                    ['value' => 'guides', 'text' => __('blog.category_guides', 'Руководства')]
+                                ],
+                                'required' => true
+                            ]); ?>
                             
                             <!-- Тип статьи -->
-                            <div class="space-y-2">
-                                <label for="post_type" class="block text-sm font-medium text-gray-700">
-                                    <?php echo __('blog.type', 'Тип статьи'); ?>
-                                </label>
-                                <select id="post_type" name="post_type" 
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition duration-200">
-                                    <option value="article" <?php echo ($current_post['post_type'] ?? 'article') === 'article' ? 'selected' : ''; ?>><?php echo __('blog.type_article', 'Статья'); ?></option>
-                                    <option value="faq" <?php echo ($current_post['post_type'] ?? '') === 'faq' ? 'selected' : ''; ?>><?php echo __('blog.type_faq', 'FAQ'); ?></option>
-                                    <option value="news" <?php echo ($current_post['post_type'] ?? '') === 'news' ? 'selected' : ''; ?>><?php echo __('blog.type_news', 'Новость'); ?></option>
-                                    <option value="tips" <?php echo ($current_post['post_type'] ?? '') === 'tips' ? 'selected' : ''; ?>><?php echo __('blog.type_tips', 'Совет'); ?></option>
-                                </select>
-                            </div>
+                            <?php render_dropdown_field([
+                                'name' => 'post_type',
+                                'id' => 'post_type',
+                                'label' => __('blog.type', 'Тип статьи'),
+                                'placeholder' => __('blog.type_placeholder', 'Выберите тип статьи'),
+                                'value' => $current_post['post_type'] ?? 'article',
+                                'options' => [
+                                    ['value' => 'article', 'text' => __('blog.type_article', 'Статья')],
+                                    ['value' => 'faq', 'text' => __('blog.type_faq', 'FAQ')],
+                                    ['value' => 'news', 'text' => __('blog.type_news', 'Новость')],
+                                    ['value' => 'tips', 'text' => __('blog.type_tips', 'Совет')]
+                                ]
+                            ]); ?>
                         </div>
                     </div>
                 </div>
@@ -719,16 +722,17 @@ ob_start();
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Статус -->
-                        <div class="space-y-2">
-                            <label for="status" class="block text-sm font-medium text-gray-700">
-                                <?php echo __('blog.status', 'Статус'); ?>
-                            </label>
-                            <select id="status" name="status" 
-                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition duration-200">
-                                <option value="draft" <?php echo ($current_post['status'] ?? 'draft') === 'draft' ? 'selected' : ''; ?>><?php echo __('blog.status_draft', 'Черновик'); ?></option>
-                                <option value="published" <?php echo ($current_post['status'] ?? '') === 'published' ? 'selected' : ''; ?>><?php echo __('blog.status_published', 'Опубликовано'); ?></option>
-                            </select>
-                        </div>
+                        <?php render_dropdown_field([
+                            'name' => 'status',
+                            'id' => 'status',
+                            'label' => __('blog.status', 'Статус'),
+                            'placeholder' => __('blog.status_placeholder', 'Выберите статус'),
+                            'value' => $current_post['status'] ?? 'draft',
+                            'options' => [
+                                ['value' => 'draft', 'text' => __('blog.status_draft', 'Черновик')],
+                                ['value' => 'published', 'text' => __('blog.status_published', 'Опубликовано')]
+                            ]
+                        ]); ?>
                         
                         <!-- Дата публикации -->
                         <?php render_input_field([
