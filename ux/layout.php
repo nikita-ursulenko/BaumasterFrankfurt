@@ -61,6 +61,48 @@ function render_frontend_head($title = '', $meta_description = '', $active_page 
             }
         }
     </script>
+    <!-- Tailwind Typography CDN -->
+    <script src="https://unpkg.com/@tailwindcss/typography@0.5.10/dist/index.js"></script>
+    
+    <!-- Custom styles for blog content -->
+    <style>
+        .prose {
+            color: #374151;
+            max-width: none;
+        }
+        .prose h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        .prose h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #374151;
+        }
+        .prose p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+        .prose ul {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+        }
+        .prose li {
+            margin-bottom: 0.5rem;
+            list-style-type: disc;
+        }
+        .prose strong {
+            font-weight: 600;
+        }
+        .prose em {
+            font-style: italic;
+        }
+    </style>
     <?php
 }
 
