@@ -389,7 +389,7 @@ function get_blog_posts($limit = 6, $category = null) {
                 'category' => $post['category'],
                 'post_type' => $post['post_type'],
                 'tags' => $tags,
-                'featured_image' => $post['featured_image'],
+                'featured_image' => !empty($post['featured_image']) ? '/assets/uploads/blog/' . $post['featured_image'] : '',
                 'views' => $post['views'],
                 'published_at' => $post['published_at'],
                 'created_at' => $post['created_at']
@@ -488,7 +488,7 @@ function get_blog_post($slug) {
                 'title' => $related['title'],
                 'slug' => $related['slug'],
                 'excerpt' => $related['excerpt'],
-                'featured_image' => $related['featured_image'],
+                'featured_image' => !empty($related['featured_image']) ? '/assets/uploads/blog/' . $related['featured_image'] : '',
                 'published_at' => $related['published_at']
             ];
         }
@@ -503,7 +503,7 @@ function get_blog_post($slug) {
             'category' => $post['category'],
             'post_type' => $post['post_type'],
             'tags' => $tags,
-            'featured_image' => $post['featured_image'],
+            'featured_image' => !empty($post['featured_image']) ? '/assets/uploads/blog/' . $post['featured_image'] : '',
             'meta_title' => $post['meta_title'] ?: $post['title'],
             'meta_description' => $post['meta_description'] ?: $post['excerpt'],
             'keywords' => $post['keywords'],

@@ -702,3 +702,51 @@
 [2025-09-23 01:50:02] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table activity_log has no column named updated_at
 [2025-09-23 02:04:01] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 near "[!]": syntax error
 [2025-09-23 02:04:35] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 near "[!]": syntax error
+[2025-09-23 02:09:13] [INFO] User root logged in
+[2025-09-23 02:09:38] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 near "=": syntax error
+[2025-09-23 02:09:45] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 near "[!]": syntax error
+[2025-09-23 02:11:22] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 near "[!]": syntax error
+[2025-09-23 02:11:44] [INFO] Blog post updated: Как выбрать правильные материалы для ремонта ванной комнаты (ID: 1)
+[2025-09-23 02:11:44] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table activity_log has no column named updated_at
+[2025-09-23 02:11:46] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 near "[!]": syntax error
+[2025-09-23 02:11:48] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 near "[!]": syntax error
+[2025-09-23 02:11:55] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 near "[!]": syntax error
+[2025-09-23 02:12:02] [INFO] Blog post updated: 1Как выбрать правильные материалы для ремонта ванной комнаты (ID: 1)
+[2025-09-23 02:12:02] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table activity_log has no column named updated_at
+[2025-09-23 02:12:19] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 near "[!]": syntax error
+[2025-09-23 02:42:13] [WARNING] Failed login attempt for username: admin
+[2025-09-23 02:42:13] [WARNING] Failed login attempt for username: admin
+[2025-09-23 02:47:01] [INFO] User root logged in
+[2025-09-23 02:47:55] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 near "[!]": syntax error
+[2025-09-23 02:50:13] [INFO] User root logged in
+[2025-09-23 02:59:35] [INFO] New blog post created: Тестовая статья для проверки предварительного просмотра (ID: 5)
+[2025-09-23 02:59:35] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table activity_log has no column named updated_at
+[2025-09-23 03:00:01] [INFO] Blog post updated: Тестовая статья для проверки предварительного просмотра (ID: 5)
+[2025-09-23 03:00:01] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table activity_log has no column named updated_at
+[2025-09-23 03:00:10] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 near "[!]": syntax error
+[2025-09-23 03:01:04] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 near "[!]": syntax error
+[2025-09-23 03:02:02] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 near "[!]": syntax error
+[2025-09-23 03:02:33] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 near "[!]": syntax error
+[2025-09-23 03:06:04] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 no such column: featured
+[2025-09-23 03:15:24] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 near "[!]": syntax error
+[2025-09-23 03:15:27] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 near "[!]": syntax error
+[2025-09-23 03:16:28] [INFO] User root logged in
+[2025-09-23 03:17:07] [INFO] New blog post created: Тестирование новых функций блога (ID: 6)
+[2025-09-23 03:17:07] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table activity_log has no column named updated_at
+[2025-09-23 03:19:48] [INFO] User root logged in
+[2025-09-23 03:19:50] [INFO] User root logged in
+[2025-09-23 03:22:18] [INFO] User root logged in
+[2025-09-23 03:25:23] [INFO] User root logged in
+[2025-09-23 03:25:44] [INFO] Blog post updated: Как выбрать правильные материалы для ремонта ванной комнаты (ID: 1)
+[2025-09-23 03:25:44] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table activity_log has no column named updated_at
+[2025-09-23 03:26:08] [INFO] User root logged in
+[2025-09-23 03:26:23] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 near "[!]": syntax error
+[2025-09-23 03:26:46] [INFO] Blog post updated: Как выбрать правильные материалы для ремонта ванной комнаты (ID: 1)
+[2025-09-23 03:26:46] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table activity_log has no column named updated_at
+[2025-09-23 03:27:11] [INFO] New blog post created: Тестирование загрузки изображений (ID: 7)
+[2025-09-23 03:27:11] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table activity_log has no column named updated_at
+[2025-09-23 03:27:42] [INFO] Blog post updated: Тестирование загрузки изображений (ID: 7)
+[2025-09-23 03:27:42] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table activity_log has no column named updated_at
+[2025-09-23 03:27:51] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 near "[!]": syntax error
+[2025-09-23 03:31:06] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 near "[!]": syntax error
+[2025-09-23 03:31:17] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 near "[!]": syntax error

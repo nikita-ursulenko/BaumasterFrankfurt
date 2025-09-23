@@ -39,6 +39,20 @@ function create_post($data) {
     // Обработка тегов
     $tags = array_filter(array_map('trim', explode(',', $data['tags'] ?? '')));
     
+    // Обработка загрузки изображения
+    $featured_image = '';
+    if (isset($_FILES['featured_image']) && $_FILES['featured_image']['error'] === UPLOAD_ERR_OK) {
+        $upload_result = handle_image_upload($_FILES['featured_image'], 'blog');
+        if ($upload_result['success']) {
+            $featured_image = basename($upload_result['filepath']);
+        } else {
+            return ['success' => false, 'error' => $upload_result['error']];
+        }
+    } elseif (!empty($data['current_image'])) {
+        // Сохраняем текущее изображение, если новое не загружено
+        $featured_image = basename($data['current_image']);
+    }
+    
     $post_data = [
         'title' => sanitize_input($data['title']),
         'slug' => $slug,
@@ -46,7 +60,7 @@ function create_post($data) {
         'content' => $data['content'], // HTML контент
         'category' => sanitize_input($data['category']),
         'tags' => json_encode($tags),
-        'featured_image' => sanitize_input($data['featured_image'] ?? ''),
+        'featured_image' => $featured_image,
         'meta_title' => sanitize_input($data['meta_title'] ?? ''),
         'meta_description' => sanitize_input($data['meta_description'] ?? ''),
         'keywords' => sanitize_input($data['keywords'] ?? ''),
@@ -92,6 +106,29 @@ function update_post($post_id, $data) {
     // Обработка тегов
     $tags = array_filter(array_map('trim', explode(',', $data['tags'] ?? '')));
     
+    // Обработка загрузки изображения
+    $featured_image = $current_post['featured_image'] ?? ''; // Сохраняем текущее изображение по умолчанию
+    
+    if (isset($_FILES['featured_image']) && $_FILES['featured_image']['error'] === UPLOAD_ERR_OK) {
+        // Удаляем старое изображение, если есть
+        if (!empty($current_post['featured_image'])) {
+            delete_image('/assets/uploads/blog/' . $current_post['featured_image']);
+        }
+        
+        $upload_result = handle_image_upload($_FILES['featured_image'], 'blog');
+        if ($upload_result['success']) {
+            $featured_image = basename($upload_result['filepath']);
+        } else {
+            return ['success' => false, 'error' => $upload_result['error']];
+        }
+    } elseif (isset($data['remove_current_image']) && $data['remove_current_image']) {
+        // Удаляем текущее изображение
+        if (!empty($current_post['featured_image'])) {
+            delete_image('/assets/uploads/blog/' . $current_post['featured_image']);
+        }
+        $featured_image = '';
+    }
+    
     $update_data = [
         'title' => sanitize_input($data['title']),
         'slug' => $slug,
@@ -99,7 +136,7 @@ function update_post($post_id, $data) {
         'content' => $data['content'],
         'category' => sanitize_input($data['category']),
         'tags' => json_encode($tags),
-        'featured_image' => sanitize_input($data['featured_image'] ?? ''),
+        'featured_image' => $featured_image,
         'meta_title' => sanitize_input($data['meta_title'] ?? ''),
         'meta_description' => sanitize_input($data['meta_description'] ?? ''),
         'keywords' => sanitize_input($data['keywords'] ?? ''),
@@ -396,7 +433,7 @@ ob_start();
                                 <!-- Изображение статьи -->
                                 <div class="flex-shrink-0">
                                     <?php if (!empty($post['featured_image'])): ?>
-                                        <img class="h-16 w-24 rounded-lg object-cover" src="<?php echo htmlspecialchars($post['featured_image']); ?>" alt="<?php echo htmlspecialchars($post['title']); ?>">
+                                        <img class="h-16 w-24 rounded-lg object-cover" src="/assets/uploads/blog/<?php echo htmlspecialchars($post['featured_image']); ?>" alt="<?php echo htmlspecialchars($post['title']); ?>">
                                     <?php else: ?>
                                         <div class="h-16 w-24 rounded-lg bg-gray-200 flex items-center justify-center">
                                             <svg class="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -528,7 +565,7 @@ ob_start();
         </div>
 
         <div class="bg-white shadow-sm rounded-lg border border-gray-200 p-6">
-            <form method="POST" class="space-y-8">
+            <form method="POST" enctype="multipart/form-data" class="space-y-8">
                 <input type="hidden" name="action" value="<?php echo $action === 'create' ? 'create' : 'update'; ?>">
                 <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                 
@@ -627,11 +664,13 @@ ob_start();
                     
                     <div class="space-y-6">
                         <!-- Главное изображение -->
-                        <?php render_input_field([
+                        <?php render_image_upload_field([
                             'name' => 'featured_image',
+                            'id' => 'featured_image',
                             'label' => __('blog.featured_image', 'Главное изображение'),
-                            'placeholder' => __('blog.image_placeholder', 'URL изображения'),
-                            'value' => $current_post['featured_image'] ?? ''
+                            'current_image' => !empty($current_post['featured_image']) ? '/assets/uploads/blog/' . $current_post['featured_image'] : '',
+                            'accept' => 'image/*',
+                            'required' => false
                         ]); ?>
                         
                         <!-- Теги -->
@@ -752,104 +791,7 @@ render_admin_layout([
     'page_description' => $page_description,
     'active_menu' => $active_menu,
     'content' => $page_content,
-    'additional_js' => '
-    <script>
-    // Автоматическая генерация slug из заголовка
-    function generateSlugFromTitle() {
-        const titleInput = document.querySelector(\'input[name="title"]\');
-        const slugInput = document.querySelector(\'input[name="slug"]\');
-        if (titleInput && slugInput && !slugInput.value) {
-            const title = titleInput.value;
-            const slug = title.toLowerCase()
-                .replace(/[^a-zа-яё0-9\s-]/g, \'\')
-                .replace(/[\s_-]+/g, \'-\')
-                .replace(/^-+|-+$/g, \'\');
-            slugInput.value = slug;
-        }
-    }
-
-    // Валидация формы перед отправкой
-    function validateForm() {
-        const title = document.querySelector(\'input[name="title"]\').value.trim();
-        const content = document.querySelector(\'textarea[name="content"]\').value.trim();
-        const category = document.querySelector(\'select[name="category"]\').value;
-
-        let errors = [];
-
-        if (title.length < 5) {
-            errors.push(\'Заголовок должен содержать минимум 5 символов\');
-        }
-
-        if (title.length > 100) {
-            errors.push(\'Заголовок не должен превышать 100 символов\');
-        }
-
-        if (content.length < 50) {
-            errors.push(\'Содержание должно содержать минимум 50 символов\');
-        }
-
-        if (!category) {
-            errors.push(\'Необходимо выбрать категорию\');
-        }
-
-        if (errors.length > 0) {
-            alert(\'Ошибки валидации:\\n\' + errors.join(\'\\n\'));
-            return false;
-        }
-
-        return true;
-    }
-
-    // Добавляем обработчики событий
-    document.addEventListener(\'DOMContentLoaded\', function() {
-        const titleInput = document.querySelector(\'input[name="title"]\');
-        const form = document.querySelector(\'form\');
-
-        if (titleInput) {
-            titleInput.addEventListener(\'blur\', generateSlugFromTitle);
-        }
-
-        if (form) {
-            form.addEventListener(\'submit\', function(e) {
-                if (!validateForm()) {
-                    e.preventDefault();
-                    return false;
-                }
-            });
-        }
-    });
-
-    function previewPost() {
-        const form = document.querySelector("form");
-        const formData = new FormData(form);
-
-        // Собираем данные формы
-        const title = formData.get("title") || "Без заголовка";
-        const excerpt = formData.get("excerpt") || "";
-        const content = formData.get("content") || "Содержание статьи отсутствует";
-        const category = formData.get("category") || "tips";
-        const tags = formData.get("tags") || "";
-
-        // Определяем название категории
-        const categories = {
-            "tips": "Советы",
-            "faq": "FAQ",
-            "news": "Новости",
-            "guides": "Руководства"
-        };
-        const categoryName = categories[category] || category;
-
-        // Показываем информацию о предварительном просмотре
-        alert("Предварительный просмотр статьи:\\n\\n" +
-              "Заголовок: " + title + "\\n" +
-              "Категория: " + categoryName + "\\n" +
-              "Краткое описание: " + (excerpt ? excerpt.substring(0, 100) + "..." : "Отсутствует") + "\\n" +
-              "Содержание: " + (content ? content.substring(0, 100) + "..." : "Отсутствует") + "\\n" +
-              "Теги: " + (tags || "Отсутствуют") + "\\n\\n" +
-              "Примечание: Полный предварительный просмотр будет доступен на фронтенде после публикации статьи.");
-    }
-    </script>
-    '
+    'additional_js' => ''
 ]);
 ?>
 

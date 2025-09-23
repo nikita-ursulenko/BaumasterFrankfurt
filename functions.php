@@ -201,7 +201,18 @@ function format_date($date, $format = 'd.m.Y H:i') {
         return $date->format($format);
     }
     
+    // Проверяем, что дата не пустая
+    if (empty($date) || $date === null) {
+        return '';
+    }
+    
     $timestamp = is_numeric($date) ? $date : strtotime($date);
+    
+    // Проверяем, что strtotime вернул корректный timestamp
+    if ($timestamp === false) {
+        return '';
+    }
+    
     return date($format, $timestamp);
 }
 
