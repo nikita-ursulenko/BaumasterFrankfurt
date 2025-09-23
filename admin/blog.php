@@ -256,12 +256,13 @@ if ($_POST) {
                 break;
                 
             case 'publish':
-                $post = $db->select('blog_posts', ['id' => $post_id], ['limit' => 1]);
+                $publish_id = intval($_POST['id'] ?? 0);
+                $post = $db->select('blog_posts', ['id' => $publish_id], ['limit' => 1]);
                 if ($post) {
                     $db->update('blog_posts', [
                         'status' => 'published',
                         'published_at' => date('Y-m-d H:i:s')
-                    ], ['id' => $post_id]);
+                    ], ['id' => $publish_id]);
                     $success_message = __('blog.published', 'Статья опубликована');
                 }
                 break;
@@ -522,6 +523,7 @@ ob_start();
                                 <?php if ($post['status'] === 'draft'): ?>
                                     <form method="POST" class="inline-block">
                                         <input type="hidden" name="action" value="publish">
+                                        <input type="hidden" name="id" value="<?php echo $post['id']; ?>">
                                         <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                                         <?php render_button([
                                             'type' => 'submit',
