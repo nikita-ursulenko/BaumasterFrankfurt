@@ -35,6 +35,12 @@ function create_project($data) {
         return ['success' => false, 'errors' => $errors];
     }
     
+    // Проверка на дублирование по названию
+    $existing_project = $db->select('portfolio', ['title' => $data['title']], ['limit' => 1]);
+    if ($existing_project) {
+        return ['success' => false, 'errors' => ['title' => 'Проект с таким названием уже существует']];
+    }
+    
     // Обработка загрузки главного изображения
     $featured_image = '';
     if (!empty($_FILES['featured_image']) && $_FILES['featured_image']['error'] !== UPLOAD_ERR_NO_FILE) {
@@ -120,6 +126,24 @@ function create_project($data) {
     $project_id = $db->insert('portfolio', $project_data);
     
     if ($project_id) {
+        // АВТОМАТИЧЕСКИЙ ПЕРЕВОД
+        try {
+            require_once __DIR__ . '/../integrations/translation/TranslationManager.php';
+            $translation_manager = new TranslationManager();
+            $translation_manager->autoTranslateContent('portfolio', $project_id, [
+                'title' => $project_data['title'],
+                'description' => $project_data['description'],
+                'area' => $project_data['area'],
+                'duration' => $project_data['duration'],
+                'client_name' => $project_data['client_name'] ?? '',
+                'meta_title' => $project_data['meta_title'],
+                'meta_description' => $project_data['meta_description']
+            ]);
+            write_log("Auto-translation completed for portfolio project ID: $project_id", 'INFO');
+        } catch (Exception $e) {
+            write_log("Auto-translation failed for portfolio project ID: $project_id - " . $e->getMessage(), 'WARNING');
+        }
+        
         // Логирование
         write_log("New portfolio project created: {$project_data['title']} (ID: $project_id)", 'INFO');
         log_user_activity('portfolio_create', 'portfolio', $project_id);
@@ -298,7 +322,8 @@ if ($_POST) {
                 break;
                 
             case 'delete':
-                $result = delete_project($project_id);
+                $delete_id = intval($_POST['id'] ?? 0);
+                $result = delete_project($delete_id);
                 if ($result['success']) {
                     $success_message = $result['message'];
                     $action = 'list'; // Возвращаемся к списку
@@ -634,6 +659,7 @@ ob_start();
                                     <!-- Удаление -->
                                     <form method="POST" class="inline-block" onsubmit="return confirmDelete('<?php echo __('portfolio.confirm_delete', 'Вы уверены, что хотите удалить этот проект?'); ?>');">
                                         <input type="hidden" name="action" value="delete">
+                                        <input type="hidden" name="id" value="<?php echo $project['id']; ?>">
                                         <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                                         <button type="submit" class="text-red-400 hover:text-red-600" title="<?php echo __('common.delete', 'Удалить'); ?>">
                                             <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

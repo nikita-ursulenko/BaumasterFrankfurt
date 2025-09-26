@@ -9,6 +9,9 @@ if (!defined('ABSPATH')) {
     define('ABSPATH', dirname(__DIR__) . '/');
 }
 
+// Подключение функций
+require_once ABSPATH . 'functions.php';
+
 /**
  * Рендеринг HTML head
  */
@@ -152,14 +155,17 @@ function render_frontend_layout($options = []) {
  * Рендеринг навигации
  */
 function render_frontend_navigation($active_page = '') {
+    // Определяем язык для навигации
+    $is_german = defined('CURRENT_LANG') && CURRENT_LANG === 'de';
+    
     $menu_items = [
-        'home' => ['url' => 'index.php', 'title' => 'Главная', 'anchor' => '#hero'],
-        'services' => ['url' => 'services.php', 'title' => 'Услуги', 'anchor' => '#services'],
-        'portfolio' => ['url' => 'portfolio.php', 'title' => 'Портфолио', 'anchor' => '#portfolio'],
-        'about' => ['url' => 'about.php', 'title' => 'О компании', 'anchor' => '#about'],
-        'reviews' => ['url' => 'review.php', 'title' => 'Отзывы', 'anchor' => '#reviews'],
-        'blog' => ['url' => 'blog.php', 'title' => 'FAQ', 'anchor' => '#faq'],
-        'contact' => ['url' => 'contact.php', 'title' => 'Контакты', 'anchor' => '#contact']
+        'home' => ['url' => 'index.php', 'title' => $is_german ? 'Startseite' : 'Главная', 'anchor' => '#hero'],
+        'services' => ['url' => 'services.php', 'title' => $is_german ? 'Dienstleistungen' : 'Услуги', 'anchor' => '#services'],
+        'portfolio' => ['url' => 'portfolio.php', 'title' => $is_german ? 'Portfolio' : 'Портфолио', 'anchor' => '#portfolio'],
+        'about' => ['url' => 'about.php', 'title' => $is_german ? 'Über uns' : 'О компании', 'anchor' => '#about'],
+        'reviews' => ['url' => 'review.php', 'title' => $is_german ? 'Bewertungen' : 'Отзывы', 'anchor' => '#reviews'],
+        'blog' => ['url' => 'blog.php', 'title' => $is_german ? 'FAQ' : 'FAQ', 'anchor' => '#faq'],
+        'contact' => ['url' => 'contact.php', 'title' => $is_german ? 'Kontakt' : 'Контакты', 'anchor' => '#contact']
     ];
     ?>
     <!-- Navigation -->
@@ -180,10 +186,30 @@ function render_frontend_navigation($active_page = '') {
                     <?php endforeach; ?>
                 </div>
 
+                <!-- Language Switcher -->
+                <div class="hidden lg:flex items-center space-x-2 mr-4">
+                    <a href="<?php echo get_language_switch_url('ru'); ?>" class="px-3 py-1 text-sm rounded <?php echo !defined('CURRENT_LANG') || CURRENT_LANG !== 'de' ? 'bg-accent-blue text-white' : 'text-text-secondary hover:text-accent-blue'; ?> transition-colors">
+                        RU
+                    </a>
+                    <a href="<?php echo get_language_switch_url('de'); ?>" class="px-3 py-1 text-sm rounded <?php echo defined('CURRENT_LANG') && CURRENT_LANG === 'de' ? 'bg-accent-blue text-white' : 'text-text-secondary hover:text-accent-blue'; ?> transition-colors">
+                        DE
+                    </a>
+                </div>
+
                 <!-- Desktop Call Button -->
                 <button class="hidden lg:block bg-accent-blue text-white px-4 py-2 rounded hover:bg-opacity-90 transition-colors" onclick="openCallModal()">
-                    Позвонить
+                    <?php echo defined('CURRENT_LANG') && CURRENT_LANG === 'de' ? 'Anrufen' : 'Позвонить'; ?>
                 </button>
+
+                <!-- Mobile Language Switcher -->
+                <div class="lg:hidden flex items-center space-x-2 mr-2">
+                    <a href="<?php echo get_language_switch_url('ru'); ?>" class="px-2 py-1 text-xs rounded <?php echo !defined('CURRENT_LANG') || CURRENT_LANG !== 'de' ? 'bg-accent-blue text-white' : 'text-text-secondary'; ?> transition-colors">
+                        RU
+                    </a>
+                    <a href="<?php echo get_language_switch_url('de'); ?>" class="px-2 py-1 text-xs rounded <?php echo defined('CURRENT_LANG') && CURRENT_LANG === 'de' ? 'bg-accent-blue text-white' : 'text-text-secondary'; ?> transition-colors">
+                        DE
+                    </a>
+                </div>
 
                 <!-- Mobile menu button -->
                 <button id="mobile-menu-button" class="lg:hidden p-2 rounded-md text-text-secondary hover:text-accent-blue focus:outline-none">
@@ -217,6 +243,8 @@ function render_frontend_navigation($active_page = '') {
  * Рендеринг footer
  */
 function render_frontend_footer() {
+    // Определяем язык для футера
+    $is_german = defined('CURRENT_LANG') && CURRENT_LANG === 'de';
     ?>
     <!-- Footer -->
     <footer class="bg-text-primary text-white py-16">
@@ -227,9 +255,9 @@ function render_frontend_footer() {
                     <div class="font-montserrat font-semibold text-2xl mb-4">
                         Frankfurt Innenausbau
                     </div>
-                    <p class="text-gray-300 mb-6 leading-relaxed">
-                        Профессиональные внутренние работы во Франкфурте. Превращаем ваши идеи в реальность с премиальным качеством и вниманием к деталям.
-                    </p>
+                      <p class="text-gray-300 mb-6 leading-relaxed">
+                         <?php echo $is_german ? 'Professionelle Innenarbeiten in Frankfurt. Wir verwandeln Ihre Ideen mit Premium-Qualität und Aufmerksamkeit für Details in die Realität.' : 'Профессиональные внутренние работы во Франкфурте. Превращаем ваши идеи в реальность с премиальным качеством и вниманием к деталям.'; ?>
+                      </p>
                     <div class="flex space-x-4">
                         <button class="bg-accent-blue text-white p-3 rounded-full hover:bg-opacity-80 transition-colors">
                             <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
@@ -246,19 +274,19 @@ function render_frontend_footer() {
                 
                 <!-- Services -->
                 <div>
-                    <h3 class="font-semibold text-lg mb-4">Услуги</h3>
+                    <h3 class="font-semibold text-lg mb-4"><?php echo $is_german ? 'Dienstleistungen' : 'Услуги'; ?></h3>
                     <ul class="space-y-2 text-gray-300">
-                        <li><a href="services.php" class="hover:text-white transition-colors">Малярные работы</a></li>
-                        <li><a href="services.php" class="hover:text-white transition-colors">Укладка полов</a></li>
-                        <li><a href="services.php" class="hover:text-white transition-colors">Ремонт ванных</a></li>
-                        <li><a href="services.php" class="hover:text-white transition-colors">Гипсокартон</a></li>
-                        <li><a href="services.php" class="hover:text-white transition-colors">Плитка</a></li>
+                        <li><a href="services.php" class="hover:text-white transition-colors"><?php echo $is_german ? 'Malerarbeiten' : 'Малярные работы'; ?></a></li>
+                        <li><a href="services.php" class="hover:text-white transition-colors"><?php echo $is_german ? 'Bodenverlegung' : 'Укладка полов'; ?></a></li>
+                        <li><a href="services.php" class="hover:text-white transition-colors"><?php echo $is_german ? 'Badezimmerrenovierung' : 'Ремонт ванных'; ?></a></li>
+                        <li><a href="services.php" class="hover:text-white transition-colors"><?php echo $is_german ? 'Trockenbau' : 'Гипсокартон'; ?></a></li>
+                        <li><a href="services.php" class="hover:text-white transition-colors"><?php echo $is_german ? 'Fliesenverlegung' : 'Плитка'; ?></a></li>
                     </ul>
                 </div>
                 
                 <!-- Contact -->
                 <div>
-                    <h3 class="font-semibold text-lg mb-4">Контакты</h3>
+                    <h3 class="font-semibold text-lg mb-4"><?php echo $is_german ? 'Kontakt' : 'Контакты'; ?></h3>
                     <div class="space-y-2 text-gray-300">
                         <div class="flex items-center space-x-2">
                             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -286,12 +314,12 @@ function render_frontend_footer() {
             <div class="border-t border-gray-700 mt-12 pt-8">
                 <div class="flex flex-col md:flex-row justify-between items-center">
                     <p class="text-gray-400 text-sm">
-                        © 2024 Frankfurt Innenausbau. Все права защищены.
+                        © 2024 Frankfurt Innenausbau. <?php echo $is_german ? 'Alle Rechte vorbehalten.' : 'Все права защищены.'; ?>
                     </p>
                     <div class="flex space-x-6 mt-4 md:mt-0">
-                        <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Политика конфиденциальности</a>
-                        <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Условия использования</a>
-                        <a href="admin/login.php" class="text-gray-400 hover:text-white text-sm transition-colors">Вход</a>
+                        <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors"><?php echo $is_german ? 'Datenschutz' : 'Политика конфиденциальности'; ?></a>
+                        <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors"><?php echo $is_german ? 'Nutzungsbedingungen' : 'Условия использования'; ?></a>
+                        <a href="admin/login.php" class="text-gray-400 hover:text-white text-sm transition-colors"><?php echo $is_german ? 'Anmelden' : 'Вход'; ?></a>
                     </div>
                 </div>
             </div>
@@ -361,6 +389,48 @@ function render_frontend_scripts() {
                 if (!validateForm(this)) {
                     e.preventDefault();
                     alert('Пожалуйста, заполните все обязательные поля');
+                }
+            });
+        });
+
+        // Language switching with page preservation
+        function switchLanguage(targetLanguage) {
+            const currentUrl = window.location.pathname;
+            const currentPage = currentUrl.split('/').pop() || 'index.php';
+            
+            // Определяем, находимся ли мы в немецкой версии
+            const isGerman = currentUrl.startsWith('/de/');
+            
+            let targetUrl;
+            if (targetLanguage === 'de') {
+                // Переключаемся на немецкий
+                if (isGerman) {
+                    return; // Уже на немецком
+                } else {
+                    targetUrl = '/de/' + currentPage;
+                }
+            } else {
+                // Переключаемся на русский
+                if (isGerman) {
+                    targetUrl = '/' + currentPage;
+                } else {
+                    return; // Уже на русском
+                }
+            }
+            
+            // Переходим на новую страницу
+            window.location.href = targetUrl;
+        }
+
+        // Добавляем обработчики для переключателей языков
+        document.querySelectorAll('a[href*="get_language_switch_url"]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const href = this.getAttribute('href');
+                if (href.includes('ru')) {
+                    switchLanguage('ru');
+                } else if (href.includes('de')) {
+                    switchLanguage('de');
                 }
             });
         });

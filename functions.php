@@ -871,3 +871,84 @@ function render_form_field($config) {
     echo '</div>';
 }
 
+/**
+ * ФУНКЦИИ ПЕРЕКЛЮЧЕНИЯ ЯЗЫКОВ
+ */
+
+/**
+ * Получить соответствие страниц между языками
+ */
+function get_page_language_mapping() {
+    return [
+        'index.php' => 'index.php',
+        'services.php' => 'services.php',
+        'portfolio.php' => 'portfolio.php',
+        'about.php' => 'about.php',
+        'review.php' => 'review.php',
+        'blog.php' => 'blog.php',
+        'contact.php' => 'contact.php'
+    ];
+}
+
+/**
+ * Определить текущую страницу
+ */
+function get_current_page() {
+    $script_name = $_SERVER['SCRIPT_NAME'];
+    $page = basename($script_name);
+    
+    // Если мы в папке /de/, убираем путь
+    if (strpos($script_name, '/de/') !== false) {
+        $page = basename($script_name);
+    }
+    
+    return $page;
+}
+
+/**
+ * Получить URL для переключения языка с сохранением текущей страницы
+ */
+function get_language_switch_url($target_language) {
+    $current_page = get_current_page();
+    $page_mapping = get_page_language_mapping();
+    
+    // Определяем, находимся ли мы в немецкой версии
+    $is_german = strpos($_SERVER['REQUEST_URI'], '/de/') !== false;
+    
+    // Определяем целевую страницу
+    $target_page = $page_mapping[$current_page] ?? 'index.php';
+    
+    if ($target_language === 'de') {
+        // Переключаемся на немецкий
+        if ($is_german) {
+            // Уже на немецком, возвращаем текущий URL
+            return $_SERVER['REQUEST_URI'];
+        } else {
+            // Переходим на немецкую версию
+            return '/de/' . $target_page;
+        }
+    } else {
+        // Переключаемся на русский
+        if ($is_german) {
+            // Переходим на русскую версию
+            return '/' . $target_page;
+        } else {
+            // Уже на русском, возвращаем текущий URL
+            return $_SERVER['REQUEST_URI'];
+        }
+    }
+}
+
+/**
+ * Получить текущий язык на основе URL
+ */
+function get_current_language_from_url() {
+    $request_uri = $_SERVER['REQUEST_URI'];
+    
+    if (strpos($request_uri, '/de/') === 0) {
+        return 'de';
+    }
+    
+    return 'ru';
+}
+

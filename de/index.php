@@ -1,18 +1,18 @@
 <?php
 /**
- * Главная страница сайта
- * Baumaster Frontend - Home Page
+ * Немецкая версия главной страницы
+ * Baumaster Frontend - Home Page (German)
  */
 
 // Подключение компонентов
-require_once __DIR__ . '/config.php';
-require_once __DIR__ . '/database.php';
-require_once __DIR__ . '/ux/layout.php';
-require_once __DIR__ . '/ux/components.php';
-require_once __DIR__ . '/ux/data.php';
+require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../database.php';
+require_once __DIR__ . '/../ux/layout.php';
+require_once __DIR__ . '/../ux/components.php';
+require_once __DIR__ . '/../ux/data.php';
 
 // Установка языка
-define('CURRENT_LANG', 'ru');
+define('CURRENT_LANG', 'de');
 
 // Получение данных
 $seo = get_seo_data()['home'];
@@ -33,18 +33,18 @@ ob_start();
                 <span class="text-accent-blue">in Frankfurt am Main</span>
             </h1>
             <p class="text-xl lg:text-2xl text-text-secondary mb-8 leading-relaxed max-w-4xl mx-auto">
-                Полный спектр внутренних работ — от малярки до укладки полов. 
-                Премиальное качество и надёжность для вашего дома.
+                Vollständige Palette von Innenarbeiten — von Malerarbeiten bis zum Verlegen von Böden. 
+                Premium-Qualität und Zuverlässigkeit für Ihr Zuhause.
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <?php render_frontend_button([
-                    'text' => 'Бесплатный расчёт',
+                    'text' => 'Kostenlose Berechnung',
                     'variant' => 'primary',
                     'size' => 'lg',
                     'href' => 'contact.php'
                 ]); ?>
                 <?php render_frontend_button([
-                    'text' => 'Наши услуги',
+                    'text' => 'Unsere Dienstleistungen',
                     'variant' => 'outline',
                     'size' => 'lg',
                     'onclick' => "document.getElementById('services').scrollIntoView({behavior: 'smooth'})"
@@ -59,10 +59,10 @@ ob_start();
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
             <h2 class="font-montserrat font-semibold text-3xl lg:text-4xl text-text-primary mb-4">
-                Наши услуги
+                Unsere Dienstleistungen
             </h2>
             <p class="text-xl text-text-secondary max-w-3xl mx-auto">
-                Выполняем все виды внутренних работ с гарантией качества и в договорные сроки
+                Wir führen alle Arten von Innenarbeiten mit Qualitätsgarantie und pünktlich durch
             </p>
         </div>
         
@@ -74,7 +74,7 @@ ob_start();
         
         <div class="text-center mt-12">
             <?php render_frontend_button([
-                'text' => 'Все услуги',
+                'text' => 'Alle Dienstleistungen',
                 'variant' => 'outline',
                 'size' => 'lg',
                 'href' => 'services.php'
@@ -88,10 +88,10 @@ ob_start();
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
             <h2 class="font-montserrat font-semibold text-3xl lg:text-4xl text-text-primary mb-4">
-                Наши работы
+                Unsere Arbeiten
             </h2>
             <p class="text-xl text-text-secondary max-w-3xl mx-auto">
-                Посмотрите примеры наших проектов — от небольших ремонтов до комплексной реконструкции
+                Sehen Sie sich Beispiele unserer Projekte an — von kleinen Renovierungen bis zur kompletten Rekonstruktion
             </p>
         </div>
         
@@ -123,7 +123,7 @@ ob_start();
         
         <div class="text-center mt-12">
             <?php render_frontend_button([
-                'text' => 'Смотреть все проекты',
+                'text' => 'Alle Projekte ansehen',
                 'variant' => 'primary',
                 'size' => 'lg',
                 'href' => 'portfolio.php'
@@ -138,32 +138,32 @@ ob_start();
         <div class="grid lg:grid-cols-2 gap-16 items-center">
             <div>
                 <h2 class="font-montserrat font-semibold text-3xl lg:text-4xl text-text-primary mb-6">
-                    О компании Frankfurt Innenausbau
+                    Über das Unternehmen Frankfurt Innenausbau
                 </h2>
                 <p class="text-lg text-text-secondary mb-6 leading-relaxed">
-                    Мы команда опытных мастеров, работающих во Франкфурте более 10 лет. 
-                    Специализируемся на внутренних работах и знаем все тонкости качественного ремонта.
+                    Wir sind ein Team erfahrener Handwerker, die seit über 10 Jahren in Frankfurt arbeiten. 
+                    Wir spezialisieren uns auf Innenarbeiten und kennen alle Feinheiten einer qualitativ hochwertigen Renovierung.
                 </p>
                 <div class="grid md:grid-cols-2 gap-6 mb-8">
                     <div class="text-center">
                         <div class="text-3xl font-bold text-accent-blue mb-2">500+</div>
-                        <div class="text-text-secondary">Довольных клиентов</div>
+                        <div class="text-text-secondary">Zufriedene Kunden</div>
                     </div>
                     <div class="text-center">
                         <div class="text-3xl font-bold text-accent-blue mb-2">10+</div>
-                        <div class="text-text-secondary">Лет опыта</div>
+                        <div class="text-text-secondary">Jahre Erfahrung</div>
                     </div>
                     <div class="text-center">
                         <div class="text-3xl font-bold text-accent-blue mb-2">100%</div>
-                        <div class="text-text-secondary">Качество работ</div>
+                        <div class="text-text-secondary">Arbeitsqualität</div>
                     </div>
                     <div class="text-center">
                         <div class="text-3xl font-bold text-accent-blue mb-2">24/7</div>
-                        <div class="text-text-secondary">Поддержка клиентов</div>
+                        <div class="text-text-secondary">Kundensupport</div>
                     </div>
                 </div>
                 <?php render_frontend_button([
-                    'text' => 'Подробнее о нас',
+                    'text' => 'Mehr über uns',
                     'variant' => 'outline',
                     'size' => 'lg',
                     'href' => 'about.php'
@@ -171,31 +171,31 @@ ob_start();
             </div>
             <div class="relative">
                 <div class="bg-gradient-to-br from-accent-blue to-gray-700 rounded-lg p-8 text-white">
-                    <h3 class="font-semibold text-2xl mb-4">Почему выбирают нас?</h3>
+                    <h3 class="font-semibold text-2xl mb-4">Warum wählen Sie uns?</h3>
                     <ul class="space-y-4">
                         <li class="flex items-center">
                             <svg class="h-6 w-6 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
-                            Гарантия качества на все работы
+                            Qualitätsgarantie für alle Arbeiten
                         </li>
                         <li class="flex items-center">
                             <svg class="h-6 w-6 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
-                            Соблюдение договорных сроков
+                            Einhaltung der vereinbarten Fristen
                         </li>
                         <li class="flex items-center">
                             <svg class="h-6 w-6 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
-                            Качественные материалы
+                            Qualitätsmaterialien
                         </li>
                         <li class="flex items-center">
                             <svg class="h-6 w-6 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
-                            Профессиональная команда
+                            Professionelles Team
                         </li>
                     </ul>
                 </div>
@@ -209,10 +209,10 @@ ob_start();
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
             <h2 class="font-montserrat font-semibold text-3xl lg:text-4xl text-text-primary mb-4">
-                Отзывы наших клиентов
+                Bewertungen unserer Kunden
             </h2>
             <p class="text-xl text-text-secondary max-w-3xl mx-auto">
-                Читайте, что говорят о нашей работе те, кто уже доверил нам свой ремонт
+                Lesen Sie, was diejenigen über unsere Arbeit sagen, die uns bereits ihre Renovierung anvertraut haben
             </p>
         </div>
         
@@ -224,7 +224,7 @@ ob_start();
         
         <div class="text-center mt-12">
             <?php render_frontend_button([
-                'text' => 'Все отзывы',
+                'text' => 'Alle Bewertungen',
                 'variant' => 'outline',
                 'size' => 'lg',
                 'href' => 'review.php'
@@ -239,11 +239,10 @@ $content = ob_get_clean();
 
 // Рендеринг страницы
 render_frontend_layout([
-    'title' => $seo['title'],
-    'meta_description' => $seo['description'],
+    'title' => 'Baumaster Frankfurt - Innenausbau & Renovierung',
+    'meta_description' => 'Professionelle Innenausbau- und Renovierungsdienstleistungen in Frankfurt am Main. Malerarbeiten, Bodenverlegung, Badezimmerrenovierung.',
     'active_page' => 'home',
     'content' => $content,
-    'language' => 'ru'
+    'language' => 'de'
 ]);
 ?>
-

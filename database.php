@@ -198,6 +198,18 @@ class Database {
                     description TEXT,
                     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
                 )
+            ",
+            
+            'translation_cache' => "
+                CREATE TABLE IF NOT EXISTS translation_cache (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    source_text TEXT NOT NULL,
+                    translated_text TEXT NOT NULL,
+                    source_lang VARCHAR(5) NOT NULL,
+                    target_lang VARCHAR(5) NOT NULL,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    UNIQUE(source_text, source_lang, target_lang)
+                )
             "
         ];
         
@@ -209,6 +221,9 @@ class Database {
             }
         }
         
+        // Создание индексов для оптимизации
+        $this->create_indexes();
+        
         // Создание администратора по умолчанию
         $this->create_default_admin();
         
@@ -217,6 +232,26 @@ class Database {
         
         // Создание настроек по умолчанию
         $this->create_default_settings();
+    }
+    
+    /**
+     * Создание индексов для оптимизации
+     */
+    private function create_indexes() {
+        $indexes = [
+            'idx_translation_cache_lookup' => 'CREATE INDEX IF NOT EXISTS idx_translation_cache_lookup ON translation_cache(source_text, source_lang, target_lang)',
+            'idx_translations_lookup' => 'CREATE INDEX IF NOT EXISTS idx_translations_lookup ON translations(source_table, source_id, target_lang)',
+            'idx_portfolio_status' => 'CREATE INDEX IF NOT EXISTS idx_portfolio_status ON portfolio(status, featured)',
+            'idx_blog_posts_status' => 'CREATE INDEX IF NOT EXISTS idx_blog_posts_status ON blog_posts(status, published_at)'
+        ];
+        
+        foreach ($indexes as $name => $sql) {
+            try {
+                $this->pdo->exec($sql);
+            } catch (PDOException $e) {
+                write_log("Error creating index $name: " . $e->getMessage(), 'ERROR');
+            }
+        }
     }
     
     /**

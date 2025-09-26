@@ -7,7 +7,9 @@
 // Подключение базовых файлов
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/../database.php';
+require_once __DIR__ . '/../functions.php';
 require_once COMPONENTS_PATH . 'admin_layout.php';
+require_once __DIR__ . '/../integrations/translation/TranslationManager.php';
 
 // Настройки страницы
 $page_title = __('services.title', 'Управление услугами');
@@ -109,6 +111,21 @@ function create_service($data, $files = []) {
     $service_id = $db->insert('services', $service_data);
     
     if ($service_id) {
+        // АВТОМАТИЧЕСКИЙ ПЕРЕВОД
+        try {
+            $translation_manager = new TranslationManager();
+            $translation_manager->autoTranslateContent('services', $service_id, [
+                'title' => $service_data['title'],
+                'description' => $service_data['description'],
+                'meta_title' => $service_data['meta_title'],
+                'meta_description' => $service_data['meta_description'],
+                'keywords' => $service_data['keywords']
+            ]);
+            write_log("Auto-translation completed for service ID: $service_id", 'INFO');
+        } catch (Exception $e) {
+            write_log("Auto-translation failed for service ID: $service_id - " . $e->getMessage(), 'WARNING');
+        }
+        
         // Логирование
         write_log("New service created: {$service_data['title']} (ID: $service_id)", 'INFO');
         log_user_activity('service_create', 'services', $service_id);
@@ -224,6 +241,27 @@ function update_service($service_id, $data, $files = []) {
     
     // Обновление в базе данных
     if ($db->update('services', $update_data, ['id' => $service_id])) {
+        // АВТОМАТИЧЕСКИЙ ПЕРЕВОД (только для измененных полей)
+        try {
+            $translation_manager = new TranslationManager();
+            $fields_to_translate = [];
+            
+            // Проверяем, какие поля изменились
+            $translatable_fields = ['title', 'description', 'meta_title', 'meta_description', 'keywords'];
+            foreach ($translatable_fields as $field) {
+                if (isset($update_data[$field]) && $update_data[$field] !== $existing_service[$field]) {
+                    $fields_to_translate[$field] = $update_data[$field];
+                }
+            }
+            
+            if (!empty($fields_to_translate)) {
+                $translation_manager->autoTranslateContent('services', $service_id, $fields_to_translate);
+                write_log("Auto-translation updated for service ID: $service_id", 'INFO');
+            }
+        } catch (Exception $e) {
+            write_log("Auto-translation update failed for service ID: $service_id - " . $e->getMessage(), 'WARNING');
+        }
+        
         // Логирование
         write_log("Service updated: {$existing_service['title']} (ID: $service_id)", 'INFO');
         log_user_activity('service_update', 'services', $service_id, $existing_service, $update_data);
@@ -249,7 +287,7 @@ function delete_service($service_id) {
     }
     
     // Удаление галереи
-    $gallery = json_decode($service['gallery'], true) ?: [];
+    $gallery = json_decode($service['gallery'] ?? '', true) ?: [];
     foreach ($gallery as $image_url) {
         delete_image($image_url);
     }
@@ -343,6 +381,44 @@ if ($_POST) {
                     $action = 'list'; // Возвращаемся к списку
                 } else {
                     $error_message = $result['error'];
+                }
+                break;
+                
+            case 'bulk_delete':
+                $selected_items = $_POST['selected_items'] ?? [];
+                write_log("Bulk delete request: " . json_encode($_POST), 'INFO');
+                write_log("Selected items: " . json_encode($selected_items), 'INFO');
+                
+                if (empty($selected_items)) {
+                    $error_message = __('common.no_items_selected', 'Не выбрано ни одного элемента');
+                    write_log("No items selected for bulk delete", 'WARNING');
+                } else {
+                    $deleted_count = 0;
+                    $errors = [];
+                    
+                    foreach ($selected_items as $item_id) {
+                        write_log("Attempting to delete service ID: " . $item_id, 'INFO');
+                        $result = delete_service(intval($item_id));
+                        write_log("Delete result for ID $item_id: " . json_encode($result), 'INFO');
+                        
+                        if ($result['success']) {
+                            $deleted_count++;
+                        } else {
+                            $errors[] = $result['error'];
+                        }
+                    }
+                    
+                    if ($deleted_count > 0) {
+                        $success_message = sprintf(__('common.bulk_delete_success', 'Успешно удалено %d элементов'), $deleted_count);
+                        write_log("Bulk delete completed: $deleted_count items deleted", 'INFO');
+                    }
+                    
+                    if (!empty($errors)) {
+                        $error_message = implode('<br>', $errors);
+                        write_log("Bulk delete errors: " . implode(', ', $errors), 'ERROR');
+                    }
+                    
+                    $action = 'list'; // Возвращаемся к списку
                 }
                 break;
                 
@@ -488,6 +564,7 @@ ob_start();
         ?>
     </div>
 
+
     <!-- Таблица услуг -->
     <div class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
         <?php if (empty($services)): ?>
@@ -507,14 +584,43 @@ ob_start();
                 </div>
             </div>
         <?php else: ?>
-            <!-- Адаптивная таблица с горизонтальной прокруткой -->
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200 admin-table-responsive">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[200px]">
-                                <?php echo __('services.service', 'Услуга'); ?>
-                            </th>
+            <!-- Форма для массовых действий -->
+            <form id="bulk-actions-form" method="POST" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+                <input type="hidden" name="action" value="bulk_delete">
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
+                
+                <!-- Панель массовых действий -->
+                <div class="bg-gray-50 px-4 py-3 border-b border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <label class="flex items-center">
+                                <input type="checkbox" id="select-all" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                                <span class="ml-2 text-sm text-gray-700"><?php echo __('common.select_all', 'Выбрать все'); ?></span>
+                            </label>
+                            <span id="selected-count" class="text-sm text-gray-500">0 <?php echo __('common.selected', 'выбрано'); ?></span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button type="submit" id="bulk-delete-btn" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                </svg>
+                                <?php echo __('common.bulk_delete', 'Удалить выбранные'); ?>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Адаптивная таблица с горизонтальной прокруткой -->
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200 admin-table-responsive">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-12">
+                                    <input type="checkbox" id="select-all-header" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                                </th>
+                                <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[200px]">
+                                    <?php echo __('services.service', 'Услуга'); ?>
+                                </th>
                             <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[120px]">
                                 <?php echo __('services.category', 'Категория'); ?>
                             </th>
@@ -535,6 +641,9 @@ ob_start();
                     <tbody class="bg-white divide-y divide-gray-200">
                         <?php foreach ($services as $service): ?>
                             <tr class="hover:bg-gray-50">
+                                <td class="px-3 py-4">
+                                    <input type="checkbox" name="selected_items[]" value="<?php echo $service['id']; ?>" class="item-checkbox rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                                </td>
                                 <td class="px-3 py-4">
                                     <div class="flex items-center">
                                         <?php if (!empty($service['image'])): ?>
@@ -587,17 +696,9 @@ ob_start();
                                             'size' => 'sm'
                                         ]); ?>
                                         
-                                        <form method="POST" class="inline-block">
-                                            <input type="hidden" name="action" value="toggle_status">
-                                            <input type="hidden" name="id" value="<?php echo $service['id']; ?>">
-                                            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
-                                            <?php render_button([
-                                                'type' => 'submit',
-                                                'text' => $service['status'] === 'active' ? __('services.deactivate', 'Скрыть') : __('services.activate', 'Показать'),
-                                                'variant' => $service['status'] === 'active' ? 'secondary' : 'primary',
-                                                'size' => 'sm'
-                                            ]); ?>
-                                        </form>
+                                        <button type="button" onclick="toggleServiceStatus(<?php echo $service['id']; ?>)" class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                            <?php echo $service['status'] === 'active' ? __('services.deactivate', 'Скрыть') : __('services.activate', 'Показать'); ?>
+                                        </button>
                                         
                                         <form method="POST" class="inline-block" onsubmit="return confirmDelete('<?php echo __('services.confirm_delete', 'Вы уверены, что хотите удалить эту услугу?'); ?>');">
                                             <input type="hidden" name="action" value="delete">
@@ -615,8 +716,9 @@ ob_start();
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
-                </table>
-            </div>
+                    </table>
+                </div>
+            </form>
         <?php endif; ?>
     </div>
 
@@ -900,6 +1002,7 @@ function previewImage(input) {
 function confirmDelete(message) {
     return confirm(message);
 }
+
 </script>
 
 <?php endif; ?>
@@ -915,3 +1018,145 @@ render_admin_layout([
     'content' => $page_content
 ]);
 ?>
+
+<script>
+// Массовый выбор элементов
+document.addEventListener('DOMContentLoaded', function() {
+    const selectAllCheckbox = document.getElementById('select-all');
+    const selectAllHeaderCheckbox = document.getElementById('select-all-header');
+    const itemCheckboxes = document.querySelectorAll('.item-checkbox');
+    const selectedCountSpan = document.getElementById('selected-count');
+    const bulkDeleteBtn = document.getElementById('bulk-delete-btn');
+    const bulkForm = document.getElementById('bulk-actions-form');
+    
+    console.log('DOM loaded, elements found:');
+    console.log('selectAllCheckbox:', selectAllCheckbox);
+    console.log('selectAllHeaderCheckbox:', selectAllHeaderCheckbox);
+    console.log('itemCheckboxes count:', itemCheckboxes.length);
+    console.log('selectedCountSpan:', selectedCountSpan);
+    console.log('bulkDeleteBtn:', bulkDeleteBtn);
+    console.log('bulkForm:', bulkForm);
+    
+    // Функция обновления счетчика выбранных элементов
+    function updateSelectedCount() {
+        const selectedItems = document.querySelectorAll('.item-checkbox:checked');
+        const count = selectedItems.length;
+        
+        console.log('Updating selected count:', count);
+        
+        if (selectedCountSpan) {
+            selectedCountSpan.textContent = count + ' выбрано';
+        }
+        
+        // Включаем/выключаем кнопку массового удаления
+        if (bulkDeleteBtn) {
+            bulkDeleteBtn.disabled = count === 0;
+        }
+        
+        // Обновляем состояние чекбокса "Выбрать все"
+        if (selectAllCheckbox) {
+            selectAllCheckbox.checked = count === itemCheckboxes.length && count > 0;
+            selectAllCheckbox.indeterminate = count > 0 && count < itemCheckboxes.length;
+        }
+        
+        if (selectAllHeaderCheckbox) {
+            selectAllHeaderCheckbox.checked = count === itemCheckboxes.length && count > 0;
+            selectAllHeaderCheckbox.indeterminate = count > 0 && count < itemCheckboxes.length;
+        }
+    }
+    
+    // Обработчик для чекбокса "Выбрать все" в панели действий
+    if (selectAllCheckbox) {
+        selectAllCheckbox.addEventListener('change', function() {
+            console.log('Select all checkbox changed:', this.checked);
+            itemCheckboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+            });
+            updateSelectedCount();
+        });
+    }
+    
+    // Обработчик для чекбокса "Выбрать все" в заголовке таблицы
+    if (selectAllHeaderCheckbox) {
+        selectAllHeaderCheckbox.addEventListener('change', function() {
+            console.log('Select all header checkbox changed:', this.checked);
+            itemCheckboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+            });
+            updateSelectedCount();
+        });
+    }
+    
+    // Обработчики для чекбоксов элементов
+    itemCheckboxes.forEach((checkbox, index) => {
+        checkbox.addEventListener('change', function() {
+            console.log('Item checkbox changed:', index, this.checked);
+            updateSelectedCount();
+        });
+    });
+    
+    // Обработчик для кнопки массового удаления
+    if (bulkDeleteBtn) {
+        bulkDeleteBtn.addEventListener('click', function(e) {
+            console.log('Bulk delete button clicked');
+            const selectedItems = document.querySelectorAll('.item-checkbox:checked');
+            console.log('Selected items count:', selectedItems.length);
+            
+            if (selectedItems.length === 0) {
+                e.preventDefault();
+                alert('Не выбрано ни одного элемента');
+                return;
+            }
+            
+            if (!confirm('Вы уверены, что хотите удалить выбранные элементы? Это действие нельзя отменить.')) {
+                e.preventDefault();
+                console.log('Confirmation cancelled');
+                return;
+            }
+            
+            console.log('Confirmation accepted, form will submit');
+            
+            // Проверяем данные формы
+            const formData = new FormData(bulkForm);
+            console.log('Form data:');
+            for (let [key, value] of formData.entries()) {
+                console.log(key, value);
+            }
+        });
+    }
+    
+    // Инициализация счетчика
+    updateSelectedCount();
+});
+
+// Функция для переключения статуса услуги
+function toggleServiceStatus(serviceId) {
+    if (confirm('Вы уверены, что хотите изменить статус этой услуги?')) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = window.location.href;
+        
+        const actionInput = document.createElement('input');
+        actionInput.type = 'hidden';
+        actionInput.name = 'action';
+        actionInput.value = 'toggle_status';
+        
+        const idInput = document.createElement('input');
+        idInput.type = 'hidden';
+        idInput.name = 'id';
+        idInput.value = serviceId;
+        
+        const csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = 'csrf_token';
+        csrfInput.value = '<?php echo htmlspecialchars($csrf_token); ?>';
+        
+        form.appendChild(actionInput);
+        form.appendChild(idInput);
+        form.appendChild(csrfInput);
+        
+        document.body.appendChild(form);
+        form.submit();
+    }
+}
+</script>

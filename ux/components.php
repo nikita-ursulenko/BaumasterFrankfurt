@@ -140,17 +140,21 @@ function render_contact_form($options = []) {
             </p>
         <?php endif; ?>
         
+        <?php
+        // Определяем язык для форм
+        $is_german = defined('CURRENT_LANG') && CURRENT_LANG === 'de';
+        ?>
         <form action="<?php echo htmlspecialchars($opts['action']); ?>" method="POST" class="space-y-4">
             <div class="grid md:grid-cols-2 gap-4">
                 <div>
                     <input type="text" name="name" required 
                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-blue focus:border-accent-blue transition-colors" 
-                           placeholder="Ваше имя *">
+                           placeholder="<?php echo $is_german ? 'Ihr Name *' : 'Ваше имя *'; ?>">
                 </div>
                 <div>
                     <input type="tel" name="phone" required 
                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-blue focus:border-accent-blue transition-colors" 
-                           placeholder="Телефон *">
+                           placeholder="<?php echo $is_german ? 'Telefon *' : 'Телефон *'; ?>">
                 </div>
             </div>
             
@@ -163,32 +167,32 @@ function render_contact_form($options = []) {
             <div>
                 <select name="service" 
                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-blue focus:border-accent-blue transition-colors">
-                    <option value="">Выберите услугу</option>
-                    <option value="painting">Малярные работы</option>
-                    <option value="flooring">Укладка полов</option>
-                    <option value="bathroom">Ремонт ванной</option>
-                    <option value="drywall">Гипсокартон</option>
-                    <option value="tiling">Плитка</option>
-                    <option value="other">Другое</option>
+                    <option value=""><?php echo $is_german ? 'Dienstleistung wählen' : 'Выберите услугу'; ?></option>
+                    <option value="painting"><?php echo $is_german ? 'Malerarbeiten' : 'Малярные работы'; ?></option>
+                    <option value="flooring"><?php echo $is_german ? 'Bodenverlegung' : 'Укладка полов'; ?></option>
+                    <option value="bathroom"><?php echo $is_german ? 'Badezimmerrenovierung' : 'Ремонт ванной'; ?></option>
+                    <option value="drywall"><?php echo $is_german ? 'Trockenbau' : 'Гипсокартон'; ?></option>
+                    <option value="tiling"><?php echo $is_german ? 'Fliesenverlegung' : 'Плитка'; ?></option>
+                    <option value="other"><?php echo $is_german ? 'Andere' : 'Другое'; ?></option>
                 </select>
             </div>
             
             <div>
                 <textarea name="message" rows="4" 
                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-blue focus:border-accent-blue transition-colors" 
-                          placeholder="Опишите ваш проект..."></textarea>
+                          placeholder="<?php echo $is_german ? 'Beschreiben Sie Ihr Projekt...' : 'Опишите ваш проект...'; ?>"></textarea>
             </div>
             
             <div class="flex items-start space-x-3">
                 <input type="checkbox" name="agree" id="agree" required 
                        class="mt-1 h-4 w-4 text-accent-blue focus:ring-accent-blue border-gray-300 rounded">
                 <label for="agree" class="text-sm text-text-secondary">
-                    Я согласен на обработку персональных данных и получение информационных сообщений *
+                    <?php echo $is_german ? 'Ich stimme der Verarbeitung personenbezogener Daten und dem Erhalt von Informationsnachrichten zu *' : 'Я согласен на обработку персональных данных и получение информационных сообщений *'; ?>
                 </label>
             </div>
             
             <?php render_frontend_button([
-                'text' => 'Отправить заявку',
+                'text' => $is_german ? 'Anfrage senden' : 'Отправить заявку',
                 'type' => 'submit',
                 'variant' => 'primary',
                 'size' => 'lg',
@@ -221,27 +225,36 @@ function render_service_card($service) {
             </p>
             
             <?php if (!empty($service['features'])): ?>
+                <?php 
+                // Обрабатываем features - может быть массивом или JSON строкой
+                $features = $service['features'];
+                if (is_string($features)) {
+                    $features = json_decode($features, true);
+                }
+                if (is_array($features) && !empty($features)): 
+                ?>
                 <ul class="space-y-2 mb-6">
-                    <?php foreach ($service['features'] as $feature): ?>
+                    <?php foreach ($features as $feature): ?>
                         <li class="flex items-center text-sm text-text-secondary">
                             <svg class="h-4 w-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
-                            <?php echo htmlspecialchars($feature); ?>
+                            <?php echo htmlspecialchars(is_array($feature) ? implode(', ', $feature) : $feature); ?>
                         </li>
                     <?php endforeach; ?>
                 </ul>
+                <?php endif; ?>
             <?php endif; ?>
             
             <div class="flex justify-between items-center">
-                <?php if (!empty($service['price'])): ?>
-                    <span class="font-semibold text-lg text-accent-blue">
-                        от <?php echo htmlspecialchars($service['price']); ?> €
-                    </span>
-                <?php endif; ?>
-                
-                <?php render_frontend_button([
-                    'text' => 'Подробнее',
+                  <?php if (!empty($service['price'])): ?>
+                      <span class="font-semibold text-lg text-accent-blue">
+                         <?php echo (defined('CURRENT_LANG') && CURRENT_LANG === 'de') ? 'ab' : 'от'; ?> <?php echo htmlspecialchars($service['price']); ?> €
+                      </span>
+                  <?php endif; ?>
+                  
+                  <?php render_frontend_button([
+                     'text' => (defined('CURRENT_LANG') && CURRENT_LANG === 'de') ? 'Mehr erfahren' : 'Подробнее',
                     'variant' => 'outline',
                     'size' => 'sm',
                     'onclick' => "openServiceModal('" . htmlspecialchars($service['id'] ?? '') . "')"

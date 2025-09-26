@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
 
 // Основные настройки
 define('SITE_NAME', 'Baumaster - Строительные услуги во Франкфурте');
-define('SITE_URL', 'https://baumeister.page.gd');
+define('SITE_URL', 'http://localhost');
 define('ADMIN_URL', SITE_URL . '/admin/');
 define('VERSION', '1.0.0');
 
@@ -67,6 +67,11 @@ define('SMTP_USERNAME', '');
 define('SMTP_PASSWORD', '');
 define('FROM_EMAIL', 'info@baumaster.de');
 define('FROM_NAME', 'Baumaster Admin');
+define('ADMIN_EMAIL', 'admin@baumaster.de');
+
+// Настройки отзывов
+define('AUTO_TRANSLATE_REVIEWS', true);
+define('REVIEW_RATE_LIMIT', 10); // Максимум отзывов в час с одного IP
 
 // SEO настройки
 define('DEFAULT_META_TITLE', 'Baumaster - Строительные услуги во Франкфурте');
@@ -78,7 +83,7 @@ define('ITEMS_PER_PAGE', 20);
 define('RECENT_ITEMS_LIMIT', 5);
 
 // Режим отладки
-define('DEBUG_MODE', false);
+define('DEBUG_MODE', true);
 define('LOG_ERRORS', true);
 define('ERROR_LOG_PATH', DATA_PATH . 'error.log');
 

@@ -217,7 +217,8 @@ if ($_POST) {
                 break;
                 
             case 'delete':
-                $result = delete_review($review_id);
+                $delete_id = intval($_POST['id'] ?? 0);
+                $result = delete_review($delete_id);
                 if ($result['success']) {
                     $success_message = $result['message'];
                     $action = 'list';
@@ -227,11 +228,15 @@ if ($_POST) {
                 break;
                 
             case 'moderate':
-                $review = $db->select('reviews', ['id' => $review_id], ['limit' => 1]);
+                $moderate_id = intval($_POST['id'] ?? 0);
+                $review = $db->select('reviews', ['id' => $moderate_id], ['limit' => 1]);
                 if ($review) {
                     $new_status = $_POST['new_status'] ?? 'pending';
-                    $db->update('reviews', ['status' => $new_status], ['id' => $review_id]);
+                    $db->update('reviews', ['status' => $new_status], ['id' => $moderate_id]);
                     $success_message = __('reviews.status_updated', 'Статус отзыва обновлен');
+                    write_log("Review moderated: {$review['client_name']} (ID: $moderate_id) -> $new_status", 'INFO');
+                } else {
+                    $error_message = __('reviews.not_found', 'Отзыв не найден');
                 }
                 break;
         }
@@ -503,31 +508,28 @@ ob_start();
                                 <?php if ($review['status'] === 'pending'): ?>
                                     <form method="POST" class="inline-block">
                                         <input type="hidden" name="action" value="moderate">
+                                        <input type="hidden" name="id" value="<?php echo $review['id']; ?>">
                                         <input type="hidden" name="new_status" value="published">
                                         <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
-                                        <?php render_button([
-                                            'type' => 'submit',
-                                            'text' => __('reviews.approve', 'Одобрить'),
-                                            'variant' => 'primary',
-                                            'size' => 'sm'
-                                        ]); ?>
+                                        <button type="submit" class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                            <?php echo __('reviews.approve', 'Одобрить'); ?>
+                                        </button>
                                     </form>
                                     
-                                    <form method="POST" class="inline-block">
+                                    <form method="POST" class="inline-block ml-2">
                                         <input type="hidden" name="action" value="moderate">
+                                        <input type="hidden" name="id" value="<?php echo $review['id']; ?>">
                                         <input type="hidden" name="new_status" value="rejected">
                                         <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
-                                        <?php render_button([
-                                            'type' => 'submit',
-                                            'text' => __('reviews.reject', 'Отклонить'),
-                                            'variant' => 'danger',
-                                            'size' => 'sm'
-                                        ]); ?>
+                                        <button type="submit" class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                            <?php echo __('reviews.reject', 'Отклонить'); ?>
+                                        </button>
                                     </form>
                                 <?php endif; ?>
                                 
                                 <form method="POST" class="inline-block" onsubmit="return confirmDelete('<?php echo __('reviews.confirm_delete', 'Вы уверены, что хотите удалить этот отзыв?'); ?>');">
                                     <input type="hidden" name="action" value="delete">
+                                    <input type="hidden" name="id" value="<?php echo $review['id']; ?>">
                                     <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                                     <button type="submit" class="text-red-400 hover:text-red-600 p-1" title="<?php echo __('common.delete', 'Удалить'); ?>">
                                         <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
