@@ -11,6 +11,7 @@ require_once __DIR__ . '/ux/data.php';
 
 // Получение данных
 $seo = get_seo_data()['about'];
+$about_data = get_about_content();
 
 // Начало контента
 ob_start();
@@ -37,27 +38,44 @@ ob_start();
         <div class="grid lg:grid-cols-2 gap-16 items-center">
             <div>
                 <h2 class="font-montserrat font-semibold text-3xl lg:text-4xl text-text-primary mb-6">
-                    Наша история
+                    <?php echo htmlspecialchars($about_data['history']['title'] ?? 'Наша история'); ?>
                 </h2>
-                <p class="text-lg text-text-secondary mb-6 leading-relaxed">
-                    Компания Frankfurt Innenausbau была основана в 2014 году группой опытных мастеров, 
-                    которые решили объединить свои знания и навыки для предоставления качественных услуг 
-                    в сфере внутренних работ.
-                </p>
-                <p class="text-lg text-text-secondary mb-6 leading-relaxed">
-                    За 10 лет работы мы выполнили более 500 проектов различной сложности — от небольших 
-                    косметических ремонтов до полной реконструкции квартир и офисов. Наш опыт охватывает 
-                    все виды внутренних работ.
-                </p>
-                <p class="text-lg text-text-secondary mb-8 leading-relaxed">
-                    Сегодня мы продолжаем развиваться, внедряя новые технологии и материалы, 
-                    но неизменным остается наш принцип — качество превыше всего.
-                </p>
+                <?php if (isset($about_data['history']['content'])): ?>
+                    <p class="text-lg text-text-secondary mb-6 leading-relaxed">
+                        <?php echo htmlspecialchars($about_data['history']['content']['paragraph1'] ?? ''); ?>
+                    </p>
+                    <p class="text-lg text-text-secondary mb-6 leading-relaxed">
+                        <?php echo htmlspecialchars($about_data['history']['content']['paragraph2'] ?? ''); ?>
+                    </p>
+                    <p class="text-lg text-text-secondary mb-8 leading-relaxed">
+                        <?php echo htmlspecialchars($about_data['history']['content']['paragraph3'] ?? ''); ?>
+                    </p>
+                <?php else: ?>
+                    <p class="text-lg text-text-secondary mb-6 leading-relaxed">
+                        Компания Frankfurt Innenausbau была основана в 2014 году группой опытных мастеров, 
+                        которые решили объединить свои знания и навыки для предоставления качественных услуг 
+                        в сфере внутренних работ.
+                    </p>
+                    <p class="text-lg text-text-secondary mb-6 leading-relaxed">
+                        За 10 лет работы мы выполнили более 500 проектов различной сложности — от небольших 
+                        косметических ремонтов до полной реконструкции квартир и офисов. Наш опыт охватывает 
+                        все виды внутренних работ.
+                    </p>
+                    <p class="text-lg text-text-secondary mb-8 leading-relaxed">
+                        Сегодня мы продолжаем развиваться, внедряя новые технологии и материалы, 
+                        но неизменным остается наш принцип — качество превыше всего.
+                    </p>
+                <?php endif; ?>
             </div>
             <div class="relative">
-                <div class="bg-gray-200 rounded-lg h-96 flex items-center justify-center">
-                    <span class="text-gray-500">Фото команды</span>
-                </div>
+                <?php if (!empty($about_data['history']['image'])): ?>
+                    <img src="<?php echo htmlspecialchars($about_data['history']['image']); ?>" 
+                         alt="Фото команды" class="w-full h-96 object-cover rounded-lg shadow-lg">
+                <?php else: ?>
+                    <div class="bg-gray-200 rounded-lg h-96 flex items-center justify-center">
+                        <span class="text-gray-500">Фото команды</span>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>

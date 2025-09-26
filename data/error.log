@@ -2605,3 +2605,113 @@
 [2025-09-26 23:34:54] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 near "[!]": syntax error
 [2025-09-26 23:34:57] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 near "[!]": syntax error
 [2025-09-26 23:34:58] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 near "[!]": syntax error
+[2025-09-26 23:54:49] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-26 23:54:50] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-26 23:54:51] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-26 23:54:53] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-26 23:55:51] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-26 23:55:51] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-26 23:55:52] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-26 23:55:52] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-26 23:55:52] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-26 23:55:53] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-26 23:55:53] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-26 23:55:53] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-26 23:56:16] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-26 23:56:17] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-26 23:56:17] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-26 23:56:17] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-26 23:56:51] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-26 23:56:53] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-26 23:56:53] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-26 23:56:53] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-26 23:56:53] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translations has no column named translated_value
+[2025-09-26 23:56:53] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translations has no column named translated_value
+[2025-09-26 23:57:21] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-26 23:57:21] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-26 23:57:21] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-26 23:57:22] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-26 23:57:22] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translations has no column named translated_value
+[2025-09-26 23:57:22] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translations has no column named translated_value
+[2025-09-26 23:58:23] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-26 23:58:23] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-26 23:58:23] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-26 23:58:23] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-26 23:58:23] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translations has no column named translated_value
+[2025-09-26 23:58:23] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translations has no column named translated_value
+[2025-09-27 00:00:10] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:00:11] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:00:11] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:00:12] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:00:12] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translations has no column named translated_value
+[2025-09-27 00:00:12] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translations has no column named translated_value
+[2025-09-27 00:00:34] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:00:34] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:00:34] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:00:35] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:00:35] [ERROR] Insert error: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: translations.source_id
+[2025-09-27 00:00:35] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translations has no column named translated_value
+[2025-09-27 00:00:36] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:00:36] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:00:36] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:00:36] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:00:36] [ERROR] Insert error: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: translations.source_id
+[2025-09-27 00:00:36] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translations has no column named translated_value
+[2025-09-27 00:00:41] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:00:41] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:00:41] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:00:41] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:00:41] [ERROR] Insert error: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: translations.source_id
+[2025-09-27 00:00:41] [ERROR] Insert error: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: translations.source_id
+[2025-09-27 00:01:09] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:01:09] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:01:09] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:01:09] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:01:09] [ERROR] Insert error: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: translations.source_id
+[2025-09-27 00:01:09] [ERROR] Insert error: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: translations.source_id
+[2025-09-27 00:01:48] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:01:48] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:01:48] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:01:48] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:01:48] [ERROR] Insert error: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: translations.source_id
+[2025-09-27 00:01:48] [ERROR] Insert error: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: translations.source_id
+[2025-09-27 00:01:50] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:01:51] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:01:51] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:01:51] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:01:51] [ERROR] Insert error: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: translations.source_id
+[2025-09-27 00:01:51] [ERROR] Insert error: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: translations.source_id
+[2025-09-27 00:01:52] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:01:52] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:01:52] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:01:52] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:01:52] [ERROR] Insert error: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: translations.source_id
+[2025-09-27 00:01:52] [ERROR] Insert error: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: translations.source_id
+[2025-09-27 00:03:14] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:03:14] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:03:14] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:03:15] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:03:38] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:03:38] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:03:38] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:03:38] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:03:59] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:03:59] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:04:00] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:04:00] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:04:28] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:04:28] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:04:28] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:04:28] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:12:28] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:12:28] [INFO] Translation saved: about_content.title (ID: 1)
+[2025-09-27 00:12:28] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:12:28] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:12:28] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:12:28] [INFO] Translation saved: about_content.content (ID: 1)
+[2025-09-27 00:13:39] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:13:39] [INFO] Translation saved: about_content.title (ID: 1)
+[2025-09-27 00:13:39] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:13:40] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:13:40] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-27 00:13:40] [INFO] Translation saved: about_content.content (ID: 1)

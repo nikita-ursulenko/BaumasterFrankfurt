@@ -647,5 +647,248 @@ function get_blog_post($slug, $lang = 'ru') {
         return null;
     }
 }
+/**
+ * Функции для работы с данными страницы "О компании"
+ */
+
+/**
+ * Получение контента страницы "О компании"
+ */
+function get_about_content($section = null, $lang = 'ru') {
+    require_once __DIR__ . '/../config.php';
+    require_once __DIR__ . '/../database.php';
+
+    try {
+        $db = get_database();
+        
+        if ($section) {
+            $content = $db->select('about_content', [
+                'section' => $section
+            ], ['limit' => 1]);
+        } else {
+            $content = $db->select('about_content', [], ['order' => 'sort_order ASC']);
+        }
+
+        if (!$content) {
+            return null;
+        }
+
+        // Если запрашивается конкретная секция
+        if ($section && isset($content[0])) {
+            $item = $content[0];
+            
+            // Декодируем JSON контент
+            if (!empty($item['content'])) {
+                $item['content'] = json_decode($item['content'], true);
+            }
+            
+            // Получаем переводы для немецкой версии
+            if ($lang !== 'ru') {
+                $translations = $db->select('translations', [
+                    'source_table' => 'about_content',
+                    'source_id' => $item['id'],
+                    'target_lang' => $lang
+                ]);
+                
+                // Применяем переводы
+                foreach ($translations as $translation) {
+                    if ($translation['source_field'] === 'title') {
+                        $item['title'] = $translation['translated_text'];
+                    } elseif ($translation['source_field'] === 'content') {
+                        $translated_content = json_decode($translation['translated_text'], true);
+                        if ($translated_content) {
+                            $item['content'] = $translated_content;
+                        }
+                    }
+                }
+            }
+            
+            return $item;
+        }
+
+        // Если запрашиваются все секции
+        $result = [];
+        if (is_array($content)) {
+            foreach ($content as $item) {
+                // Декодируем JSON контент
+                if (!empty($item['content'])) {
+                    $item['content'] = json_decode($item['content'], true);
+                }
+                
+                // Получаем переводы для немецкой версии
+                if ($lang !== 'ru') {
+                    $translations = $db->select('translations', [
+                        'source_table' => 'about_content',
+                        'source_id' => $item['id'],
+                        'target_lang' => $lang
+                    ]);
+                    
+                    // Применяем переводы
+                    if (is_array($translations)) {
+                        foreach ($translations as $translation) {
+                            if ($translation['source_field'] === 'title') {
+                                $item['title'] = $translation['translated_text'];
+                            } elseif ($translation['source_field'] === 'content') {
+                                $translated_content = json_decode($translation['translated_text'], true);
+                                if ($translated_content) {
+                                    $item['content'] = $translated_content;
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                if (isset($item['section'])) {
+                    $result[$item['section']] = $item;
+                }
+            }
+        }
+        
+        return $result;
+        
+    } catch (Exception $e) {
+        error_log("Error getting about content: " . $e->getMessage());
+        return null;
+    }
+}
+
+/**
+ * Сохранение контента страницы "О компании"
+ */
+function save_about_content($section, $data, $lang = 'ru') {
+    require_once __DIR__ . '/../config.php';
+    require_once __DIR__ . '/../database.php';
+
+    try {
+        $db = get_database();
+        
+        // Проверяем, существует ли запись
+        $existing = $db->select('about_content', [
+            'section' => $section
+        ], ['limit' => 1]);
+
+        if ($existing) {
+            // Обновляем существующую запись
+            $update_data = [
+                'title' => $data['title'],
+                'content' => json_encode($data['content']),
+                'updated_at' => date('Y-m-d H:i:s')
+            ];
+            
+            if (isset($data['image']) && !empty($data['image'])) {
+                $update_data['image'] = $data['image'];
+            }
+            
+            $result = $db->update('about_content', $update_data, [
+                'section' => $section
+            ]);
+            
+            $record_id = $existing[0]['id'] ?? null;
+        } else {
+            // Создаем новую запись
+            $insert_data = [
+                'section' => $section,
+                'title' => $data['title'],
+                'content' => json_encode($data['content']),
+                'sort_order' => $data['sort_order'] ?? 0,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ];
+            
+            if (isset($data['image']) && !empty($data['image'])) {
+                $insert_data['image'] = $data['image'];
+            }
+            
+            $result = $db->insert('about_content', $insert_data);
+            $record_id = $db->lastInsertId();
+        }
+
+        // Если это не русская версия, создаем переводы
+        if ($lang !== 'ru' && $record_id) {
+            // Сохраняем перевод заголовка
+            if (!empty($data['title'])) {
+                $translation_data = [
+                    'source_table' => 'about_content',
+                    'source_id' => $record_id,
+                    'source_field' => 'title',
+                    'source_lang' => 'ru',
+                    'target_lang' => $lang,
+                    'source_text' => $data['title'],
+                    'translated_text' => $data['title'],
+                    'translation_service' => 'TranslationService',
+                    'auto_translated' => 1,
+                    'created_at' => date('Y-m-d H:i:s')
+                ];
+                
+                // Проверяем, существует ли перевод
+                $existing_translation = $db->select('translations', [
+                    'source_table' => 'about_content',
+                    'source_id' => $record_id,
+                    'source_field' => 'title',
+                    'target_lang' => $lang
+                ], ['limit' => 1]);
+                
+                if ($existing_translation) {
+                    $db->update('translations', [
+                        'translated_text' => $data['title'],
+                        'updated_at' => date('Y-m-d H:i:s')
+                    ], [
+                        'source_table' => 'about_content',
+                        'source_id' => $record_id,
+                        'source_field' => 'title',
+                        'target_lang' => $lang
+                    ]);
+                } else {
+                    $db->insert('translations', $translation_data);
+                }
+            }
+            
+            // Сохраняем перевод контента
+            if (!empty($data['content'])) {
+                $translation_data = [
+                    'source_table' => 'about_content',
+                    'source_id' => $record_id,
+                    'source_field' => 'content',
+                    'source_lang' => 'ru',
+                    'target_lang' => $lang,
+                    'source_text' => json_encode($data['content']),
+                    'translated_text' => json_encode($data['content']),
+                    'translation_service' => 'TranslationService',
+                    'auto_translated' => 1,
+                    'created_at' => date('Y-m-d H:i:s')
+                ];
+                
+                // Проверяем, существует ли перевод
+                $existing_translation = $db->select('translations', [
+                    'source_table' => 'about_content',
+                    'source_id' => $record_id,
+                    'source_field' => 'content',
+                    'target_lang' => $lang
+                ], ['limit' => 1]);
+                
+                if ($existing_translation) {
+                    $db->update('translations', [
+                        'translated_text' => json_encode($data['content']),
+                        'updated_at' => date('Y-m-d H:i:s')
+                    ], [
+                        'source_table' => 'about_content',
+                        'source_id' => $record_id,
+                        'source_field' => 'content',
+                        'target_lang' => $lang
+                    ]);
+                } else {
+                    $db->insert('translations', $translation_data);
+                }
+            }
+        }
+
+        return $result;
+        
+    } catch (Exception $e) {
+        error_log("Error saving about content: " . $e->getMessage());
+        return false;
+    }
+}
+
 ?>
 

@@ -16,6 +16,7 @@ define('CURRENT_LANG', 'de');
 
 // Получение данных
 $seo = get_seo_data()['about'];
+$about_data = get_about_content(null, 'de');
 
 // Начало контента
 ob_start();
@@ -42,27 +43,44 @@ ob_start();
         <div class="grid lg:grid-cols-2 gap-16 items-center">
             <div>
                 <h2 class="font-montserrat font-semibold text-3xl lg:text-4xl text-text-primary mb-6">
-                    Unsere Geschichte
+                    <?php echo htmlspecialchars($about_data['history']['title'] ?? 'Unsere Geschichte'); ?>
                 </h2>
-                <p class="text-lg text-text-secondary mb-6 leading-relaxed">
-                    Das Unternehmen Frankfurt Innenausbau wurde 2014 von einer Gruppe erfahrener Handwerker gegründet, 
-                    die beschlossen haben, ihr Wissen und ihre Fähigkeiten zu vereinen, um qualitativ hochwertige Dienstleistungen 
-                    im Bereich Innenarbeiten anzubieten.
-                </p>
-                <p class="text-lg text-text-secondary mb-6 leading-relaxed">
-                    In 10 Jahren Arbeit haben wir mehr als 500 Projekte unterschiedlicher Komplexität durchgeführt — von kleinen 
-                    kosmetischen Reparaturen bis hin zur vollständigen Rekonstruktion von Wohnungen und Büros. Unsere Erfahrung 
-                    umfasst alle Arten von Innenarbeiten.
-                </p>
-                <p class="text-lg text-text-secondary mb-8 leading-relaxed">
-                    Heute entwickeln wir uns weiter, indem wir neue Technologien und Materialien einführen, 
-                    aber unser Prinzip bleibt unverändert — Qualität steht an erster Stelle.
-                </p>
+                <?php if (isset($about_data['history']['content'])): ?>
+                    <p class="text-lg text-text-secondary mb-6 leading-relaxed">
+                        <?php echo htmlspecialchars($about_data['history']['content']['paragraph1'] ?? ''); ?>
+                    </p>
+                    <p class="text-lg text-text-secondary mb-6 leading-relaxed">
+                        <?php echo htmlspecialchars($about_data['history']['content']['paragraph2'] ?? ''); ?>
+                    </p>
+                    <p class="text-lg text-text-secondary mb-8 leading-relaxed">
+                        <?php echo htmlspecialchars($about_data['history']['content']['paragraph3'] ?? ''); ?>
+                    </p>
+                <?php else: ?>
+                    <p class="text-lg text-text-secondary mb-6 leading-relaxed">
+                        Das Unternehmen Frankfurt Innenausbau wurde 2014 von einer Gruppe erfahrener Handwerker gegründet, 
+                        die beschlossen haben, ihr Wissen und ihre Fähigkeiten zu vereinen, um qualitativ hochwertige Dienstleistungen 
+                        im Bereich Innenarbeiten anzubieten.
+                    </p>
+                    <p class="text-lg text-text-secondary mb-6 leading-relaxed">
+                        In 10 Jahren Arbeit haben wir mehr als 500 Projekte unterschiedlicher Komplexität durchgeführt — von kleinen 
+                        kosmetischen Reparaturen bis hin zur vollständigen Rekonstruktion von Wohnungen und Büros. Unsere Erfahrung 
+                        umfasst alle Arten von Innenarbeiten.
+                    </p>
+                    <p class="text-lg text-text-secondary mb-8 leading-relaxed">
+                        Heute entwickeln wir uns weiter, indem wir neue Technologien und Materialien einführen, 
+                        aber unser Prinzip bleibt unverändert — Qualität steht an erster Stelle.
+                    </p>
+                <?php endif; ?>
             </div>
             <div class="relative">
-                <div class="bg-gray-200 rounded-lg h-96 flex items-center justify-center">
-                    <span class="text-gray-500">Teamfoto</span>
-                </div>
+                <?php if (!empty($about_data['history']['image'])): ?>
+                    <img src="../<?php echo htmlspecialchars($about_data['history']['image']); ?>" 
+                         alt="Teamfoto" class="w-full h-96 object-cover rounded-lg shadow-lg">
+                <?php else: ?>
+                    <div class="bg-gray-200 rounded-lg h-96 flex items-center justify-center">
+                        <span class="text-gray-500">Teamfoto</span>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>

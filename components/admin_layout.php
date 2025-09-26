@@ -118,6 +118,12 @@ function get_admin_menu_items($active_menu = 'dashboard', $current_user = null) 
             'icon' => 'portfolio',
             'active' => $active_menu === 'portfolio'
         ],
+        'about' => [
+            'title' => __('menu.about', 'О компании'),
+            'url' => 'about.php',
+            'icon' => 'information-circle',
+            'active' => $active_menu === 'about'
+        ],
         'reviews' => [
             'title' => __('menu.reviews', 'Отзывы'),
             'url' => 'reviews.php',

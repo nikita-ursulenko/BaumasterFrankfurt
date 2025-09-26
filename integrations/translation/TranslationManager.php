@@ -34,6 +34,20 @@ class TranslationManager {
                 continue;
             }
             
+            // Специальная обработка для JSON контента (about_content)
+            if ($field === 'content' && $table === 'about_content' && is_string($text)) {
+                $decoded_content = json_decode($text, true);
+                if (is_array($decoded_content)) {
+                    $translated_content = $this->translateJsonContent($decoded_content, $from_lang, $to_lang);
+                    if ($translated_content) {
+                        $translated_text = json_encode($translated_content);
+                        $this->saveTranslation($table, $id, $field, $text, $translated_text, $from_lang, $to_lang);
+                        $translated_fields[$field] = $translated_text;
+                        continue;
+                    }
+                }
+            }
+            
             // Переводим текст
             try {
                 $translated_text = $this->translation_service->translate($text, $from_lang, $to_lang);
@@ -52,6 +66,29 @@ class TranslationManager {
         }
         
         return $translated_fields;
+    }
+    
+    /**
+     * Перевод JSON контента (для about_content)
+     */
+    private function translateJsonContent($content, $from_lang = 'ru', $to_lang = 'de') {
+        $translated_content = [];
+        
+        foreach ($content as $key => $value) {
+            if (is_string($value) && !empty(trim($value))) {
+                try {
+                    $translated_value = $this->translation_service->translate($value, $from_lang, $to_lang);
+                    $translated_content[$key] = $translated_value ?: $value;
+                } catch (Exception $e) {
+                    write_log("JSON translation failed for key $key: " . $e->getMessage(), 'ERROR');
+                    $translated_content[$key] = $value;
+                }
+            } else {
+                $translated_content[$key] = $value;
+            }
+        }
+        
+        return $translated_content;
     }
     
     /**
@@ -271,7 +308,8 @@ class TranslationManager {
             'portfolio' => ['title', 'description', 'meta_title', 'meta_description'],
             'blog_posts' => ['title', 'excerpt', 'content', 'meta_title', 'meta_description', 'keywords'],
             'reviews' => ['review_text'],
-            'faq' => ['question', 'answer']
+            'faq' => ['question', 'answer'],
+            'about_content' => ['title', 'content']
         ];
         
         return $translatable_fields[$table] ?? [];
@@ -289,7 +327,7 @@ class TranslationManager {
             $stats['total_translations'] = count($this->db->select('translations'));
             
             // Переводы по таблицам
-            $tables = ['services', 'portfolio', 'blog_posts', 'reviews', 'faq'];
+            $tables = ['services', 'portfolio', 'blog_posts', 'reviews', 'faq', 'about_content'];
             foreach ($tables as $table) {
                 $table_translations = $this->db->select('translations', ['source_table' => $table]);
                 $stats['by_table'][$table] = count($table_translations);
