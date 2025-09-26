@@ -19,6 +19,7 @@ $seo = get_seo_data()['home'];
 $services = get_services_data();
 $portfolio = array_slice(get_portfolio_data(), 0, 3); // Показываем только первые 3
 $reviews = array_slice(get_reviews_data(), 0, 4); // Показываем только первые 4
+$statistics = get_statistics();
 
 // Начало контента
 ob_start();
@@ -145,22 +146,31 @@ ob_start();
                     Специализируемся на внутренних работах и знаем все тонкости качественного ремонта.
                 </p>
                 <div class="grid md:grid-cols-2 gap-6 mb-8">
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-accent-blue mb-2">500+</div>
-                        <div class="text-text-secondary">Довольных клиентов</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-accent-blue mb-2">10+</div>
-                        <div class="text-text-secondary">Лет опыта</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-accent-blue mb-2">100%</div>
-                        <div class="text-text-secondary">Качество работ</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-accent-blue mb-2">24/7</div>
-                        <div class="text-text-secondary">Поддержка клиентов</div>
-                    </div>
+                    <?php if (!empty($statistics)): ?>
+                        <?php foreach (array_slice($statistics, 0, 4) as $stat): ?>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-accent-blue mb-2"><?php echo htmlspecialchars($stat['number']); ?></div>
+                                <div class="text-text-secondary"><?php echo htmlspecialchars($stat['label']); ?></div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-accent-blue mb-2">500+</div>
+                            <div class="text-text-secondary">Довольных клиентов</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-accent-blue mb-2">10+</div>
+                            <div class="text-text-secondary">Лет опыта</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-accent-blue mb-2">100%</div>
+                            <div class="text-text-secondary">Качество работ</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-accent-blue mb-2">24/7</div>
+                            <div class="text-text-secondary">Поддержка клиентов</div>
+                        </div>
+                    <?php endif; ?>
                 </div>
                 <?php render_frontend_button([
                     'text' => 'Подробнее о нас',

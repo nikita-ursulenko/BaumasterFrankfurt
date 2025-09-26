@@ -180,25 +180,25 @@
 
 ### Функции данных frontend
 
-| Имя                                 | Тип      | Модуль/Класс | Назначение                         | Пример использования                     |
-| ----------------------------------- | -------- | ------------ | ---------------------------------- | ---------------------------------------- |
-| `get_services_data()`               | function | ux/data.php  | Получить данные услуг              | `$services = get_services_data();`       |
-| `get_portfolio_data()`              | function | ux/data.php  | Получить данные портфолио          | `$portfolio = get_portfolio_data();`     |
-| `get_reviews_data()`                | function | ux/data.php  | Получить данные отзывов            | `$reviews = get_reviews_data();`         |
-| `get_faq_data()`                    | function | ux/data.php  | Получить данные FAQ из таблицы faq | `$faq = get_faq_data();`                 |
-| `get_faq_data_translated($lang)`    | function | ux/data.php  | Получить переведенные данные FAQ   | `$faq = get_faq_data_translated('de');`  |
-| `get_contact_info()`                | function | ux/data.php  | Получить контактную информацию     | `$contact = get_contact_info();`         |
-| `get_seo_data()`                    | function | ux/data.php  | Получить SEO данные                | `$seo = get_seo_data();`                 |
-| `get_blog_posts($limit, $category)` | function | ux/data.php  | Получить статьи блога              | `$posts = get_blog_posts(6, 'tips');`    |
-| `get_blog_post($slug)`              | function | ux/data.php  | Получить статью блога              | `$post = get_blog_post('article-slug');` |
-| `get_about_content($section, $lang)` | function | ux/data.php  | Получить контент страницы "О компании" | `$data = get_about_content('history', 'de');` |
+| Имя                                          | Тип      | Модуль/Класс | Назначение                              | Пример использования                          |
+| -------------------------------------------- | -------- | ------------ | --------------------------------------- | --------------------------------------------- |
+| `get_services_data()`                        | function | ux/data.php  | Получить данные услуг                   | `$services = get_services_data();`            |
+| `get_portfolio_data()`                       | function | ux/data.php  | Получить данные портфолио               | `$portfolio = get_portfolio_data();`          |
+| `get_reviews_data()`                         | function | ux/data.php  | Получить данные отзывов                 | `$reviews = get_reviews_data();`              |
+| `get_faq_data()`                             | function | ux/data.php  | Получить данные FAQ из таблицы faq      | `$faq = get_faq_data();`                      |
+| `get_faq_data_translated($lang)`             | function | ux/data.php  | Получить переведенные данные FAQ        | `$faq = get_faq_data_translated('de');`       |
+| `get_contact_info()`                         | function | ux/data.php  | Получить контактную информацию          | `$contact = get_contact_info();`              |
+| `get_seo_data()`                             | function | ux/data.php  | Получить SEO данные                     | `$seo = get_seo_data();`                      |
+| `get_blog_posts($limit, $category)`          | function | ux/data.php  | Получить статьи блога                   | `$posts = get_blog_posts(6, 'tips');`         |
+| `get_blog_post($slug)`                       | function | ux/data.php  | Получить статью блога                   | `$post = get_blog_post('article-slug');`      |
+| `get_about_content($section, $lang)`         | function | ux/data.php  | Получить контент страницы "О компании"  | `$data = get_about_content('history', 'de');` |
 | `save_about_content($section, $data, $lang)` | function | ux/data.php  | Сохранить контент страницы "О компании" | `save_about_content('history', $data, 'ru');` |
-| `get_team_members($lang)`           | function | ux/data.php  | Получить список сотрудников       | `$members = get_team_members('de');`      |
-| `save_team_member($data, $lang)`    | function | ux/data.php  | Сохранить сотрудника              | `save_team_member($member_data, 'ru');`   |
-| `delete_team_member($id)`           | function | ux/data.php  | Удалить сотрудника                | `delete_team_member(1);`                 |
-| `get_team_member($id, $lang)`       | function | ux/data.php  | Получить сотрудника по ID         | `$member = get_team_member(1, 'de');`    |
-| `get_statistics($lang)`             | function | ux/data.php  | Получить статистику компании      | `$stats = get_statistics('de');`          |
-| `save_statistics($data, $lang)`     | function | ux/data.php  | Сохранить статистику компании     | `save_statistics($stats_data, 'ru');`     |
+| `get_team_members($lang)`                    | function | ux/data.php  | Получить список сотрудников             | `$members = get_team_members('de');`          |
+| `save_team_member($data, $lang)`             | function | ux/data.php  | Сохранить сотрудника                    | `save_team_member($member_data, 'ru');`       |
+| `delete_team_member($id)`                    | function | ux/data.php  | Удалить сотрудника                      | `delete_team_member(1);`                      |
+| `get_team_member($id, $lang)`                | function | ux/data.php  | Получить сотрудника по ID               | `$member = get_team_member(1, 'de');`         |
+| `get_statistics($lang)`                      | function | ux/data.php  | Получить статистику компании            | `$stats = get_statistics('de');`              |
+| `save_statistics($data, $lang)`              | function | ux/data.php  | Сохранить статистику компании           | `save_statistics($stats_data, 'ru');`         |
 
 ### Функции админ-панели
 
