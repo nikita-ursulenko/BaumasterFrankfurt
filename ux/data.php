@@ -164,15 +164,16 @@ function get_faq_data() {
     
     try {
         $db = get_database();
-        $faq = $db->select('blog_posts', ['post_type' => 'faq', 'status' => 'published'], ['order_by' => 'sort_order DESC, created_at DESC']);
+        // Используем новую таблицу faq вместо blog_posts
+        $faq = $db->select('faq', ['status' => 'active'], ['order' => 'sort_order DESC, created_at DESC']);
         
         // Преобразуем данные из базы в нужный формат
         $formatted_faq = [];
         foreach ($faq as $item) {
             $formatted_faq[] = [
                 'id' => $item['id'],
-                'question' => $item['title'],
-                'answer' => $item['content'],
+                'question' => $item['question'],
+                'answer' => $item['answer'],
                 'category' => $item['category'] ?? 'general',
                 'sort_order' => $item['sort_order'] ?? 0
             ];

@@ -180,16 +180,16 @@
 
 ### Функции данных frontend
 
-| Имя                                 | Тип      | Модуль/Класс | Назначение                     | Пример использования                     |
-| ----------------------------------- | -------- | ------------ | ------------------------------ | ---------------------------------------- |
-| `get_services_data()`               | function | ux/data.php  | Получить данные услуг          | `$services = get_services_data();`       |
-| `get_portfolio_data()`              | function | ux/data.php  | Получить данные портфолио      | `$portfolio = get_portfolio_data();`     |
-| `get_reviews_data()`                | function | ux/data.php  | Получить данные отзывов        | `$reviews = get_reviews_data();`         |
-| `get_faq_data()`                    | function | ux/data.php  | Получить данные FAQ            | `$faq = get_faq_data();`                 |
-| `get_contact_info()`                | function | ux/data.php  | Получить контактную информацию | `$contact = get_contact_info();`         |
-| `get_seo_data()`                    | function | ux/data.php  | Получить SEO данные            | `$seo = get_seo_data();`                 |
-| `get_blog_posts($limit, $category)` | function | ux/data.php  | Получить статьи блога          | `$posts = get_blog_posts(6, 'tips');`    |
-| `get_blog_post($slug)`              | function | ux/data.php  | Получить статью блога          | `$post = get_blog_post('article-slug');` |
+| Имя                                 | Тип      | Модуль/Класс | Назначение                         | Пример использования                     |
+| ----------------------------------- | -------- | ------------ | ---------------------------------- | ---------------------------------------- |
+| `get_services_data()`               | function | ux/data.php  | Получить данные услуг              | `$services = get_services_data();`       |
+| `get_portfolio_data()`              | function | ux/data.php  | Получить данные портфолио          | `$portfolio = get_portfolio_data();`     |
+| `get_reviews_data()`                | function | ux/data.php  | Получить данные отзывов            | `$reviews = get_reviews_data();`         |
+| `get_faq_data()`                    | function | ux/data.php  | Получить данные FAQ из таблицы faq | `$faq = get_faq_data();`                 |
+| `get_contact_info()`                | function | ux/data.php  | Получить контактную информацию     | `$contact = get_contact_info();`         |
+| `get_seo_data()`                    | function | ux/data.php  | Получить SEO данные                | `$seo = get_seo_data();`                 |
+| `get_blog_posts($limit, $category)` | function | ux/data.php  | Получить статьи блога              | `$posts = get_blog_posts(6, 'tips');`    |
+| `get_blog_post($slug)`              | function | ux/data.php  | Получить статью блога              | `$post = get_blog_post('article-slug');` |
 
 ### Функции админ-панели
 
@@ -198,6 +198,15 @@
 | `get_dashboard_stats()` | function | admin/index.php | Получить статистику dashboard | `$stats = get_dashboard_stats();`    |
 | `get_recent_activity()` | function | admin/index.php | Получить последнюю активность | `$activity = get_recent_activity();` |
 | `get_chart_data()`      | function | admin/index.php | Получить данные для графиков  | `$chart = get_chart_data();`         |
+
+### Функции управления FAQ
+
+| Имя                        | Тип      | Модуль/Класс  | Назначение           | Пример использования                  |
+| -------------------------- | -------- | ------------- | -------------------- | ------------------------------------- |
+| `create_faq($data)`        | function | admin/faq.php | Создать новый FAQ    | `$result = create_faq($faq_data);`    |
+| `update_faq($id, $data)`   | function | admin/faq.php | Обновить FAQ         | `$result = update_faq(1, $faq_data);` |
+| `delete_faq($id)`          | function | admin/faq.php | Удалить FAQ          | `$result = delete_faq(1);`            |
+| `validate_faq_data($data)` | function | admin/faq.php | Валидация данных FAQ | `$errors = validate_faq_data($data);` |
 
 ## Классы
 
@@ -235,3 +244,4 @@
 - **2024-01-22**: Добавлены все основные функции и константы
 - **2024-01-22**: Документированы классы и методы
 - **2024-01-22**: Обновлена структура согласно rules.mdc
+- **2024-01-22**: Добавлена функциональность FAQ - меню в админке, отображение на frontend, функции управления
