@@ -421,15 +421,43 @@ ob_start();
 <?php render_success_message($success_message); ?>
 
 <?php if ($action === 'list'): ?>
-    <!-- Заголовок и кнопки -->
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-        <div>
-            <h2 class="text-xl font-semibold text-gray-900">
-                <?php echo __('portfolio.list_title', 'Управление портфолио'); ?>
-            </h2>
-            <p class="text-sm text-gray-600 mt-1">
-                <?php echo __('portfolio.total_count', 'Всего проектов'); ?>: <?php echo count($projects); ?>
-            </p>
+    <!-- Статистика и кнопки -->
+    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 gap-4">
+        <div class="flex items-center space-x-4">
+            <?php 
+            // Подсчет статистики
+            $total_projects = count($projects);
+            $active_projects = count(array_filter($projects, function($project) {
+                return $project['status'] === 'active';
+            }));
+            $featured_projects = count(array_filter($projects, function($project) {
+                return $project['featured'] == 1;
+            }));
+            
+            // Статистическая карточка для портфолио
+            ?>
+            <div class="bg-white shadow-sm rounded-lg border border-gray-200 p-4 min-w-[200px]">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
+                            <?php echo get_icon('portfolio', 'w-5 h-5 text-white'); ?>
+                        </div>
+                    </div>
+                    <div class="ml-4 flex-1">
+                        <p class="text-sm font-medium text-gray-500">
+                            <?php echo __('portfolio.total_count', 'Всего проектов'); ?>
+                        </p>
+                        <p class="text-2xl font-semibold text-gray-900">
+                            <?php echo $total_projects; ?>
+                        </p>
+                        <?php if ($featured_projects > 0): ?>
+                        <p class="text-xs text-yellow-600 mt-1">
+                            <?php echo $featured_projects; ?> рекомендуемых
+                        </p>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
         </div>
         
         <div class="flex flex-col sm:flex-row gap-2">

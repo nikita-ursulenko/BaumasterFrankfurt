@@ -5,6 +5,7 @@
  */
 
 require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../database.php';
 require_once COMPONENTS_PATH . 'admin_layout.php';
 
 // Проверка прав доступа (только для админов)

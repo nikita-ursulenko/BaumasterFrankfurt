@@ -260,15 +260,41 @@ ob_start();
 <?php render_success_message($success_message); ?>
 
 <?php if ($action === 'list'): ?>
-    <!-- Заголовок и кнопки -->
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-        <div>
-            <h2 class="text-xl font-semibold text-gray-900">
-                <?php echo __('faq.list_title', 'Управление FAQ'); ?>
-            </h2>
-            <p class="text-sm text-gray-600 mt-1">
-                <?php echo __('faq.total_count', 'Всего вопросов'); ?>: <?php echo count($faq_items); ?>
-            </p>
+    <!-- Статистика и кнопки -->
+    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 gap-4">
+        <div class="flex items-center space-x-4">
+            <?php 
+            // Подсчет статистики
+            $total_questions = count($faq_items);
+            $active_questions = count(array_filter($faq_items, function($item) {
+                return $item['status'] === 'active';
+            }));
+            $inactive_questions = $total_questions - $active_questions;
+            
+            // Статистическая карточка для FAQ
+            ?>
+            <div class="bg-white shadow-sm rounded-lg border border-gray-200 p-4 min-w-[200px]">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
+                            <?php echo get_icon('question-mark-circle', 'w-5 h-5 text-white'); ?>
+                        </div>
+                    </div>
+                    <div class="ml-4 flex-1">
+                        <p class="text-sm font-medium text-gray-500">
+                            <?php echo __('faq.total_count', 'Всего вопросов'); ?>
+                        </p>
+                        <p class="text-2xl font-semibold text-gray-900">
+                            <?php echo $total_questions; ?>
+                        </p>
+                        <?php if ($active_questions > 0): ?>
+                        <p class="text-xs text-green-600 mt-1">
+                            <?php echo $active_questions; ?> активных
+                        </p>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
         </div>
         
         <div class="flex flex-col sm:flex-row gap-2">

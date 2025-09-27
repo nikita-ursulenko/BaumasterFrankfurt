@@ -117,34 +117,25 @@ ob_start();
 <?php render_error_message($error_message); ?>
 <?php render_success_message($success_message); ?>
 
-<!-- Заголовок -->
-<div class="flex justify-between items-center mb-6">
-    <div>
-        <h2 class="text-xl font-semibold text-gray-900">
-            <?php echo __('settings.title', 'Настройки сайта'); ?>
-        </h2>
-        <p class="text-sm text-gray-600 mt-1">
-            <?php echo __('settings.description', 'Управление основными настройками сайта и компании'); ?>
-        </p>
-    </div>
-</div>
 
 <!-- Вкладки настроек -->
-<div class="mb-6">
-    <nav class="flex space-x-8" aria-label="Tabs">
-        <button class="settings-tab-btn active" data-tab="company">
-            <?php echo get_icon('building', 'w-5 h-5 mr-2'); ?>
-            <?php echo __('settings.tab_company', 'Компания'); ?>
-        </button>
-        <button class="settings-tab-btn" data-tab="seo">
-            <?php echo get_icon('search', 'w-5 h-5 mr-2'); ?>
-            <?php echo __('settings.tab_seo', 'SEO'); ?>
-        </button>
-        <button class="settings-tab-btn" data-tab="site">
-            <?php echo get_icon('cog', 'w-5 h-5 mr-2'); ?>
-            <?php echo __('settings.tab_site', 'Сайт'); ?>
-        </button>
-    </nav>
+<div class="bg-white rounded-lg shadow-sm mb-6">
+    <div class="border-b border-gray-200">
+        <nav class="-mb-px flex space-x-8 px-6" aria-label="Tabs">
+            <button class="settings-tab-btn active py-4 px-1 border-b-2 border-primary-500 font-medium text-sm text-primary-600 flex items-center" data-tab="company">
+                <?php echo get_icon('building', 'w-5 h-5 mr-2'); ?>
+                <?php echo __('settings.tab_company', 'Компания'); ?>
+            </button>
+            <button class="settings-tab-btn py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 flex items-center" data-tab="seo">
+                <?php echo get_icon('search', 'w-5 h-5 mr-2'); ?>
+                <?php echo __('settings.tab_seo', 'SEO'); ?>
+            </button>
+            <button class="settings-tab-btn py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 flex items-center" data-tab="site">
+                <?php echo get_icon('cog', 'w-5 h-5 mr-2'); ?>
+                <?php echo __('settings.tab_site', 'Сайт'); ?>
+            </button>
+        </nav>
+    </div>
 </div>
 
 <!-- Информация о компании -->
@@ -427,8 +418,13 @@ document.addEventListener('DOMContentLoaded', function() {
     function switchToTab(targetTab) {
             console.log('Switching to tab:', targetTab);
             
-            // Убрать активный класс со всех кнопок
-            tabButtons.forEach(btn => btn.classList.remove('active'));
+            // Убрать активный класс и стили со всех кнопок
+            tabButtons.forEach(btn => {
+                btn.classList.remove('active');
+                // Убираем активные стили
+                btn.classList.remove('border-primary-500', 'text-primary-600');
+                btn.classList.add('border-transparent', 'text-gray-500');
+            });
             
             // Скрыть все контенты
             tabContents.forEach(content => {
@@ -440,6 +436,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const targetButton = document.querySelector(`.settings-tab-btn[data-tab="${targetTab}"]`);
         if (targetButton) {
             targetButton.classList.add('active');
+            // Добавляем активные стили
+            targetButton.classList.remove('border-transparent', 'text-gray-500');
+            targetButton.classList.add('border-primary-500', 'text-primary-600');
         }
             
             // Показать целевой контент
@@ -550,11 +549,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <style>
 .settings-tab-btn {
-    @apply px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 flex items-center;
+    @apply transition-all duration-200 ease-in-out focus:outline-none;
 }
 
-.settings-tab-btn.active {
-    @apply text-primary-600 border-primary-500;
+.settings-tab-btn:hover svg {
+    @apply text-gray-700;
+}
+
+.settings-tab-content {
+    @apply transition-all duration-300 ease-in-out;
+}
+
+.settings-tab-content.hidden {
+    @apply opacity-0 transform translate-y-2 pointer-events-none;
+}
+
+.settings-tab-content:not(.hidden) {
+    @apply opacity-100 transform translate-y-0;
 }
 </style>
 
