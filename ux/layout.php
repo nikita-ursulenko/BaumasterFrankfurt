@@ -54,6 +54,59 @@ function get_page_seo_settings($page_key = '') {
 }
 
 /**
+ * Получение переведенных SEO настроек для страницы
+ */
+function get_page_seo_settings_translated($page_key = '', $lang = 'de') {
+    require_once __DIR__ . '/../config.php';
+    require_once __DIR__ . '/../database.php';
+    require_once __DIR__ . '/../integrations/translation/TranslationManager.php';
+    
+    try {
+        $db = get_database();
+        $translation_manager = new TranslationManager();
+        
+        // Получаем базовые SEO настройки
+        $seo_settings = $db->select('settings', ['category' => 'seo']);
+        
+        $settings = [];
+        foreach ($seo_settings as $setting) {
+            $settings[$setting['setting_key']] = $setting['setting_value'];
+        }
+        
+        // Если указана конкретная страница, получаем её настройки с переводами
+        if ($page_key) {
+            $page_settings = [];
+            $page_keys = [
+                'title', 'h1', 'description', 'keywords', 
+                'og_title', 'og_description', 'og_image'
+            ];
+            
+            foreach ($page_keys as $key) {
+                // Сначала пробуем найти переведенную версию
+                $translated_setting_key = 'page_' . $page_key . '_' . $lang . '_page_' . $key;
+                $translated_value = isset($settings[$translated_setting_key]) ? $settings[$translated_setting_key] : '';
+                
+                if (!empty($translated_value)) {
+                    $page_settings[$key] = $translated_value;
+                } else {
+                    // Если перевода нет, используем оригинальное значение
+                    $setting_key = 'page_' . $page_key . '_page_' . $key;
+                    $original_value = isset($settings[$setting_key]) ? $settings[$setting_key] : '';
+                    $page_settings[$key] = $original_value;
+                }
+            }
+            
+            return array_merge($settings, $page_settings);
+        }
+        
+        return $settings;
+    } catch (Exception $e) {
+        error_log("Ошибка загрузки переведенных SEO настроек: " . $e->getMessage());
+        return [];
+    }
+}
+
+/**
  * Получение H1 заголовка для страницы
  */
 function get_page_h1($page_key = '') {
@@ -99,8 +152,9 @@ function render_frontend_head($title = '', $meta_description = '', $active_page 
         $page_key = $page_mapping[$current_script];
     }
     
-    // Получаем SEO настройки
-    $seo_settings = get_page_seo_settings($page_key);
+    // Получаем SEO настройки с учетом языка
+    $current_lang = defined('CURRENT_LANG') ? CURRENT_LANG : 'ru';
+    $seo_settings = get_page_seo_settings_translated($page_key, $current_lang);
     
     // Формируем заголовок
     $site_title = '';

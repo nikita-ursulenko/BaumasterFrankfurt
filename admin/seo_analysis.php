@@ -69,8 +69,16 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'auto_translate') {
             $source_data = [];
             
             foreach ($seo_keys as $key) {
+                // Сначала пробуем найти с языком
                 $setting_key = 'page_' . $page_key . '_' . $from_lang . '_' . $key;
                 $setting = $db->select('settings', ['setting_key' => $setting_key], ['limit' => 1]);
+                
+                // Если не найдено, пробуем без языка
+                if (!$setting || empty($setting['setting_value'])) {
+                    $setting_key = 'page_' . $page_key . '_' . $key;
+                    $setting = $db->select('settings', ['setting_key' => $setting_key], ['limit' => 1]);
+                }
+                
                 if ($setting && !empty($setting['setting_value'])) {
                     // Убираем префикс 'page_' для перевода
                     $clean_key = str_replace('page_', '', $key);
@@ -252,7 +260,7 @@ ob_start();
         'title' => __('seo.pages_analyzed', 'Страниц проанализировано'),
         'value' => $seo_stats['pages_analyzed'],
         'change' => '+5%',
-        'icon' => 'search',
+        'icon' => get_icon('search', 'w-5 h-5 text-white'),
         'color' => 'blue'
     ]); ?>
     
@@ -260,7 +268,7 @@ ob_start();
         'title' => __('seo.images_optimized', 'Изображений оптимизировано'),
         'value' => $seo_stats['images_optimized'],
         'change' => '+12%',
-        'icon' => 'image',
+        'icon' => get_icon('image', 'w-5 h-5 text-white'),
         'color' => 'green'
     ]); ?>
     
@@ -268,7 +276,7 @@ ob_start();
         'title' => __('seo.avg_page_score', 'Средний балл страниц'),
         'value' => $seo_stats['avg_page_score'] . '/100',
         'change' => '+8%',
-        'icon' => 'chart',
+        'icon' => get_icon('chart', 'w-5 h-5 text-white'),
         'color' => 'yellow'
     ]); ?>
     
@@ -276,7 +284,7 @@ ob_start();
         'title' => __('seo.issues_found', 'Найдено проблем'),
         'value' => $seo_stats['issues_found'],
         'change' => '-15%',
-        'icon' => 'warning',
+        'icon' => get_icon('warning', 'w-5 h-5 text-white'),
         'color' => 'red'
     ]); ?>
 </div>

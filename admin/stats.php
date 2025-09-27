@@ -6,6 +6,7 @@
 
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/../database.php';
+require_once __DIR__ . '/../functions/views_counter.php';
 require_once COMPONENTS_PATH . 'admin_layout.php';
 
 // Проверка прав доступа
@@ -90,7 +91,7 @@ ob_start();
         'title' => __('stats.total_services', 'Всего услуг'),
         'value' => $stats['services']['total'],
         'change' => $stats['services']['change'],
-        'icon' => 'services',
+        'icon' => '<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>',
         'color' => 'blue'
     ]); ?>
     
@@ -98,7 +99,7 @@ ob_start();
         'title' => __('stats.total_portfolio', 'Проектов в портфолио'),
         'value' => $stats['portfolio']['total'],
         'change' => $stats['portfolio']['change'],
-        'icon' => 'portfolio',
+        'icon' => '<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>',
         'color' => 'green'
     ]); ?>
     
@@ -106,7 +107,7 @@ ob_start();
         'title' => __('stats.total_reviews', 'Отзывов клиентов'),
         'value' => $stats['reviews']['total'],
         'change' => $stats['reviews']['change'],
-        'icon' => 'reviews',
+        'icon' => '<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>',
         'color' => 'yellow'
     ]); ?>
     
@@ -114,7 +115,7 @@ ob_start();
         'title' => __('stats.total_blog', 'Статей в блоге'),
         'value' => $stats['blog']['total'],
         'change' => $stats['blog']['change'],
-        'icon' => 'blog',
+        'icon' => '<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>',
         'color' => 'purple'
     ]); ?>
 </div>
@@ -126,13 +127,8 @@ ob_start();
         <h3 class="text-lg font-medium text-gray-900 mb-4">
             <?php echo __('stats.activity_chart', 'Активность по дням'); ?>
         </h3>
-        <div class="h-64 flex items-center justify-center text-gray-500">
-            <div class="text-center">
-                <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                </svg>
-                <p><?php echo __('stats.chart_placeholder', 'График активности (Chart.js интеграция)'); ?></p>
-            </div>
+        <div class="h-64">
+            <canvas id="activityChart" width="400" height="200"></canvas>
         </div>
     </div>
     
@@ -278,13 +274,54 @@ function get_statistics_data($date_from, $date_to) {
     $blog_published = count($db->select('blog_posts', ['status' => 'published']));
     $blog_featured = count($db->select('blog_posts', ['featured' => 1]));
     
-    // Топ контента (заглушка)
-    $top_content = [
-        ['title' => 'Ремонт ванной комнаты', 'type' => 'Услуга', 'views' => 156],
-        ['title' => 'Современная кухня', 'type' => 'Проект', 'views' => 134],
-        ['title' => 'Как выбрать материалы', 'type' => 'Статья', 'views' => 98],
-        ['title' => 'Отзыв клиента', 'type' => 'Отзыв', 'views' => 87]
-    ];
+    // Топ контента - реальные данные с просмотрами
+    $top_content_raw = get_top_content_by_views(4);
+    $top_content = [];
+    
+    foreach ($top_content_raw as $item) {
+        $type_map = [
+            'service' => 'Услуга',
+            'portfolio' => 'Проект',
+            'blog' => 'Статья'
+        ];
+        
+        $top_content[] = [
+            'title' => $item['title'],
+            'type' => $type_map[$item['type']] ?? $item['type'],
+            'views' => $item['views']
+        ];
+    }
+    
+    // Вычисляем изменения в процентах за период
+    $period_start = date('Y-m-d', strtotime($date_from));
+    $period_end = date('Y-m-d', strtotime($date_to));
+    
+    // Получаем данные за предыдущий период для сравнения
+    $prev_start = date('Y-m-d', strtotime($date_from . ' -' . (strtotime($date_to) - strtotime($date_from)) / 86400 . ' days'));
+    $prev_end = date('Y-m-d', strtotime($date_from . ' -1 day'));
+    
+    // Подсчитываем изменения для услуг (упрощенная версия)
+    $services_prev = count($db->select('services'));
+    $services_curr = count($db->select('services'));
+    $services_change = calculate_percentage_change($services_prev, $services_curr);
+    
+    // Подсчитываем изменения для портфолио
+    $portfolio_prev = count($db->select('portfolio'));
+    $portfolio_curr = count($db->select('portfolio'));
+    $portfolio_change = calculate_percentage_change($portfolio_prev, $portfolio_curr);
+    
+    // Подсчитываем изменения для отзывов
+    $reviews_prev = count($db->select('reviews'));
+    $reviews_curr = count($db->select('reviews'));
+    $reviews_change = calculate_percentage_change($reviews_prev, $reviews_curr);
+    
+    // Подсчитываем изменения для блога
+    $blog_prev = count($db->select('blog_posts'));
+    $blog_curr = count($db->select('blog_posts'));
+    $blog_change = calculate_percentage_change($blog_prev, $blog_curr);
+    
+    // Данные для графика активности по дням
+    $activity_data = get_activity_chart_data_real($date_from, $date_to);
     
     return [
         'services' => [
@@ -292,33 +329,116 @@ function get_statistics_data($date_from, $date_to) {
             'active' => $services_active,
             'featured' => $services_featured,
             'avg_price' => $avg_price,
-            'change' => '+12%'
+            'change' => $services_change
         ],
         'portfolio' => [
             'total' => $portfolio_total,
             'completed' => $portfolio_completed,
             'featured' => $portfolio_featured,
             'avg_budget' => $avg_budget,
-            'change' => '+8%'
+            'change' => $portfolio_change
         ],
         'reviews' => [
             'total' => $reviews_total,
             'verified' => $reviews_verified,
             'pending' => $reviews_pending,
             'avg_rating' => $avg_rating,
-            'change' => '+15%'
+            'change' => $reviews_change
         ],
         'blog' => [
             'total' => $blog_total,
             'published' => $blog_published,
             'featured' => $blog_featured,
-            'change' => '+5%'
+            'change' => $blog_change
         ],
-        'top_content' => $top_content
+        'top_content' => $top_content,
+        'activity_data' => $activity_data
     ];
 }
 
+/**
+ * Вычисление процентного изменения
+ */
+function calculate_percentage_change($old_value, $new_value) {
+    if ($old_value == 0) {
+        return $new_value > 0 ? '+100%' : '0%';
+    }
+    
+    $change = (($new_value - $old_value) / $old_value) * 100;
+    $sign = $change >= 0 ? '+' : '';
+    
+    return $sign . round($change, 1) . '%';
+}
+
+
 $page_content = ob_get_clean();
+
+// Добавляем JavaScript для графика
+$page_content .= '
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const activityData = ' . json_encode($stats['activity_data']) . ';
+    
+    const ctx = document.getElementById("activityChart").getContext("2d");
+    new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: activityData.map(item => item.label),
+        datasets: [{
+            label: "Общая активность",
+            data: activityData.map(item => item.total),
+            borderColor: "rgb(59, 130, 246)",
+            backgroundColor: "rgba(59, 130, 246, 0.1)",
+            tension: 0.4,
+            fill: true
+        }, {
+            label: "Услуги",
+            data: activityData.map(item => item.services),
+            borderColor: "rgb(34, 197, 94)",
+            backgroundColor: "rgba(34, 197, 94, 0.1)",
+            tension: 0.4,
+            fill: false
+        }, {
+            label: "Портфолио",
+            data: activityData.map(item => item.portfolio),
+            borderColor: "rgb(168, 85, 247)",
+            backgroundColor: "rgba(168, 85, 247, 0.1)",
+            tension: 0.4,
+            fill: false
+        }, {
+            label: "Посты блога",
+            data: activityData.map(item => item.blog),
+            borderColor: "rgb(245, 158, 11)",
+            backgroundColor: "rgba(245, 158, 11, 0.1)",
+            tension: 0.4,
+            fill: false
+        }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    position: "top",
+                },
+                tooltip: {
+                    mode: "index",
+                    intersect: false,
+                }
+            }
+        }
+    });
+});
+</script>';
 
 // Рендеринг страницы
 render_admin_layout([

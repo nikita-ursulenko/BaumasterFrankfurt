@@ -283,6 +283,26 @@ function openProjectModal(projectId) {
     const project = portfolioData.find(p => p.id == projectId);
     if (!project) return;
     
+    // Отслеживаем просмотр портфолио
+    fetch('track_portfolio_view.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `portfolio_id=${projectId}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log('Portfolio view tracked successfully');
+        } else {
+            console.error('Failed to track portfolio view:', data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Error tracking portfolio view:', error);
+    });
+    
     const modal = document.getElementById('projectModal');
     const modalContent = document.getElementById('projectModalContent');
     

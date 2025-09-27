@@ -30,8 +30,7 @@ ob_start();
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div class="text-center">
             <h1 class="font-montserrat font-semibold text-4xl lg:text-6xl text-text-primary mb-6 leading-tight">
-                Innenausbau & Renovierung<br>
-                <span class="text-accent-blue">in Frankfurt am Main</span>
+                <?php echo htmlspecialchars($seo['h1'] ?? 'Professionelle Baudienstleistungen in Frankfurt'); ?>
             </h1>
             <p class="text-xl lg:text-2xl text-text-secondary mb-8 leading-relaxed max-w-4xl mx-auto">
                 Vollständige Palette von Innenarbeiten — von Malerarbeiten bis zum Verlegen von Böden. 

@@ -253,12 +253,35 @@ function render_service_card($service) {
                       </span>
                   <?php endif; ?>
                   
-                  <?php render_frontend_button([
-                     'text' => (defined('CURRENT_LANG') && CURRENT_LANG === 'de') ? 'Mehr erfahren' : 'Подробнее',
-                    'variant' => 'outline',
-                    'size' => 'sm',
-                    'onclick' => "openServiceModal('" . htmlspecialchars($service['id'] ?? '') . "')"
-                ]); ?>
+                  <div class="flex gap-2">
+                      <?php 
+                      // Проверяем, есть ли галерея
+                      $hasGallery = false;
+                      if (!empty($service['gallery'])) {
+                          $gallery = $service['gallery'];
+                          if (is_string($gallery)) {
+                              $gallery = json_decode($gallery, true);
+                          }
+                          $hasGallery = is_array($gallery) && !empty($gallery);
+                      }
+                      ?>
+                      
+                      <?php if ($hasGallery): ?>
+                          <?php render_frontend_button([
+                              'text' => (defined('CURRENT_LANG') && CURRENT_LANG === 'de') ? 'Galerie' : 'Галерея',
+                              'variant' => 'secondary',
+                              'size' => 'sm',
+                              'onclick' => "openServiceGallery('" . htmlspecialchars($service['id'] ?? '') . "')"
+                          ]); ?>
+                      <?php endif; ?>
+                      
+                      <?php render_frontend_button([
+                         'text' => (defined('CURRENT_LANG') && CURRENT_LANG === 'de') ? 'Mehr erfahren' : 'Подробнее',
+                        'variant' => 'outline',
+                        'size' => 'sm',
+                        'onclick' => "openServiceModal('" . htmlspecialchars($service['id'] ?? '') . "')"
+                    ]); ?>
+                  </div>
             </div>
         </div>
     </div>

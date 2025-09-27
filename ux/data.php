@@ -26,13 +26,23 @@ function get_services_data() {
                 $features = is_array($decoded) ? $decoded : [];
             }
             
+            // Декодируем gallery если это JSON строка
+            $gallery = [];
+            if (!empty($service['gallery'])) {
+                $decoded = json_decode($service['gallery'], true);
+                $gallery = is_array($decoded) ? $decoded : [];
+            }
+            
             $formatted_services[] = [
                 'id' => $service['id'],
                 'title' => $service['title'],
                 'description' => $service['description'],
                 'image' => $service['image'] ?: '/assets/images/services/default.jpg',
                 'price' => $service['price'],
-                'features' => $features
+                'category' => $service['category'] ?? '',
+                'status' => $service['status'] ?? 'active',
+                'features' => $features,
+                'gallery' => $gallery
             ];
         }
         
@@ -40,6 +50,69 @@ function get_services_data() {
     } catch (Exception $e) {
         // В случае ошибки возвращаем пустой массив
         error_log("Ошибка загрузки услуг: " . $e->getMessage());
+        return [];
+    }
+}
+
+/**
+ * Получение данных об услугах с переводами для указанного языка
+ */
+function get_services_data_with_translations($lang = 'de') {
+    // Подключаем конфигурацию и базу данных
+    require_once __DIR__ . '/../config.php';
+    require_once __DIR__ . '/../database.php';
+    require_once __DIR__ . '/../integrations/translation/TranslationManager.php';
+    
+    try {
+        $db = get_database();
+        $translation_manager = new TranslationManager();
+        $services = $db->select('services');
+        
+        // Преобразуем данные из базы в нужный формат
+        $formatted_services = [];
+        foreach ($services as $service) {
+            // Получаем переводы для этой услуги
+            $translations = $translation_manager->getTranslatedContent('services', $service['id'], $lang);
+            
+            // Декодируем features если это JSON строка
+            $features = [];
+            if (!empty($service['features'])) {
+                $decoded = json_decode($service['features'], true);
+                $features = is_array($decoded) ? $decoded : [];
+                
+                // Если есть перевод features, используем его
+                if (isset($translations['features'])) {
+                    $translated_features = json_decode($translations['features'], true);
+                    if (is_array($translated_features)) {
+                        $features = $translated_features;
+                    }
+                }
+            }
+            
+            // Декодируем gallery если это JSON строка
+            $gallery = [];
+            if (!empty($service['gallery'])) {
+                $decoded = json_decode($service['gallery'], true);
+                $gallery = is_array($decoded) ? $decoded : [];
+            }
+            
+            $formatted_services[] = [
+                'id' => $service['id'],
+                'title' => $translations['title'] ?? $service['title'],
+                'description' => $translations['description'] ?? $service['description'],
+                'image' => $service['image'] ?: '/assets/images/services/default.jpg',
+                'price' => $service['price'],
+                'category' => $service['category'] ?? '',
+                'status' => $service['status'] ?? 'active',
+                'features' => $features,
+                'gallery' => $gallery
+            ];
+        }
+        
+        return $formatted_services;
+    } catch (Exception $e) {
+        // В случае ошибки возвращаем пустой массив
+        error_log("Ошибка загрузки услуг с переводами: " . $e->getMessage());
         return [];
     }
 }
@@ -685,7 +758,7 @@ function get_blog_post($slug, $lang = 'ru') {
             'status' => 'published'
         ], ['limit' => 1]);
 
-        if (!$post) {
+        if (!$post || empty($post)) {
             return null;
         }
 
@@ -716,6 +789,31 @@ function get_blog_post($slug, $lang = 'ru') {
         $db->update('blog_posts', [
             'views' => $post['views'] + 1
         ], ['id' => $post['id']]);
+        
+        // Записываем активность в daily_activity
+        $today = date('Y-m-d');
+        $existing_activity = $db->select('daily_activity', ['date' => $today], ['limit' => 1]);
+        
+        if (!empty($existing_activity)) {
+            // Обновляем существующую запись
+            $current_blog_views = $existing_activity['blog_views'] ?? 0;
+            $current_total = $existing_activity['total_views'] ?? 0;
+            
+            $db->update('daily_activity', [
+                'blog_views' => $current_blog_views + 1,
+                'total_views' => $current_total + 1
+            ], ['date' => $today]);
+        } else {
+            // Создаем новую запись
+            $db->insert('daily_activity', [
+                'date' => $today,
+                'services_views' => 0,
+                'portfolio_views' => 0,
+                'blog_views' => 1,
+                'reviews_views' => 0,
+                'total_views' => 1
+            ]);
+        }
 
         // Получаем предыдущую и следующую статьи
         $prev_post = null;
@@ -756,12 +854,16 @@ function get_blog_post($slug, $lang = 'ru') {
         // Получаем связанные статьи (по категории, исключая текущую)
         $related_posts = $db->select('blog_posts', [
             'category' => $post['category'],
-            'status' => 'published',
-            'id[!]' => $post['id']
+            'status' => 'published'
         ], [
             'order_by' => 'published_at DESC',
             'limit' => 3
         ]);
+        
+        // Исключаем текущую статью из связанных
+        $related_posts = array_filter($related_posts, function($related) use ($post) {
+            return $related['id'] != $post['id'];
+        });
 
         $formatted_related = [];
         foreach ($related_posts as $related) {
