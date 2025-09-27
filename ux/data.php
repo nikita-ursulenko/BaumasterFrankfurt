@@ -248,12 +248,19 @@ function get_contact_info() {
             'social' => [
                 'telegram' => '@baumaster_frankfurt',
                 'whatsapp' => '+4969123456789',
-                'instagram' => '@baumaster.frankfurt'
+                'instagram' => '@baumaster.frankfurt',
+                'facebook' => '',
+                'linkedin' => ''
             ]
         ];
         
         // Заполняем данными из настроек
+        $working_hours_data = [];
+        $settings_array = []; // Создаем массив для удобного доступа к настройкам
+        
         foreach ($settings as $setting) {
+            $settings_array[$setting['setting_key']] = $setting['setting_value'];
+            
             switch ($setting['setting_key']) {
                 case 'company_name':
                     $contact_info['company_name'] = $setting['setting_value'];
@@ -267,14 +274,75 @@ function get_contact_info() {
                 case 'company_address':
                     $contact_info['address'] = $setting['setting_value'];
                     break;
+                case 'working_hours':
+                    $contact_info['working_hours'] = $setting['setting_value'];
+                    break;
+                default:
+                    // Обработка рабочих часов по дням
+                    if (strpos($setting['setting_key'], 'working_hours_') === 0) {
+                        $day = str_replace('working_hours_', '', $setting['setting_key']);
+                        $working_hours_data[$day] = $setting['setting_value'];
+                    }
+                    break;
             }
         }
+        
+        // Формируем компактную строку рабочих часов (упрощенная версия)
+        $is_german = defined('CURRENT_LANG') && CURRENT_LANG === 'de';
+        
+        // Получаем новые настройки рабочих часов из массива
+        $weekdays_from = $settings_array['working_hours_weekdays_from'] ?? '08:00';
+        $weekdays_to = $settings_array['working_hours_weekdays_to'] ?? '17:00';
+        $saturday_from = $settings_array['working_hours_saturday_from'] ?? '09:00';
+        $saturday_to = $settings_array['working_hours_saturday_to'] ?? '14:00';
+        $sunday_working = ($settings_array['sunday_working'] ?? '0') == '1';
+        $sunday_from = $settings_array['working_hours_sunday_from'] ?? '10:00';
+        $sunday_to = $settings_array['working_hours_sunday_to'] ?? '16:00';
+        
+        // Формируем строку рабочих часов
+        $working_hours_parts = [];
+        
+        if ($is_german) {
+            $working_hours_parts[] = "MO-FR {$weekdays_from}-{$weekdays_to}";
+            $working_hours_parts[] = "SA {$saturday_from}-{$saturday_to}";
+            if ($sunday_working) {
+                $working_hours_parts[] = "SO {$sunday_from}-{$sunday_to}";
+            } else {
+                $working_hours_parts[] = "SO - X";
+            }
+        } else {
+            $working_hours_parts[] = "ПН-ПТ {$weekdays_from}-{$weekdays_to}";
+            $working_hours_parts[] = "СБ {$saturday_from}-{$saturday_to}";
+            if ($sunday_working) {
+                $working_hours_parts[] = "ВС {$sunday_from}-{$sunday_to}";
+            } else {
+                $working_hours_parts[] = "ВС - X";
+            }
+        }
+        
+        $contact_info['working_hours'] = implode('<br>', $working_hours_parts);
         
         // Получаем социальные сети
         $social_settings = $db->select('settings', ['category' => 'social']);
         foreach ($social_settings as $setting) {
             if (!empty($setting['setting_value'])) {
-                $contact_info['social'][$setting['setting_key']] = $setting['setting_value'];
+                switch ($setting['setting_key']) {
+                    case 'whatsapp':
+                        $contact_info['social']['whatsapp'] = $setting['setting_value'];
+                        break;
+                    case 'telegram':
+                        $contact_info['social']['telegram'] = $setting['setting_value'];
+                        break;
+                    case 'facebook_url':
+                        $contact_info['social']['facebook'] = $setting['setting_value'];
+                        break;
+                    case 'instagram_url':
+                        $contact_info['social']['instagram'] = $setting['setting_value'];
+                        break;
+                    case 'linkedin_url':
+                        $contact_info['social']['linkedin'] = $setting['setting_value'];
+                        break;
+                }
             }
         }
         

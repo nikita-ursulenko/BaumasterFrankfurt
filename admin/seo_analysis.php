@@ -26,10 +26,86 @@ $active_menu = 'seo';
 $db = get_database();
 $analysis_results = [];
 
+// Обработка AJAX запросов для SEO настроек
+if (isset($_GET['ajax']) && $_GET['ajax'] === 'load_seo_data') {
+    $page_key = $_GET['page_key'] ?? '';
+    
+    if ($page_key) {
+        try {
+            $seo_keys = ['title', 'h1', 'description', 'keywords', 'og_title', 'og_description', 'og_image'];
+            $seo_data = [];
+            
+            foreach ($seo_keys as $key) {
+                $setting_key = 'page_' . $page_key . '_page_' . $key;
+                $setting = $db->select('settings', ['setting_key' => $setting_key], ['limit' => 1]);
+                $seo_data[$key] = $setting ? $setting['setting_value'] : '';
+            }
+            
+            header('Content-Type: application/json');
+            echo json_encode(['success' => true, 'data' => $seo_data]);
+            exit;
+        } catch (Exception $e) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+            exit;
+        }
+    }
+}
+
 // Обработка POST запросов
 if ($_POST && verify_csrf_token($_POST['csrf_token'] ?? '')) {
     $action = $_POST['action'] ?? '';
+    $category = $_POST['category'] ?? '';
+    $settings_data = $_POST['settings'] ?? [];
     
+    // Обработка SEO настроек страниц
+    if ($category === 'seo' && isset($_POST['page_key'])) {
+        $page_key = $_POST['page_key'];
+        
+        try {
+            foreach ($settings_data as $key => $value) {
+                $full_key = 'page_' . $page_key . '_page_' . $key;
+                
+                $existing = $db->select('settings', ['setting_key' => $full_key], ['limit' => 1]);
+                
+                if ($existing) {
+                    $db->update('settings', 
+                        ['setting_value' => $value, 'updated_at' => date('Y-m-d H:i:s')], 
+                        ['setting_key' => $full_key]
+                    );
+                } else {
+                    $db->insert('settings', [
+                        'setting_key' => $full_key,
+                        'setting_value' => $value,
+                        'category' => $category
+                    ]);
+                }
+            }
+            
+            $success_message = 'SEO настройки успешно сохранены';
+            log_user_activity('seo_settings_update', 'seo', 0);
+            
+            // Если это AJAX запрос, возвращаем JSON ответ
+            if (isset($_POST['ajax']) && $_POST['ajax'] === 'seo_modal') {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => true, 'message' => $success_message]);
+                exit;
+            }
+            
+        } catch (Exception $e) {
+            $error_message = 'Ошибка при сохранении SEO настроек';
+            write_log("SEO settings update error: " . $e->getMessage(), 'ERROR');
+            
+            // Если это AJAX запрос, возвращаем JSON ответ с ошибкой
+            if (isset($_POST['ajax']) && $_POST['ajax'] === 'seo_modal') {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'error' => $error_message]);
+                exit;
+            }
+        }
+    }
+    
+    // Обработка других действий
     switch ($action) {
         case 'analyze_pages':
             $analysis_results = analyze_all_pages();
@@ -68,6 +144,14 @@ if ($_POST && verify_csrf_token($_POST['csrf_token'] ?? '')) {
 
 // Получение статистики SEO
 $seo_stats = get_seo_statistics();
+
+// Получение текущих настроек
+$settings = [];
+$all_settings = $db->select('settings', [], ['order' => 'category, setting_key']);
+
+foreach ($all_settings as $setting) {
+    $settings[$setting['category']][$setting['setting_key']] = $setting;
+}
 
 // Генерация CSRF токена
 $csrf_token = generate_csrf_token();
@@ -278,6 +362,425 @@ ob_start();
         </div>
     </div>
 </div>
+
+<!-- SEO настройки по страницам -->
+<div class="bg-white shadow-sm rounded-lg border border-gray-200 p-6 mt-8">
+    <h3 class="text-lg font-medium text-gray-900 mb-4">
+        SEO настройки по страницам
+    </h3>
+    
+    <div class="space-y-4">
+        <p class="text-sm text-gray-600">
+            Управление SEO настройками для отдельных страниц сайта
+        </p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <?php
+            $pages = [
+                'home' => ['name' => 'Главная', 'url' => '/'],
+                'services' => ['name' => 'Услуги', 'url' => '/services.php'],
+                'portfolio' => ['name' => 'Портфолио', 'url' => '/portfolio.php'],
+                'about' => ['name' => 'О компании', 'url' => '/about.php'],
+                'reviews' => ['name' => 'Отзывы', 'url' => '/review.php'],
+                'blog' => ['name' => 'Блог/FAQ', 'url' => '/blog.php'],
+                'contact' => ['name' => 'Контакты', 'url' => '/contact.php']
+            ];
+            
+            foreach ($pages as $page_key => $page_info): ?>
+            <div class="border border-gray-200 rounded-lg p-4">
+                <h4 class="font-medium text-gray-900 mb-2"><?php echo $page_info['name']; ?></h4>
+                <p class="text-sm text-gray-600 mb-3"><?php echo $page_info['url']; ?></p>
+                <button onclick="openSeoModal('<?php echo $page_key; ?>', '<?php echo $page_info['name']; ?>')" 
+                        class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                    Настроить SEO
+                </button>
+            </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</div>
+
+<!-- Социальные сети и Open Graph -->
+<div class="bg-white shadow-sm rounded-lg border border-gray-200 p-6 mt-8">
+    <h3 class="text-lg font-medium text-gray-900 mb-4">
+        Социальные сети и Open Graph
+    </h3>
+    
+    <form method="POST" class="space-y-4">
+        <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+        <input type="hidden" name="category" value="seo">
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Open Graph заголовок</label>
+                <input type="text" name="settings[og_title]" 
+                       value="<?php echo htmlspecialchars($settings['seo']['og_title']['setting_value'] ?? ''); ?>"
+                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                <p class="text-xs text-gray-500 mt-1">Заголовок для социальных сетей</p>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Open Graph изображение</label>
+                <input type="text" name="settings[og_image]" 
+                       value="<?php echo htmlspecialchars($settings['seo']['og_image']['setting_value'] ?? ''); ?>"
+                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                <p class="text-xs text-gray-500 mt-1">URL изображения для социальных сетей</p>
+            </div>
+        </div>
+        
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Open Graph описание</label>
+            <textarea name="settings[og_description]" rows="2"
+                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"><?php echo htmlspecialchars($settings['seo']['og_description']['setting_value'] ?? ''); ?></textarea>
+            <p class="text-xs text-gray-500 mt-1">Описание для социальных сетей</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Twitter аккаунт</label>
+                <input type="text" name="settings[twitter_handle]" 
+                       value="<?php echo htmlspecialchars($settings['seo']['twitter_handle']['setting_value'] ?? ''); ?>"
+                       placeholder="@username"
+                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                <p class="text-xs text-gray-500 mt-1">@username в Twitter</p>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Facebook URL</label>
+                <input type="url" name="settings[facebook_url]" 
+                       value="<?php echo htmlspecialchars($settings['social']['facebook_url']['setting_value'] ?? ''); ?>"
+                       placeholder="https://www.facebook.com/yourpage"
+                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Instagram URL</label>
+                <input type="url" name="settings[instagram_url]" 
+                       value="<?php echo htmlspecialchars($settings['social']['instagram_url']['setting_value'] ?? ''); ?>"
+                       placeholder="https://www.instagram.com/yourpage"
+                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">LinkedIn URL</label>
+                <input type="url" name="settings[linkedin_url]" 
+                       value="<?php echo htmlspecialchars($settings['social']['linkedin_url']['setting_value'] ?? ''); ?>"
+                       placeholder="https://www.linkedin.com/company/yourcompany"
+                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">WhatsApp</label>
+                <input type="text" name="settings[whatsapp]" 
+                       value="<?php echo htmlspecialchars($settings['social']['whatsapp']['setting_value'] ?? ''); ?>"
+                       placeholder="+4969123456789"
+                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Telegram</label>
+                <input type="text" name="settings[telegram]" 
+                       value="<?php echo htmlspecialchars($settings['social']['telegram']['setting_value'] ?? ''); ?>"
+                       placeholder="@baumaster_frankfurt"
+                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+            </div>
+        </div>
+        
+        <div class="flex justify-end">
+            <button type="submit" 
+                    class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                Сохранить
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Аналитика и отслеживание -->
+<div class="bg-white shadow-sm rounded-lg border border-gray-200 p-6 mt-8">
+    <h3 class="text-lg font-medium text-gray-900 mb-4">
+        Аналитика и отслеживание
+    </h3>
+    
+    <form method="POST" class="space-y-4">
+        <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+        <input type="hidden" name="category" value="seo">
+        
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Google Analytics</label>
+            <textarea name="settings[google_analytics]" rows="3"
+                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"><?php echo htmlspecialchars($settings['seo']['google_analytics']['setting_value'] ?? ''); ?></textarea>
+            <p class="text-xs text-gray-500 mt-1">Код отслеживания Google Analytics (gtag или GA4)</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Google Tag Manager</label>
+                <input type="text" name="settings[google_tag_manager]" 
+                       value="<?php echo htmlspecialchars($settings['seo']['google_tag_manager']['setting_value'] ?? ''); ?>"
+                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                <p class="text-xs text-gray-500 mt-1">ID контейнера GTM</p>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Facebook Pixel</label>
+                <input type="text" name="settings[facebook_pixel]" 
+                       value="<?php echo htmlspecialchars($settings['seo']['facebook_pixel']['setting_value'] ?? ''); ?>"
+                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                <p class="text-xs text-gray-500 mt-1">ID Facebook Pixel</p>
+            </div>
+        </div>
+        
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Пользовательский код в head</label>
+            <textarea name="settings[custom_head_code]" rows="4"
+                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"><?php echo htmlspecialchars($settings['seo']['custom_head_code']['setting_value'] ?? ''); ?></textarea>
+            <p class="text-xs text-gray-500 mt-1">Дополнительный HTML код для секции head</p>
+        </div>
+        
+        <div class="flex justify-end">
+            <button type="submit" 
+                    class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                Сохранить
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Модальное окно для SEO настроек страницы -->
+<div id="seoModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+    <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white">
+        <div class="mt-3">
+            <!-- Заголовок модального окна -->
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-medium text-gray-900" id="seoModalTitle">
+                    SEO настройки
+                </h3>
+                <button onclick="closeSeoModal()" class="text-gray-400 hover:text-gray-600">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Форма SEO настроек -->
+            <form id="seoModalForm" method="POST" class="space-y-4">
+                <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+                <input type="hidden" name="category" value="seo">
+                <input type="hidden" name="page_key" id="seoModalPageKey" value="">
+                <input type="hidden" name="ajax" value="seo_modal">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Заголовок страницы</label>
+                        <input type="text" name="settings[page_title]" id="seoModalTitleInput" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                        <p class="text-xs text-gray-500 mt-1">Уникальный заголовок для этой страницы</p>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">H1 заголовок</label>
+                        <input type="text" name="settings[page_h1]" id="seoModalH1Input" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                        <p class="text-xs text-gray-500 mt-1">Основной заголовок страницы</p>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Мета-описание</label>
+                    <textarea name="settings[page_description]" id="seoModalDescriptionInput" rows="3"
+                              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"></textarea>
+                    <p class="text-xs text-gray-500 mt-1">Описание для поисковых систем (до 160 символов)</p>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Ключевые слова</label>
+                    <textarea name="settings[page_keywords]" id="seoModalKeywordsInput" rows="2"
+                              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"></textarea>
+                    <p class="text-xs text-gray-500 mt-1">Ключевые слова через запятую</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Open Graph заголовок</label>
+                        <input type="text" name="settings[page_og_title]" id="seoModalOgTitleInput" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                        <p class="text-xs text-gray-500 mt-1">Заголовок для социальных сетей</p>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Open Graph изображение</label>
+                        <input type="text" name="settings[page_og_image]" id="seoModalOgImageInput" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                        <p class="text-xs text-gray-500 mt-1">URL изображения для социальных сетей</p>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Open Graph описание</label>
+                    <textarea name="settings[page_og_description]" id="seoModalOgDescriptionInput" rows="2"
+                              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"></textarea>
+                    <p class="text-xs text-gray-500 mt-1">Описание для социальных сетей</p>
+                </div>
+                
+                <!-- Кнопки -->
+                <div class="flex justify-end space-x-3 pt-4 border-t">
+                    <button type="button" onclick="closeSeoModal()" 
+                            class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                        Отмена
+                    </button>
+                    <button type="submit" 
+                            class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                        Сохранить
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Управление модальным окном SEO
+    window.openSeoModal = function(pageKey, pageName) {
+        const modal = document.getElementById('seoModal');
+        const title = document.getElementById('seoModalTitle');
+        const pageKeyInput = document.getElementById('seoModalPageKey');
+        
+        // Устанавливаем заголовок и ключ страницы
+        title.textContent = `SEO настройки: ${pageName}`;
+        pageKeyInput.value = pageKey;
+        
+        // Загружаем существующие данные
+        loadSeoData(pageKey);
+        
+        // Показываем модальное окно
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden'; // Блокируем прокрутку фона
+    };
+    
+    window.closeSeoModal = function() {
+        const modal = document.getElementById('seoModal');
+        modal.classList.add('hidden');
+        document.body.style.overflow = 'auto'; // Восстанавливаем прокрутку
+    };
+    
+    // Загрузка существующих SEO данных
+    window.loadSeoData = function(pageKey) {
+        console.log('Загружаем SEO данные для страницы:', pageKey);
+        
+        // AJAX запрос для загрузки данных
+        fetch('?ajax=load_seo_data&page_key=' + encodeURIComponent(pageKey))
+            .then(response => {
+                console.log('Ответ получен:', response.status);
+                return response.json();
+            })
+            .then(data => {
+                console.log('Данные получены:', data);
+                if (data.success) {
+                    document.getElementById('seoModalTitleInput').value = data.data.title || '';
+                    document.getElementById('seoModalH1Input').value = data.data.h1 || '';
+                    document.getElementById('seoModalDescriptionInput').value = data.data.description || '';
+                    document.getElementById('seoModalKeywordsInput').value = data.data.keywords || '';
+                    document.getElementById('seoModalOgTitleInput').value = data.data.og_title || '';
+                    document.getElementById('seoModalOgImageInput').value = data.data.og_image || '';
+                    document.getElementById('seoModalOgDescriptionInput').value = data.data.og_description || '';
+                } else {
+                    console.log('Ошибка в данных:', data.error);
+                    // Очищаем поля при ошибке
+                    clearSeoFields();
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка загрузки SEO данных:', error);
+                clearSeoFields();
+            });
+    };
+    
+    // Очистка полей SEO
+    window.clearSeoFields = function() {
+        document.getElementById('seoModalTitleInput').value = '';
+        document.getElementById('seoModalH1Input').value = '';
+        document.getElementById('seoModalDescriptionInput').value = '';
+        document.getElementById('seoModalKeywordsInput').value = '';
+        document.getElementById('seoModalOgTitleInput').value = '';
+        document.getElementById('seoModalOgImageInput').value = '';
+        document.getElementById('seoModalOgDescriptionInput').value = '';
+    };
+    
+    // Закрытие модального окна по клику на фон
+    document.getElementById('seoModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeSeoModal();
+        }
+    });
+    
+    // Закрытие модального окна по клавише Escape
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const modal = document.getElementById('seoModal');
+            if (!modal.classList.contains('hidden')) {
+                closeSeoModal();
+            }
+        }
+    });
+    
+    // Обработка отправки формы SEO модального окна
+    document.getElementById('seoModalForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const submitButton = this.querySelector('button[type="submit"]');
+        const originalText = submitButton.textContent;
+        
+        // Показываем индикатор загрузки
+        submitButton.textContent = 'Сохранение...';
+        submitButton.disabled = true;
+        
+        fetch('', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Показываем сообщение об успехе
+                showNotification('Настройки успешно сохранены', 'success');
+                closeSeoModal();
+            } else {
+                showNotification(data.error || 'Ошибка при сохранении', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+            showNotification('Ошибка при сохранении настроек', 'error');
+        })
+        .finally(() => {
+            // Восстанавливаем кнопку
+            submitButton.textContent = originalText;
+            submitButton.disabled = false;
+        });
+    });
+    
+    // Функция показа уведомлений
+    function showNotification(message, type) {
+        const notification = document.createElement('div');
+        notification.className = `fixed top-4 right-4 p-4 rounded-md shadow-lg z-50 ${
+            type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+        }`;
+        notification.textContent = message;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.remove();
+        }, 3000);
+    }
+});
+</script>
 
 <?php
 /**

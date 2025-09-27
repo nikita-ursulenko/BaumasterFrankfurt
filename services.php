@@ -10,7 +10,7 @@ require_once __DIR__ . '/ux/components.php';
 require_once __DIR__ . '/ux/data.php';
 
 // Получение данных
-$seo = get_seo_data()['services'];
+$seo = get_page_seo_settings('services');
 $services = get_services_data();
 
 // Начало контента
@@ -22,7 +22,7 @@ ob_start();
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center">
             <h1 class="font-montserrat font-semibold text-4xl lg:text-5xl text-text-primary mb-6">
-                Наши услуги
+                <?php echo htmlspecialchars($seo['h1'] ?? 'Наши услуги'); ?>
             </h1>
             <p class="text-xl text-text-secondary max-w-3xl mx-auto mb-8">
                 Выполняем все виды внутренних работ во Франкфурте. От небольшого косметического ремонта 

@@ -33,48 +33,47 @@ ob_start();
 </section>
 
 <!-- Contact Info -->
-<section class="py-20 bg-white">
+<section class="py-12 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <div class="text-center">
-                <div class="w-16 h-16 bg-accent-blue text-white rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="w-12 h-12 bg-accent-blue text-white rounded-full flex items-center justify-center mx-auto mb-3">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
                     </svg>
                 </div>
-                <h3 class="font-semibold text-lg text-text-primary mb-2">Телефон</h3>
-                <p class="text-text-secondary mb-1"><?php echo $contact_info['phone']; ?></p>
-                <p class="text-sm text-text-secondary"><?php echo $contact_info['working_hours']; ?></p>
+                <h3 class="font-semibold text-base text-text-primary mb-1">Телефон</h3>
+                <p class="text-text-secondary"><?php echo $contact_info['phone']; ?></p>
             </div>
             
             <div class="text-center">
-                <div class="w-16 h-16 bg-accent-blue text-white rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="w-12 h-12 bg-accent-blue text-white rounded-full flex items-center justify-center mx-auto mb-3">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                     </svg>
                 </div>
-                <h3 class="font-semibold text-lg text-text-primary mb-2">Email</h3>
+                <h3 class="font-semibold text-base text-text-primary mb-1">Email</h3>
                 <p class="text-text-secondary"><?php echo $contact_info['email']; ?></p>
             </div>
             
             <div class="text-center">
-                <div class="w-16 h-16 bg-accent-blue text-white rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="w-12 h-12 bg-accent-blue text-white rounded-full flex items-center justify-center mx-auto mb-3">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                     </svg>
                 </div>
-                <h3 class="font-semibold text-lg text-text-primary mb-2">Адрес</h3>
+                <h3 class="font-semibold text-base text-text-primary mb-1">Адрес</h3>
                 <p class="text-text-secondary"><?php echo $contact_info['address']; ?></p>
             </div>
             
             <div class="text-center">
-                <div class="w-16 h-16 bg-accent-blue text-white rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="w-12 h-12 bg-accent-blue text-white rounded-full flex items-center justify-center mx-auto mb-3">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                 </div>
-                <h3 class="font-semibold text-lg text-text-primary mb-2">Режим работы</h3>
+                <h3 class="font-semibold text-base text-text-primary mb-1">Режим работы</h3>
                 <p class="text-text-secondary"><?php echo $contact_info['working_hours']; ?></p>
             </div>
         </div>
@@ -190,34 +189,229 @@ ob_start();
             </p>
         </div>
         
-        <!-- Placeholder for map -->
-        <div class="bg-gray-200 rounded-lg h-96 flex items-center justify-center">
-            <div class="text-center text-gray-500">
-                <svg class="h-16 w-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                </svg>
-                <p class="text-lg">Интерактивная карта</p>
-                <p class="text-sm">Frankfurt am Main, Deutschland</p>
+        <!-- Interactive Map -->
+        <div class="relative">
+            <div id="frankfurt-map" class="rounded-lg h-96 w-full bg-gray-100 pointer-events-none"></div>
+            
+            <!-- Map Overlay - Click to Activate -->
+            <div id="map-overlay" class="absolute inset-0 bg-black bg-opacity-20 rounded-lg flex items-center justify-center cursor-pointer transition-all duration-300 hover:bg-opacity-30">
+                <div class="text-center">
+                    <div class="mb-3">
+                        <svg class="h-12 w-12 mx-auto text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                    </div>
+                    <p class="text-white text-sm drop-shadow-md font-medium">Нажмите для активации карты</p>
+                </div>
+            </div>
+            
+            <div class="absolute top-4 left-4 bg-white bg-opacity-90 rounded-lg p-3 shadow-lg">
+                <h4 class="font-semibold text-sm text-gray-800 mb-1">Frankfurt am Main</h4>
+                <p class="text-xs text-gray-600">Deutschland</p>
             </div>
         </div>
+        
+        <!-- Map Script -->
+        <script>
+        // Глобальные переменные для карты
+        let frankfurtMap = null;
+        let mapInitialized = false;
+        let districtsData = null;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Координаты Франкфурта
+            const frankfurtCoords = [50.1109, 8.6821];
+            
+            // Элементы overlay
+            const mapOverlay = document.getElementById('map-overlay');
+            
+            // Инициализируем карту сразу при загрузке
+            initializeMap();
+            
+            // Функция инициализации карты
+            function initializeMap() {
+                if (mapInitialized) return;
+                
+                // Создаем карту
+                frankfurtMap = L.map('frankfurt-map').setView(frankfurtCoords, 11);
+                
+                // Добавляем слой OpenStreetMap
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                    maxZoom: 18
+                }).addTo(frankfurtMap);
+            
+                // Основная метка Франкфурта
+                const mainMarker = L.marker(frankfurtCoords).addTo(frankfurtMap);
+                mainMarker.bindPopup(`
+                    <div class="text-center">
+                        <h3 class="font-semibold text-lg mb-2">Frankfurt am Main</h3>
+                        <p class="text-sm text-gray-600 mb-2">Deutschland</p>
+                        <p class="text-xs text-gray-500">Мы работаем по всему городу</p>
+                    </div>
+                `);
+                
+                // Координаты районов Франкфурта
+                districtsData = [
+                    { name: 'Altstadt', coords: [50.1109, 8.6821], description: 'Исторический центр' },
+                    { name: 'Sachsenhausen', coords: [50.1036, 8.6908], description: 'Южный район' },
+                    { name: 'Westend', coords: [50.1200, 8.6500], description: 'Западный район' },
+                    { name: 'Nordend', coords: [50.1300, 8.6800], description: 'Северный район' },
+                    { name: 'Ostend', coords: [50.1150, 8.7200], description: 'Восточный район' },
+                    { name: 'Bornheim', coords: [50.1250, 8.7100], description: 'Жилой район' },
+                    { name: 'Bockenheim', coords: [50.1200, 8.6400], description: 'Университетский район' },
+                    { name: 'Gallus', coords: [50.1000, 8.6500], description: 'Промышленный район' },
+                    { name: 'Höchst', coords: [50.0900, 8.5500], description: 'Западный пригород' },
+                    { name: 'Fechenheim', coords: [50.1300, 8.7500], description: 'Восточный пригород' },
+                    { name: 'Rödelheim', coords: [50.1100, 8.6000], description: 'Западный пригород' }
+                ];
+                
+                // Добавляем метки районов
+                districtsData.forEach(district => {
+                    const marker = L.circleMarker(district.coords, {
+                        radius: 6,
+                        fillColor: '#2C3E50',
+                        color: '#fff',
+                        weight: 2,
+                        opacity: 1,
+                        fillOpacity: 0.8
+                    }).addTo(frankfurtMap);
+                    
+                    marker.bindPopup(`
+                        <div class="text-center">
+                            <h4 class="font-semibold text-sm mb-1">${district.name}</h4>
+                            <p class="text-xs text-gray-600">${district.description}</p>
+                        </div>
+                    `);
+                });
+                
+                // Добавляем кластер для лучшей производительности
+                const markers = L.markerClusterGroup();
+                markers.addLayer(mainMarker);
+                frankfurtMap.addLayer(markers);
+                
+                // Сохраняем ссылки на карту и районы для глобального доступа
+                window.frankfurtMap = frankfurtMap;
+                window.districtsData = districtsData;
+                
+                mapInitialized = true;
+            }
+            
+            // Функция активации карты
+            function activateMap() {
+                mapOverlay.style.display = 'none';
+                // Включаем интерактивность карты
+                const mapElement = document.getElementById('frankfurt-map');
+                mapElement.classList.remove('pointer-events-none');
+            }
+            
+            // Обработчики событий
+            mapOverlay.addEventListener('click', activateMap);
+        });
+        
+        // Функция для показа конкретного района на карте
+        function showDistrictOnMap(districtName) {
+            // Активируем карту если она еще не активирована
+            if (!mapInitialized) {
+                activateMap();
+            }
+            
+            if (!window.frankfurtMap || !window.districtsData) return;
+            
+            const district = window.districtsData.find(d => d.name === districtName);
+            if (district) {
+                window.frankfurtMap.setView(district.coords, 14);
+                
+                // Находим и открываем popup для этого района
+                window.frankfurtMap.eachLayer(function(layer) {
+                    if (layer instanceof L.CircleMarker) {
+                        if (layer.getLatLng().lat === district.coords[0] && 
+                            layer.getLatLng().lng === district.coords[1]) {
+                            layer.openPopup();
+                        }
+                    }
+                });
+            }
+        }
+        
+        // Функция для показа всех районов
+        function showAllDistricts() {
+            // Активируем карту если она еще не активирована
+            if (!mapInitialized) {
+                activateMap();
+            }
+            
+            if (!window.frankfurtMap || !window.districtsData) return;
+            
+            const group = new L.featureGroup();
+            window.districtsData.forEach(district => {
+                group.addLayer(L.marker(district.coords));
+            });
+            
+            window.frankfurtMap.fitBounds(group.getBounds().pad(0.1));
+        }
+        </script>
+        
+        <!-- Leaflet CSS and JS -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+        <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
         
         <!-- Districts -->
         <div class="mt-12">
             <h3 class="text-center font-semibold text-xl text-text-primary mb-8">Районы работы</h3>
             <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 text-center">
-                <div class="bg-gray-50 p-3 rounded">Altstadt</div>
-                <div class="bg-gray-50 p-3 rounded">Sachsenhausen</div>
-                <div class="bg-gray-50 p-3 rounded">Westend</div>
-                <div class="bg-gray-50 p-3 rounded">Nordend</div>
-                <div class="bg-gray-50 p-3 rounded">Ostend</div>
-                <div class="bg-gray-50 p-3 rounded">Bornheim</div>
-                <div class="bg-gray-50 p-3 rounded">Bockenheim</div>
-                <div class="bg-gray-50 p-3 rounded">Gallus</div>
-                <div class="bg-gray-50 p-3 rounded">Höchst</div>
-                <div class="bg-gray-50 p-3 rounded">Fechenheim</div>
-                <div class="bg-gray-50 p-3 rounded">Rödelheim</div>
-                <div class="bg-gray-50 p-3 rounded">Und andere</div>
+                <div class="bg-gray-50 p-3 rounded hover:bg-accent-blue hover:text-white transition-colors cursor-pointer" onclick="showDistrictOnMap('Altstadt')">
+                    <div class="font-medium">Altstadt</div>
+                    <div class="text-xs text-gray-500">Исторический центр</div>
+                </div>
+                <div class="bg-gray-50 p-3 rounded hover:bg-accent-blue hover:text-white transition-colors cursor-pointer" onclick="showDistrictOnMap('Sachsenhausen')">
+                    <div class="font-medium">Sachsenhausen</div>
+                    <div class="text-xs text-gray-500">Южный район</div>
+                </div>
+                <div class="bg-gray-50 p-3 rounded hover:bg-accent-blue hover:text-white transition-colors cursor-pointer" onclick="showDistrictOnMap('Westend')">
+                    <div class="font-medium">Westend</div>
+                    <div class="text-xs text-gray-500">Западный район</div>
+                </div>
+                <div class="bg-gray-50 p-3 rounded hover:bg-accent-blue hover:text-white transition-colors cursor-pointer" onclick="showDistrictOnMap('Nordend')">
+                    <div class="font-medium">Nordend</div>
+                    <div class="text-xs text-gray-500">Северный район</div>
+                </div>
+                <div class="bg-gray-50 p-3 rounded hover:bg-accent-blue hover:text-white transition-colors cursor-pointer" onclick="showDistrictOnMap('Ostend')">
+                    <div class="font-medium">Ostend</div>
+                    <div class="text-xs text-gray-500">Восточный район</div>
+                </div>
+                <div class="bg-gray-50 p-3 rounded hover:bg-accent-blue hover:text-white transition-colors cursor-pointer" onclick="showDistrictOnMap('Bornheim')">
+                    <div class="font-medium">Bornheim</div>
+                    <div class="text-xs text-gray-500">Жилой район</div>
+                </div>
+                <div class="bg-gray-50 p-3 rounded hover:bg-accent-blue hover:text-white transition-colors cursor-pointer" onclick="showDistrictOnMap('Bockenheim')">
+                    <div class="font-medium">Bockenheim</div>
+                    <div class="text-xs text-gray-500">Университетский район</div>
+                </div>
+                <div class="bg-gray-50 p-3 rounded hover:bg-accent-blue hover:text-white transition-colors cursor-pointer" onclick="showDistrictOnMap('Gallus')">
+                    <div class="font-medium">Gallus</div>
+                    <div class="text-xs text-gray-500">Промышленный район</div>
+                </div>
+                <div class="bg-gray-50 p-3 rounded hover:bg-accent-blue hover:text-white transition-colors cursor-pointer" onclick="showDistrictOnMap('Höchst')">
+                    <div class="font-medium">Höchst</div>
+                    <div class="text-xs text-gray-500">Западный пригород</div>
+                </div>
+                <div class="bg-gray-50 p-3 rounded hover:bg-accent-blue hover:text-white transition-colors cursor-pointer" onclick="showDistrictOnMap('Fechenheim')">
+                    <div class="font-medium">Fechenheim</div>
+                    <div class="text-xs text-gray-500">Восточный пригород</div>
+                </div>
+                <div class="bg-gray-50 p-3 rounded hover:bg-accent-blue hover:text-white transition-colors cursor-pointer" onclick="showDistrictOnMap('Rödelheim')">
+                    <div class="font-medium">Rödelheim</div>
+                    <div class="text-xs text-gray-500">Западный пригород</div>
+                </div>
+                <div class="bg-gray-50 p-3 rounded hover:bg-accent-blue hover:text-white transition-colors cursor-pointer" onclick="showAllDistricts()">
+                    <div class="font-medium">И другие</div>
+                    <div class="text-xs text-gray-500">Все районы</div>
+                </div>
             </div>
         </div>
     </div>

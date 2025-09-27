@@ -2754,3 +2754,12 @@
 [2025-09-27 00:49:18] [INFO] Translation saved: statistics.label (ID: 12)
 [2025-09-27 00:49:18] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
 [2025-09-27 00:49:18] [INFO] Translation saved: statistics.description (ID: 12)
+[2025-09-27 01:39:57] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 no such column: featured
+[2025-09-27 01:55:47] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 no such column: featured
+[2025-09-27 02:08:16] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 no such column: featured
+[2025-09-27 02:08:23] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 no such column: featured
+[2025-09-27 02:50:35] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 no such column: featured
+[2025-09-27 09:44:37] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 no such column: featured
+[2025-09-27 09:48:19] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 no such column: featured
+[2025-09-27 09:48:33] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 no such column: featured
+[2025-09-27 09:50:33] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 no such column: featured

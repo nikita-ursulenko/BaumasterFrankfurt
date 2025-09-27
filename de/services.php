@@ -16,7 +16,7 @@ require_once __DIR__ . '/../integrations/translation/TranslationManager.php';
 define('CURRENT_LANG', 'de');
 
 // Получение данных
-$seo = get_seo_data()['services'];
+$seo = get_page_seo_settings('services');
 $services = get_services_data();
 $translation_manager = new TranslationManager();
 
@@ -29,7 +29,7 @@ ob_start();
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center">
             <h1 class="font-montserrat font-semibold text-4xl lg:text-5xl text-text-primary mb-6">
-                Unsere Dienstleistungen
+                <?php echo htmlspecialchars($seo['h1'] ?? 'Unsere Dienstleistungen'); ?>
             </h1>
             <p class="text-xl text-text-secondary max-w-3xl mx-auto mb-8">
                 Professionelle Innenausbau- und Renovierungsdienstleistungen in Frankfurt am Main. 
@@ -179,8 +179,8 @@ $content = ob_get_clean();
 
 // Рендеринг страницы
 render_frontend_layout([
-    'title' => 'Unsere Dienstleistungen - Baumaster Frankfurt',
-    'meta_description' => 'Professionelle Innenausbau- und Renovierungsdienstleistungen in Frankfurt. Malerarbeiten, Bodenverlegung, Badezimmerrenovierung und mehr.',
+    'title' => $seo['title'] ?? 'Unsere Dienstleistungen - Baumaster Frankfurt',
+    'meta_description' => $seo['description'] ?? 'Professionelle Innenausbau- und Renovierungsdienstleistungen in Frankfurt. Malerarbeiten, Bodenverlegung, Badezimmerrenovierung und mehr.',
     'active_page' => 'services',
     'content' => $content,
     'language' => 'de'
