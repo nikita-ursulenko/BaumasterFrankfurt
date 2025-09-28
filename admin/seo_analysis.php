@@ -194,7 +194,8 @@ if ($_POST && verify_csrf_token($_POST['csrf_token'] ?? '')) {
     // Обработка других действий
     switch ($action) {
         case 'analyze_pages':
-            $analysis_results['analyze_pages'] = analyze_all_pages();
+            $selected_pages = $_POST['pages'] ?? [];
+            $analysis_results['analyze_pages'] = analyze_selected_pages($selected_pages);
             break;
             
         case 'optimize_images':
@@ -312,9 +313,121 @@ ob_start();
             <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
             <input type="hidden" name="action" value="analyze_pages">
             
+            <!-- Выбор страниц для анализа -->
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        Выберите страницы для анализа:
+                    </label>
+                    
+                    <!-- Быстрый выбор -->
+                    <div class="mb-3">
+                        <div class="flex space-x-2">
+                            <button type="button" onclick="selectAllPages()" 
+                                    class="px-3 py-1 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200">
+                                Выбрать все
+                            </button>
+                            <button type="button" onclick="selectRussianPages()" 
+                                    class="px-3 py-1 text-xs bg-green-100 text-green-700 rounded hover:bg-green-200">
+                                Только русские
+                            </button>
+                            <button type="button" onclick="selectGermanPages()" 
+                                    class="px-3 py-1 text-xs bg-yellow-100 text-yellow-700 rounded hover:bg-yellow-200">
+                                Только немецкие
+                            </button>
+                            <button type="button" onclick="clearAllPages()" 
+                                    class="px-3 py-1 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200">
+                                Очистить
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Список страниц -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Русские страницы -->
+                        <div class="space-y-2">
+                            <h4 class="font-medium text-gray-900 text-sm">🇷🇺 Русские страницы</h4>
+                            <div class="space-y-2">
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" name="pages[]" value="index.php" class="page-checkbox" checked>
+                                    <span class="text-sm text-gray-700">Главная страница (/)</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" name="pages[]" value="services.php" class="page-checkbox" checked>
+                                    <span class="text-sm text-gray-700">Услуги (/services.php)</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" name="pages[]" value="portfolio.php" class="page-checkbox">
+                                    <span class="text-sm text-gray-700">Портфолио (/portfolio.php)</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" name="pages[]" value="about.php" class="page-checkbox">
+                                    <span class="text-sm text-gray-700">О нас (/about.php)</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" name="pages[]" value="reviews.php" class="page-checkbox">
+                                    <span class="text-sm text-gray-700">Отзывы (/reviews.php)</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" name="pages[]" value="blog.php" class="page-checkbox">
+                                    <span class="text-sm text-gray-700">Блог (/blog.php)</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" name="pages[]" value="contact.php" class="page-checkbox">
+                                    <span class="text-sm text-gray-700">Контакты (/contact.php)</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Немецкие страницы -->
+                        <div class="space-y-2">
+                            <h4 class="font-medium text-gray-900 text-sm">🇩🇪 Немецкие страницы</h4>
+                            <div class="space-y-2">
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" name="pages[]" value="de/index.php" class="page-checkbox german-page">
+                                    <span class="text-sm text-gray-700">Главная страница (/de/)</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" name="pages[]" value="de/services.php" class="page-checkbox german-page">
+                                    <span class="text-sm text-gray-700">Услуги (/de/services.php)</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" name="pages[]" value="de/portfolio.php" class="page-checkbox german-page">
+                                    <span class="text-sm text-gray-700">Портфолио (/de/portfolio.php)</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" name="pages[]" value="de/about.php" class="page-checkbox german-page">
+                                    <span class="text-sm text-gray-700">О нас (/de/about.php)</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" name="pages[]" value="de/reviews.php" class="page-checkbox german-page">
+                                    <span class="text-sm text-gray-700">Отзывы (/de/reviews.php)</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" name="pages[]" value="de/blog.php" class="page-checkbox german-page">
+                                    <span class="text-sm text-gray-700">Блог (/de/blog.php)</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" name="pages[]" value="de/contact.php" class="page-checkbox german-page">
+                                    <span class="text-sm text-gray-700">Контакты (/de/contact.php)</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Статистика выбора -->
+                    <div class="mt-3 p-3 bg-gray-50 rounded-lg">
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-600">Выбрано страниц:</span>
+                            <span id="selected-count" class="font-medium text-blue-600">2</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             <?php render_button([
                 'type' => 'submit',
-                'text' => __('seo.analyze_now', 'Анализировать сейчас'),
+                'text' => __('seo.analyze_selected', 'Анализировать выбранные страницы'),
                 'variant' => 'primary',
                 'icon' => get_icon('search', 'w-4 h-4 mr-2')
             ]); ?>
@@ -1157,6 +1270,58 @@ document.addEventListener('DOMContentLoaded', function() {
                 button.disabled = false;
             });
     };
+    
+    // Управление выбором страниц для анализа
+    function updateSelectedCount() {
+        const checkboxes = document.querySelectorAll('.page-checkbox:checked');
+        const countElement = document.getElementById('selected-count');
+        if (countElement) {
+            countElement.textContent = checkboxes.length;
+        }
+    }
+    
+    function selectAllPages() {
+        const checkboxes = document.querySelectorAll('.page-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = true;
+        });
+        updateSelectedCount();
+    }
+    
+    function selectRussianPages() {
+        const checkboxes = document.querySelectorAll('.page-checkbox:not(.german-page)');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = true;
+        });
+        updateSelectedCount();
+    }
+    
+    function selectGermanPages() {
+        const checkboxes = document.querySelectorAll('.page-checkbox.german-page');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = true;
+        });
+        updateSelectedCount();
+    }
+    
+    function clearAllPages() {
+        const checkboxes = document.querySelectorAll('.page-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = false;
+        });
+        updateSelectedCount();
+    }
+    
+    // Добавляем обработчики событий для чекбоксов
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkboxes = document.querySelectorAll('.page-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateSelectedCount);
+        });
+        
+        // Обновляем счетчик при загрузке страницы
+        updateSelectedCount();
+    });
 });
 </script>
 
@@ -1205,46 +1370,57 @@ function get_seo_statistics() {
 }
 
 /**
- * Анализ всех страниц
+ * Анализ выбранных страниц
  */
-function analyze_all_pages() {
+function analyze_selected_pages($selected_pages = []) {
     require_once __DIR__ . '/../seo/advanced_seo_analyzer.php';
     
     $results = [];
     $site_url = get_site_url();
     
-    // Анализ статических страниц
-    $static_pages = [
+    // Если страницы не выбраны, анализируем все доступные
+    if (empty($selected_pages)) {
+        $selected_pages = [
+            'index.php', 'services.php', 'portfolio.php', 'about.php', 
+            'reviews.php', 'blog.php', 'contact.php',
+            'de/index.php', 'de/services.php'
+        ];
+    }
+    
+    // Маппинг файлов к URL путям
+    $page_mapping = [
         'index.php' => '/',
         'services.php' => '/services.php',
         'portfolio.php' => '/portfolio.php',
         'about.php' => '/about.php',
         'reviews.php' => '/reviews.php',
         'blog.php' => '/blog.php',
-        'contact.php' => '/contact.php'
-    ];
-    
-    foreach ($static_pages as $file => $path) {
-        if (file_exists(__DIR__ . '/../' . $file)) {
-            $full_url = $site_url . $path;
-            $results[$file] = analyze_page_seo($full_url);
-        }
-    }
-    
-    // Анализ немецких страниц
-    $german_pages = [
+        'contact.php' => '/contact.php',
         'de/index.php' => '/de/',
-        'de/services.php' => '/de/services.php'
+        'de/services.php' => '/de/services.php',
+        'de/portfolio.php' => '/de/portfolio.php',
+        'de/about.php' => '/de/about.php',
+        'de/reviews.php' => '/de/reviews.php',
+        'de/blog.php' => '/de/blog.php',
+        'de/contact.php' => '/de/contact.php'
     ];
     
-    foreach ($german_pages as $file => $path) {
-        if (file_exists(__DIR__ . '/../' . $file)) {
+    foreach ($selected_pages as $file) {
+        if (isset($page_mapping[$file]) && file_exists(__DIR__ . '/../' . $file)) {
+            $path = $page_mapping[$file];
             $full_url = $site_url . $path;
             $results[$file] = analyze_page_seo($full_url);
         }
     }
     
     return $results;
+}
+
+/**
+ * Анализ всех страниц (для обратной совместимости)
+ */
+function analyze_all_pages() {
+    return analyze_selected_pages();
 }
 
 /**
