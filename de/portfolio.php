@@ -17,7 +17,7 @@ define('CURRENT_LANG', 'de');
 
 // Получение данных
 $seo = get_seo_data()['portfolio'];
-$portfolio = get_portfolio_data();
+$portfolio = get_portfolio_data_translated('de');
 $translation_manager = new FastTranslationManager();
 
 // Начало контента
@@ -146,7 +146,19 @@ ob_start();
                         <div class="flex flex-wrap gap-2 mb-4">
                             <?php foreach (array_slice($project['tags'], 0, 3) as $tag): ?>
                                 <span class="inline-block px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">
-                                    <?php echo htmlspecialchars($tag); ?>
+                                    <?php 
+                                    // Перевод тегов на немецкий
+                                    $tag_translations = [
+                                        'ремонт' => 'Renovierung',
+                                        'квартира' => 'Wohnung',
+                                        'лофт' => 'Loft',
+                                        'современный стиль' => 'moderner Stil',
+                                        'открытая планировка' => 'offene Planung',
+                                        'Франкфурт' => 'Frankfurt'
+                                    ];
+                                    $translated_tag = $tag_translations[$tag] ?? $tag;
+                                    echo htmlspecialchars($translated_tag); 
+                                    ?>
                                 </span>
                             <?php endforeach; ?>
                         </div>
@@ -293,6 +305,31 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
 });
 
 // Project modal
+// Function to translate text to German
+function translateToGerman(text) {
+    const translations = {
+        // Project titles and descriptions
+        'Современный ремонт квартиры в стиле лофт': 'Moderne Wohnungsrenovierung im Loft-Stil',
+        'Полная реконструкция двухкомнатной квартиры площадью 75 м² в современном стиле лофт. Проект включал демонтаж старых перегородок, устройство стяжки полов, монтаж теплых полов, установку новых окон и дверей, полную замену электропроводки и сантехники. Кухня была объединена с гостиной в единое пространство, ванная комната расширена за счет коридора. Использованы современные материалы: кварцвиниловая плитка, гипсокартонные конструкции, LED освещение, энергосберегающие окна. Результат - стильное и функциональное жилое пространство с открытой планировкой.': 'Vollständige Renovierung einer 2-Zimmer-Wohnung mit 75 m² im modernen Loft-Stil. Das Projekt umfasste den Abbau alter Trennwände, Estriche, Fußbodenheizung, neue Fenster und Türen sowie vollständigen Austausch von Elektro- und Sanitärinstallationen. Küche und Wohnzimmer wurden zu einem einheitlichen Raum zusammengefasst, das Badezimmer durch den Korridor erweitert. Verwendet wurden moderne Materialien: Quarzvinylfliesen, Gipskartonkonstruktionen, LED-Beleuchtung, energiesparende Fenster. Das Ergebnis: ein stilvoller und funktionaler Wohnraum mit offener Raumaufteilung.',
+        
+        // Client names and locations
+        'Анна и Михаил Шмидт': 'Anna und Michael Schmidt',
+        'Франкфурт-на-Майне, район Захсенхаузен': 'Frankfurt am Main, Stadtteil Sachsenhausen',
+        
+        // Technical details
+        'Лофт, современный, минимализм': 'Loft, modern, Minimalismus',
+        'Теплые полы': 'Fußbodenheizung',
+        'LED освещение': 'LED-Beleuchtung',
+        'открытая планировка': 'offene Raumaufteilung',
+        'энергосберегающие окна': 'energiesparende Fenster',
+        'кварцвиниловая плитка': 'Quarzvinylfliesen',
+        'гипсокартонные конструкции': 'Gipskartonkonstruktionen',
+        'встроенная мебель': 'Einbaumöbel'
+    };
+    
+    return translations[text] || text;
+}
+
 function openProjectModal(projectId) {
     const project = portfolioData.find(p => p.id == projectId);
     if (!project) return;
@@ -304,7 +341,7 @@ function openProjectModal(projectId) {
         <div class="bg-white rounded-lg max-w-4xl mx-auto max-h-[90vh] overflow-y-auto">
             <!-- Header -->
             <div class="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
-                <h2 class="text-2xl font-semibold text-gray-900">${project.title}</h2>
+                <h2 class="text-2xl font-semibold text-gray-900">${translateToGerman(project.title)}</h2>
                 <button onclick="closeProjectModal()" class="text-gray-400 hover:text-gray-600">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -347,13 +384,13 @@ function openProjectModal(projectId) {
                             ${project.client_name ? `
                             <div class="flex justify-between">
                                 <span class="text-gray-600">Kunde:</span>
-                                <span class="font-medium">${project.client_name}</span>
+                                <span class="font-medium">${translateToGerman(project.client_name)}</span>
                             </div>
                             ` : ''}
                             ${project.location ? `
                             <div class="flex justify-between">
                                 <span class="text-gray-600">Standort:</span>
-                                <span class="font-medium">${project.location}</span>
+                                <span class="font-medium">${translateToGerman(project.location)}</span>
                             </div>
                             ` : ''}
                         </div>
@@ -361,18 +398,110 @@ function openProjectModal(projectId) {
                     
                     <div>
                         <h3 class="text-lg font-semibold mb-3">Beschreibung</h3>
-                        <p class="text-gray-700 leading-relaxed">${project.description}</p>
+                        <p class="text-gray-700 leading-relaxed">${translateToGerman(project.description)}</p>
                     </div>
                 </div>
+                
+                <!-- Technical Details -->
+                ${project.technical_info && (project.technical_info.rooms || project.technical_info.bathrooms || project.technical_info.year || project.technical_info.style || project.technical_info.features) ? `
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-3">Technische Details</h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="space-y-2 text-sm">
+                            ${project.technical_info.rooms ? `
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Zimmer:</span>
+                                <span class="font-medium">${project.technical_info.rooms}</span>
+                            </div>
+                            ` : ''}
+                            ${project.technical_info.bathrooms ? `
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Badezimmer:</span>
+                                <span class="font-medium">${project.technical_info.bathrooms}</span>
+                            </div>
+                            ` : ''}
+                            ${project.technical_info.year ? `
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Jahr:</span>
+                                <span class="font-medium">${project.technical_info.year}</span>
+                            </div>
+                            ` : ''}
+                            ${project.technical_info.style ? `
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Stil:</span>
+                                <span class="font-medium">${translateToGerman(project.technical_info.style)}</span>
+                            </div>
+                            ` : ''}
+                        </div>
+                        ${project.technical_info.features ? `
+                        <div>
+                            <h4 class="font-semibold mb-2">Besonderheiten:</h4>
+                            <div class="flex flex-wrap gap-1">
+                                ${Array.isArray(project.technical_info.features) ? 
+                                    project.technical_info.features.map(feature => 
+                                        `<span class="px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded">${translateToGerman(feature.trim())}</span>`
+                                    ).join('') :
+                                    project.technical_info.features.split(', ').map(feature => 
+                                        `<span class="px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded">${translateToGerman(feature.trim())}</span>`
+                                    ).join('')
+                                }
+                            </div>
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+                ` : ''}
+                
+                <!-- Before/After -->
+                ${project.before_after && (project.before_after.before || project.before_after.after) ? `
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-3">Vorher und Nachher</h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        ${project.before_after.before ? `
+                        <div>
+                            <h4 class="font-semibold mb-2">Vorher</h4>
+                            <img src="${project.before_after.before}" alt="Vor der Renovierung" class="w-full h-48 object-cover rounded-lg cursor-pointer hover:opacity-80 transition-opacity" onclick="openImageModal('${project.before_after.before}')">
+                        </div>
+                        ` : ''}
+                        ${project.before_after.after ? `
+                        <div>
+                            <h4 class="font-semibold mb-2">Nachher</h4>
+                            <img src="${project.before_after.after}" alt="Nach der Renovierung" class="w-full h-48 object-cover rounded-lg cursor-pointer hover:opacity-80 transition-opacity" onclick="openImageModal('${project.before_after.after}')">
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+                ` : ''}
+                
+                <!-- Gallery -->
+                ${project.gallery && project.gallery.length > 0 ? `
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-3">Galerie</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        ${project.gallery.map((img, index) => 
+                            `<img src="${img}" alt="Galerie" class="w-full h-32 object-cover rounded-lg cursor-pointer hover:opacity-80 transition-opacity" onclick="openImageModal('${img}')">`
+                        ).join('')}
+                    </div>
+                </div>
+                ` : ''}
                 
                 <!-- Tags -->
                 ${project.tags && project.tags.length > 0 ? `
                 <div class="mb-6">
                     <h3 class="text-lg font-semibold mb-3">Tags</h3>
                     <div class="flex flex-wrap gap-2">
-                        ${project.tags.map(tag => `
-                            <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">${tag}</span>
-                        `).join('')}
+                        ${project.tags.map(tag => {
+                            const tagTranslations = {
+                                'ремонт': 'Renovierung',
+                                'квартира': 'Wohnung',
+                                'лофт': 'Loft',
+                                'современный стиль': 'moderner Stil',
+                                'открытая планировка': 'offene Planung',
+                                'Франкфурт': 'Frankfurt'
+                            };
+                            const translatedTag = tagTranslations[tag] || tag;
+                            return `<span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">${translatedTag}</span>`;
+                        }).join('')}
                     </div>
                 </div>
                 ` : ''}
@@ -392,6 +521,38 @@ function closeProjectModal() {
     document.body.style.overflow = 'auto';
 }
 
+function openImageModal(imageSrc) {
+    const modal = document.getElementById('imageModal');
+    const modalContent = document.getElementById('imageModalContent');
+    
+    modalContent.innerHTML = `
+        <div class="bg-white rounded-lg max-w-4xl mx-auto">
+            <div class="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
+                <h2 class="text-xl font-semibold text-gray-900">Bild anzeigen</h2>
+                <button onclick="closeImageModal()" class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="p-6">
+                <img src="${imageSrc}" alt="Großansicht" class="w-full h-auto rounded-lg">
+            </div>
+        </div>
+    `;
+    
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeImageModal() {
+    const modal = document.getElementById('imageModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    document.body.style.overflow = 'auto';
+}
+
 // Gallery modal
 function openGallery(projectId) {
     const project = portfolioData.find(p => p.id == projectId);
@@ -404,7 +565,7 @@ function openGallery(projectId) {
         <div class="bg-white rounded-lg max-w-4xl mx-auto max-h-[90vh] overflow-y-auto">
             <!-- Header -->
             <div class="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
-                <h2 class="text-2xl font-semibold text-gray-900">Galerie: ${project.title}</h2>
+                <h2 class="text-2xl font-semibold text-gray-900">Galerie: ${translateToGerman(project.title)}</h2>
                 <button onclick="closeGalleryModal()" class="text-gray-400 hover:text-gray-600">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>

@@ -3105,3 +3105,215 @@
 [2025-09-27 21:47:05] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 no such column: featured
 [2025-09-27 21:47:53] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 no such column: featured
 [2025-09-27 21:58:17] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 no such column: featured
+[2025-09-28 14:33:55] [INFO] User root logged in
+[2025-09-28 14:34:16] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 no such column: featured
+[2025-09-28 14:35:57] [INFO] User root logged in
+[2025-09-28 14:39:52] [INFO] User root logged in
+[2025-09-28 14:43:47] [INFO] User root logged in
+[2025-09-28 14:46:13] [INFO] User root logged in
+[2025-09-28 14:49:38] [INFO] User root logged in
+[2025-09-28 14:55:42] [INFO] User root logged in
+[2025-09-28 14:55:59] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 14:55:59] [INFO] Translation saved: portfolio.title (ID: 40)
+[2025-09-28 14:56:00] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 14:56:00] [INFO] Translation saved: portfolio.description (ID: 40)
+[2025-09-28 14:56:00] [INFO] Auto-translation completed for portfolio project ID: 40
+[2025-09-28 14:56:00] [INFO] New portfolio project created: Тестовый проект (ID: 40)
+[2025-09-28 14:58:20] [INFO] User root logged in
+[2025-09-28 15:03:27] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:03:27] [INFO] Translation saved: portfolio.title (ID: 41)
+[2025-09-28 15:03:28] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:03:28] [INFO] Translation saved: portfolio.description (ID: 41)
+[2025-09-28 15:03:28] [INFO] Auto-translation completed for portfolio project ID: 41
+[2025-09-28 15:03:28] [INFO] New portfolio project created: Проект с фото (ID: 41)
+[2025-09-28 15:04:39] [WARNING] Portfolio project deleted: Современная студия для молодой семьи (ID: 38)
+[2025-09-28 15:04:41] [WARNING] Portfolio project deleted: Современная кухня в стиле лофт (ID: 39)
+[2025-09-28 15:04:45] [WARNING] Portfolio project deleted: Тестовый проект (ID: 40)
+[2025-09-28 15:04:47] [WARNING] Portfolio project deleted: Проект с фото (ID: 41)
+[2025-09-28 15:05:36] [INFO] User root logged in
+[2025-09-28 15:05:56] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:05:56] [INFO] Translation saved: portfolio.title (ID: 42)
+[2025-09-28 15:05:57] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:05:57] [INFO] Translation saved: portfolio.description (ID: 42)
+[2025-09-28 15:05:57] [INFO] Auto-translation completed for portfolio project ID: 42
+[2025-09-28 15:05:57] [INFO] New portfolio project created: Тест создания (ID: 42)
+[2025-09-28 15:06:25] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:06:25] [INFO] Translation saved: portfolio.title (ID: 43)
+[2025-09-28 15:06:26] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:06:26] [INFO] Translation saved: portfolio.description (ID: 43)
+[2025-09-28 15:06:26] [INFO] Auto-translation completed for portfolio project ID: 43
+[2025-09-28 15:06:26] [INFO] New portfolio project created: Проект с изображениями (ID: 43)
+[2025-09-28 15:07:39] [INFO] Portfolio project updated: Проект с изображениями (ID: 43)
+[2025-09-28 15:08:41] [INFO] User root logged in
+[2025-09-28 15:09:04] [INFO] Portfolio project updated: Проект с изображениями (ID: 43)
+[2025-09-28 15:10:42] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:10:42] [INFO] Translation saved: portfolio.title (ID: 44)
+[2025-09-28 15:10:44] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:10:44] [INFO] Translation saved: portfolio.description (ID: 44)
+[2025-09-28 15:10:44] [INFO] Auto-translation completed for portfolio project ID: 44
+[2025-09-28 15:10:44] [INFO] New portfolio project created: Тест с исправлениями (ID: 44)
+[2025-09-28 15:12:53] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:12:53] [INFO] Translation saved: portfolio.title (ID: 45)
+[2025-09-28 15:12:54] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:12:54] [INFO] Translation saved: portfolio.description (ID: 45)
+[2025-09-28 15:12:54] [INFO] Auto-translation completed for portfolio project ID: 45
+[2025-09-28 15:12:54] [INFO] New portfolio project created: Тест галереи (ID: 45)
+[2025-09-28 15:14:03] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:14:03] [INFO] Translation saved: portfolio.title (ID: 46)
+[2025-09-28 15:14:05] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:14:05] [INFO] Translation saved: portfolio.description (ID: 46)
+[2025-09-28 15:14:05] [INFO] Auto-translation completed for portfolio project ID: 46
+[2025-09-28 15:14:05] [INFO] New portfolio project created: Тест без изображений (ID: 46)
+[2025-09-28 15:14:31] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:14:31] [INFO] Translation saved: portfolio.title (ID: 47)
+[2025-09-28 15:14:31] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:14:31] [INFO] Translation saved: portfolio.description (ID: 47)
+[2025-09-28 15:14:31] [INFO] Auto-translation completed for portfolio project ID: 47
+[2025-09-28 15:14:31] [INFO] New portfolio project created: Тест с главным изображением (ID: 47)
+[2025-09-28 15:15:09] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:15:09] [INFO] Translation saved: portfolio.title (ID: 48)
+[2025-09-28 15:15:10] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:15:10] [INFO] Translation saved: portfolio.description (ID: 48)
+[2025-09-28 15:15:10] [INFO] Auto-translation completed for portfolio project ID: 48
+[2025-09-28 15:15:10] [INFO] New portfolio project created: Тест с галереей (ID: 48)
+[2025-09-28 15:17:38] [WARNING] Portfolio project deleted: Квартира в центре Франкфурта (ID: 7)
+[2025-09-28 15:17:41] [WARNING] Portfolio project deleted: Тест с главным изображением (ID: 47)
+[2025-09-28 15:17:43] [WARNING] Portfolio project deleted: Ванная комната премиум-класса (ID: 8)
+[2025-09-28 15:17:46] [WARNING] Portfolio project deleted: Офис в деловом центре (ID: 9)
+[2025-09-28 15:17:48] [WARNING] Portfolio project deleted: Тест с галереей (ID: 48)
+[2025-09-28 15:17:49] [WARNING] Portfolio project deleted: Тест без изображений (ID: 46)
+[2025-09-28 15:17:51] [WARNING] Portfolio project deleted: Тест галереи (ID: 45)
+[2025-09-28 15:17:53] [WARNING] Portfolio project deleted: Тест с исправлениями (ID: 44)
+[2025-09-28 15:17:55] [WARNING] Portfolio project deleted: Проект с изображениями (ID: 43)
+[2025-09-28 15:18:03] [WARNING] Portfolio project deleted: Тест создания (ID: 42)
+[2025-09-28 15:18:10] [WARNING] Portfolio project deleted: Квартира в центре Франкфурта (ID: 49)
+[2025-09-28 15:18:13] [WARNING] Portfolio project deleted: Ванная комната премиум-класса (ID: 50)
+[2025-09-28 15:18:16] [WARNING] Portfolio project deleted: Офис в деловом центре (ID: 51)
+[2025-09-28 15:18:52] [INFO] User root logged in
+[2025-09-28 15:19:09] [WARNING] Portfolio project deleted: Квартира в центре Франкфурта (ID: 52)
+[2025-09-28 15:19:39] [WARNING] Portfolio project deleted: Офис в деловом центре (ID: 54)
+[2025-09-28 15:19:44] [WARNING] Portfolio project deleted: Ванная комната премиум-класса (ID: 53)
+[2025-09-28 15:20:09] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:20:09] [INFO] Translation saved: portfolio.title (ID: 58)
+[2025-09-28 15:20:09] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:20:09] [INFO] Translation saved: portfolio.description (ID: 58)
+[2025-09-28 15:20:09] [INFO] Auto-translation completed for portfolio project ID: 58
+[2025-09-28 15:20:09] [INFO] New portfolio project created: http://localhost/admin/portfolio.phphttp://localhost/admin/portfolio.php (ID: 58)
+[2025-09-28 15:20:13] [WARNING] Portfolio project deleted: Квартира в центре Франкфурта (ID: 55)
+[2025-09-28 15:20:17] [WARNING] Portfolio project deleted: Ванная комната премиум-класса (ID: 56)
+[2025-09-28 15:20:19] [WARNING] Portfolio project deleted: Офис в деловом центре (ID: 57)
+[2025-09-28 15:21:18] [INFO] User root logged in
+[2025-09-28 15:25:21] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:25:21] [INFO] Translation saved: portfolio.title (ID: 59)
+[2025-09-28 15:25:23] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:25:23] [INFO] Translation saved: portfolio.description (ID: 59)
+[2025-09-28 15:25:24] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:25:24] [INFO] Translation saved: portfolio.area (ID: 59)
+[2025-09-28 15:25:24] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:25:24] [INFO] Translation saved: portfolio.duration (ID: 59)
+[2025-09-28 15:25:25] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:25:25] [INFO] Translation saved: portfolio.client_name (ID: 59)
+[2025-09-28 15:25:26] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:25:26] [INFO] Translation saved: portfolio.meta_title (ID: 59)
+[2025-09-28 15:25:27] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:25:27] [INFO] Translation saved: portfolio.meta_description (ID: 59)
+[2025-09-28 15:25:27] [INFO] Auto-translation completed for portfolio project ID: 59
+[2025-09-28 15:25:27] [INFO] New portfolio project created: Современный ремонт квартиры в стиле лофт (ID: 59)
+[2025-09-28 15:45:12] [INFO] User root logged in
+[2025-09-28 15:48:20] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:48:20] [INFO] Translation saved: portfolio.title (ID: 60)
+[2025-09-28 15:48:21] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:48:21] [INFO] Translation saved: portfolio.description (ID: 60)
+[2025-09-28 15:48:22] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:48:22] [INFO] Translation saved: portfolio.area (ID: 60)
+[2025-09-28 15:48:23] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:48:23] [INFO] Translation saved: portfolio.duration (ID: 60)
+[2025-09-28 15:48:24] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:48:24] [INFO] Translation saved: portfolio.client_name (ID: 60)
+[2025-09-28 15:48:25] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:48:25] [INFO] Translation saved: portfolio.meta_title (ID: 60)
+[2025-09-28 15:48:27] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:48:27] [INFO] Translation saved: portfolio.meta_description (ID: 60)
+[2025-09-28 15:48:27] [INFO] Auto-translation completed for portfolio project ID: 60
+[2025-09-28 15:48:27] [INFO] New portfolio project created: Современный офис в стиле минимализм (ID: 60)
+[2025-09-28 15:55:11] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:55:11] [INFO] Translation saved: portfolio.title (ID: 61)
+[2025-09-28 15:55:11] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:55:11] [INFO] Translation saved: portfolio.description (ID: 61)
+[2025-09-28 15:55:11] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:55:11] [INFO] Translation saved: portfolio.area (ID: 61)
+[2025-09-28 15:55:11] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:55:11] [INFO] Translation saved: portfolio.duration (ID: 61)
+[2025-09-28 15:55:12] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:55:12] [INFO] Translation saved: portfolio.client_name (ID: 61)
+[2025-09-28 15:55:12] [INFO] Auto-translation completed for portfolio project ID: 61
+[2025-09-28 15:55:12] [INFO] New portfolio project created: Современный офис TechSolutions в стиле минимализм (ID: 61)
+[2025-09-28 15:58:23] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:58:23] [INFO] Translation saved: portfolio.title (ID: 62)
+[2025-09-28 15:58:24] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:58:24] [INFO] Translation saved: portfolio.description (ID: 62)
+[2025-09-28 15:58:24] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:58:24] [INFO] Translation saved: portfolio.area (ID: 62)
+[2025-09-28 15:58:25] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:58:25] [INFO] Translation saved: portfolio.duration (ID: 62)
+[2025-09-28 15:58:25] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 15:58:25] [INFO] Translation saved: portfolio.client_name (ID: 62)
+[2025-09-28 15:58:25] [INFO] Auto-translation completed for portfolio project ID: 62
+[2025-09-28 15:58:25] [INFO] New portfolio project created: Современная ванная комната в скандинавском стиле (ID: 62)
+[2025-09-28 16:04:38] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 16:04:38] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 16:04:38] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 16:04:39] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 16:04:39] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 16:04:39] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 16:04:40] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 16:04:40] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 16:04:40] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 16:04:40] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 16:04:40] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 16:04:40] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 16:04:41] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 16:04:41] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 16:04:41] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 16:04:41] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 16:04:41] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 16:04:41] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 16:04:42] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 16:04:42] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 16:04:42] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 16:04:42] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 16:04:42] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 16:04:42] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 16:04:42] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 16:04:43] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 16:04:43] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 16:04:44] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 16:04:44] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 16:04:44] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 16:04:44] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 16:04:45] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 16:04:45] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 16:05:55] [ERROR] Insert error: SQLSTATE[HY000]: General error: 1 table translation_cache has no column named updated_at
+[2025-09-28 16:22:01] [WARNING] Portfolio project deleted: Современный офис в стиле минимализм (ID: 60)
+[2025-09-28 16:22:04] [WARNING] Portfolio project deleted: Современный ремонт квартиры в стиле лофт (ID: 59)
+[2025-09-28 16:22:12] [WARNING] Portfolio project deleted: Современная ванная комната в скандинавском стиле (ID: 62)
+[2025-09-28 16:23:36] [INFO] Translation saved: portfolio.title (ID: 63)
+[2025-09-28 16:23:38] [INFO] Translation saved: portfolio.description (ID: 63)
+[2025-09-28 16:23:39] [INFO] Translation saved: portfolio.area (ID: 63)
+[2025-09-28 16:23:39] [INFO] Translation saved: portfolio.duration (ID: 63)
+[2025-09-28 16:23:40] [INFO] Translation saved: portfolio.client_name (ID: 63)
+[2025-09-28 16:23:40] [INFO] Auto-translation completed for portfolio project ID: 63
+[2025-09-28 16:23:40] [INFO] New portfolio project created: Современная кухня в стиле хай-тек (ID: 63)
+[2025-09-28 16:37:44] [INFO] Translation saved: portfolio.title (ID: 64)
+[2025-09-28 16:37:45] [INFO] Translation saved: portfolio.description (ID: 64)
+[2025-09-28 16:37:45] [INFO] Auto-translation completed for portfolio project ID: 64
+[2025-09-28 16:37:45] [INFO] New portfolio project created: тест новый проект (ID: 64)
+[2025-09-28 16:44:02] [INFO] Translation saved: portfolio.title (ID: 65)
+[2025-09-28 16:44:04] [INFO] Translation saved: portfolio.description (ID: 65)
+[2025-09-28 16:44:05] [INFO] Translation saved: portfolio.area (ID: 65)
+[2025-09-28 16:44:05] [INFO] Translation saved: portfolio.duration (ID: 65)
+[2025-09-28 16:44:05] [INFO] Translation saved: portfolio.client_name (ID: 65)
+[2025-09-28 16:44:06] [INFO] Translation saved: portfolio.meta_title (ID: 65)
+[2025-09-28 16:44:07] [INFO] Translation saved: portfolio.meta_description (ID: 65)
+[2025-09-28 16:44:07] [INFO] Auto-translation completed for portfolio project ID: 65
+[2025-09-28 16:44:07] [INFO] New portfolio project created: Ремонт ванной комнаты в стиле минимализм (ID: 65)

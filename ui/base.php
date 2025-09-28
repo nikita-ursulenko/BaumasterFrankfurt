@@ -703,7 +703,7 @@ function render_image_upload_field($options = []) {
                          alt="<?php echo __('common.current_image', 'Текущее изображение'); ?>" 
                          class="w-32 h-32 object-cover rounded-lg border border-gray-300">
                     <button type="button" 
-                            onclick="removeCurrentImage()" 
+                            onclick="removeCurrentImage_<?php echo htmlspecialchars($id); ?>()" 
                             class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600">
                         ×
                     </button>
@@ -721,7 +721,7 @@ function render_image_upload_field($options = []) {
                 <?php if ($opts['required'] && !$opts['current_image']): ?>required<?php endif; ?>
                 accept="<?php echo htmlspecialchars($opts['accept']); ?>"
                 class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100"
-                onchange="previewImage(this)"
+                onchange="previewImage_<?php echo htmlspecialchars($id); ?>(this)"
             >
             <p class="text-xs text-gray-500 mt-1">
                 <?php echo __('common.max_file_size', 'Максимальный размер файла'); ?>: <?php echo $opts['max_size']; ?>
@@ -737,7 +737,7 @@ function render_image_upload_field($options = []) {
     </div>
     
     <script>
-    function previewImage(input) {
+    function previewImage_<?php echo htmlspecialchars($id); ?>(input) {
         const preview = document.getElementById('image-preview-<?php echo htmlspecialchars($id); ?>');
         const previewImg = document.getElementById('preview-img-<?php echo htmlspecialchars($id); ?>');
         
@@ -753,7 +753,7 @@ function render_image_upload_field($options = []) {
         }
     }
     
-    function removeCurrentImage() {
+    function removeCurrentImage_<?php echo htmlspecialchars($id); ?>() {
         const currentImageInput = document.querySelector('input[name="current_image"]');
         if (currentImageInput) {
             currentImageInput.value = '';
@@ -802,7 +802,7 @@ function render_image_gallery_field($options = []) {
                                  alt="<?php echo __('common.gallery_image', 'Изображение галереи'); ?>" 
                                  class="w-full h-20 object-cover rounded-lg border border-gray-300">
                             <button type="button" 
-                                    onclick="removeGalleryImage(<?php echo $index; ?>)" 
+                                    onclick="removeGalleryImage_<?php echo htmlspecialchars($id); ?>(<?php echo $index; ?>)" 
                                     class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-600 opacity-0 group-hover:opacity-100 transition-opacity">
                                 ×
                             </button>
@@ -822,7 +822,7 @@ function render_image_gallery_field($options = []) {
                 multiple
                 accept="image/*"
                 class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100"
-                onchange="previewGallery(this)"
+                onchange="previewGallery_<?php echo htmlspecialchars($id); ?>(this)"
             >
             <p class="text-xs text-gray-500 mt-1">
                 <?php echo __('common.max_files', 'Максимум файлов'); ?>: <?php echo $opts['max_files']; ?>
@@ -837,20 +837,36 @@ function render_image_gallery_field($options = []) {
     </div>
     
     <script>
-    function previewGallery(input) {
+    function previewGallery_<?php echo htmlspecialchars($id); ?>(input) {
         const preview = document.getElementById('gallery-preview-<?php echo htmlspecialchars($id); ?>');
         const previewContainer = document.getElementById('preview-gallery-<?php echo htmlspecialchars($id); ?>');
         
         if (input.files && input.files.length > 0) {
-            previewContainer.innerHTML = '';
+            // НЕ очищаем контейнер, добавляем к существующим изображениям
+            let currentIndex = previewContainer.children.length;
             
             Array.from(input.files).forEach((file, index) => {
                 const reader = new FileReader();
                 reader.onload = function(e) {
+                    const imageWrapper = document.createElement('div');
+                    imageWrapper.className = 'relative group';
+                    
                     const img = document.createElement('img');
                     img.src = e.target.result;
                     img.className = 'w-full h-20 object-cover rounded-lg border border-gray-300';
-                    previewContainer.appendChild(img);
+                    
+                    const deleteButton = document.createElement('button');
+                    deleteButton.type = 'button';
+                    deleteButton.className = 'absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-600 opacity-0 group-hover:opacity-100 transition-opacity';
+                    deleteButton.innerHTML = '×';
+                    deleteButton.onclick = function() {
+                        imageWrapper.remove();
+                        updateGalleryInput();
+                    };
+                    
+                    imageWrapper.appendChild(img);
+                    imageWrapper.appendChild(deleteButton);
+                    previewContainer.appendChild(imageWrapper);
                 };
                 reader.readAsDataURL(file);
             });
@@ -861,7 +877,23 @@ function render_image_gallery_field($options = []) {
         }
     }
     
-    function removeGalleryImage(index) {
+    function updateGalleryInput() {
+        // Обновляем скрытое поле с данными о загруженных файлах
+        const previewContainer = document.getElementById('preview-gallery-<?php echo htmlspecialchars($id); ?>');
+        const images = Array.from(previewContainer.querySelectorAll('img')).map(img => img.src);
+        
+        // Создаем скрытое поле для передачи данных
+        let hiddenInput = document.querySelector('input[name="gallery_preview_data"]');
+        if (!hiddenInput) {
+            hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'gallery_preview_data';
+            document.querySelector('form').appendChild(hiddenInput);
+        }
+        hiddenInput.value = JSON.stringify(images);
+    }
+    
+    function removeGalleryImage_<?php echo htmlspecialchars($id); ?>(index) {
         const currentImages = <?php echo json_encode($current_images); ?>;
         currentImages.splice(index, 1);
         

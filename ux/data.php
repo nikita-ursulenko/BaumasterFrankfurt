@@ -136,7 +136,11 @@ function get_portfolio_data() {
             $gallery = [];
             if (!empty($project['gallery'])) {
                 $decoded = json_decode($project['gallery'], true);
-                $gallery = is_array($decoded) ? $decoded : [];
+                if (is_array($decoded)) {
+                    foreach ($decoded as $image) {
+                        $gallery[] = '/assets/uploads/portfolio/' . $image;
+                    }
+                }
             }
             
             // Декодируем technical_info если это JSON строка
@@ -150,7 +154,12 @@ function get_portfolio_data() {
             $before_after = [];
             if (!empty($project['before_after'])) {
                 $decoded = json_decode($project['before_after'], true);
-                $before_after = is_array($decoded) ? $decoded : [];
+                if (is_array($decoded)) {
+                    $before_after = [
+                        'before' => !empty($decoded['before']) ? '/assets/uploads/portfolio/' . $decoded['before'] : '',
+                        'after' => !empty($decoded['after']) ? '/assets/uploads/portfolio/' . $decoded['after'] : ''
+                    ];
+                }
             }
             
             // Декодируем tags если это JSON строка
@@ -187,6 +196,122 @@ function get_portfolio_data() {
     } catch (Exception $e) {
         // В случае ошибки возвращаем пустой массив
         error_log("Ошибка загрузки портфолио: " . $e->getMessage());
+        return [];
+    }
+}
+
+/**
+ * Получение портфолио с автоматическими переводами
+ */
+function get_portfolio_data_translated($target_lang = 'de') {
+    // Подключаем конфигурацию и базу данных
+    require_once __DIR__ . '/../config.php';
+    require_once __DIR__ . '/../database.php';
+    require_once __DIR__ . '/../integrations/translation/TranslationService.php';
+    
+    try {
+        $db = get_database();
+        $translation_service = new TranslationService();
+        
+        // Получаем все активные проекты портфолио
+        $portfolio = $db->select('portfolio', ['status' => 'active'], ['order_by' => 'sort_order DESC, featured DESC, created_at DESC']);
+        
+        if (empty($portfolio)) {
+            return [];
+        }
+        
+        $formatted_portfolio = [];
+        
+        foreach ($portfolio as $project) {
+            // Декодируем gallery если это JSON строка
+            $gallery = [];
+            if (!empty($project['gallery'])) {
+                $decoded = json_decode($project['gallery'], true);
+                if (is_array($decoded)) {
+                    foreach ($decoded as $image) {
+                        $gallery[] = '/assets/uploads/portfolio/' . $image;
+                    }
+                }
+            }
+            
+            // Декодируем technical_info если это JSON строка
+            $technical_info = [];
+            if (!empty($project['technical_info'])) {
+                $decoded = json_decode($project['technical_info'], true);
+                $technical_info = is_array($decoded) ? $decoded : [];
+            }
+            
+            // Декодируем before_after если это JSON строка
+            $before_after = [];
+            if (!empty($project['before_after'])) {
+                $decoded = json_decode($project['before_after'], true);
+                if (is_array($decoded)) {
+                    $before_after = [
+                        'before' => !empty($decoded['before']) ? '/assets/uploads/portfolio/' . $decoded['before'] : '',
+                        'after' => !empty($decoded['after']) ? '/assets/uploads/portfolio/' . $decoded['after'] : ''
+                    ];
+                }
+            }
+            
+            // Декодируем tags если это JSON строка
+            $tags = [];
+            if (!empty($project['tags'])) {
+                $decoded = json_decode($project['tags'], true);
+                $tags = is_array($decoded) ? $decoded : [];
+            }
+            
+            // Переводим основные поля
+            $translated_title = $translation_service->translate($project['title'], 'ru', $target_lang);
+            $translated_description = $translation_service->translate($project['description'], 'ru', $target_lang);
+            $translated_client_name = $translation_service->translate($project['client_name'], 'ru', $target_lang);
+            $translated_location = $translation_service->translate($project['location'], 'ru', $target_lang);
+            
+            // Переводим техническую информацию
+            $translated_technical_info = $technical_info;
+            if (!empty($technical_info['style'])) {
+                $translated_technical_info['style'] = $translation_service->translate($technical_info['style'], 'ru', $target_lang);
+            }
+            if (!empty($technical_info['features']) && is_array($technical_info['features'])) {
+                $translated_features = [];
+                foreach ($technical_info['features'] as $feature) {
+                    $translated_features[] = $translation_service->translate($feature, 'ru', $target_lang);
+                }
+                $translated_technical_info['features'] = $translated_features;
+            }
+            
+            // Переводим теги
+            $translated_tags = [];
+            foreach ($tags as $tag) {
+                $translated_tags[] = $translation_service->translate($tag, 'ru', $target_lang);
+            }
+            
+            $formatted_portfolio[] = [
+                'id' => $project['id'],
+                'title' => $translated_title,
+                'description' => $translated_description,
+                'category' => $project['category'],
+                'area' => $project['area'] ?? '',
+                'duration' => $project['duration'] ?? '',
+                'budget' => $project['budget'] ?? 0,
+                'completion_date' => $project['completion_date'] ?? '',
+                'image' => !empty($project['featured_image']) ? '/assets/uploads/portfolio/' . $project['featured_image'] : '/assets/images/portfolio/default.jpg',
+                'gallery' => $gallery,
+                'technical_info' => $translated_technical_info,
+                'before_after' => $before_after,
+                'tags' => $translated_tags,
+                'client_name' => $translated_client_name,
+                'location' => $translated_location,
+                'featured' => $project['featured'] ?? 0,
+                'sort_order' => $project['sort_order'] ?? 0,
+                'meta_title' => $project['meta_title'] ?? '',
+                'meta_description' => $project['meta_description'] ?? ''
+            ];
+        }
+        
+        return $formatted_portfolio;
+    } catch (Exception $e) {
+        // В случае ошибки возвращаем пустой массив
+        error_log("Ошибка загрузки портфолио с переводами: " . $e->getMessage());
         return [];
     }
 }

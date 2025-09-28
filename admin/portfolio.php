@@ -56,8 +56,8 @@ function create_project($data) {
     $gallery = [];
     if (!empty($_FILES['gallery_images']) && $_FILES['gallery_images']['error'][0] !== UPLOAD_ERR_NO_FILE) {
         $upload_result = handle_multiple_image_upload($_FILES['gallery_images'], 'portfolio');
-        if ($upload_result['success'] && !empty($upload_result['files'])) {
-            $gallery = array_column($upload_result['files'], 'filename');
+        if ($upload_result['success'] && !empty($upload_result['results'])) {
+            $gallery = array_column($upload_result['results'], 'filename');
         } else {
             return ['success' => false, 'errors' => ['gallery_images' => implode(', ', $upload_result['errors'])]];
         }
@@ -107,12 +107,12 @@ function create_project($data) {
         'budget' => !empty($data['budget']) ? floatval($data['budget']) : null,
         'client_name' => sanitize_input($data['client_name'] ?? ''),
         'location' => sanitize_input($data['location'] ?? ''),
-        'featured_image' => $featured_image ?: sanitize_input($data['featured_image'] ?? ''),
+        'featured_image' => $featured_image,
         'gallery' => json_encode($gallery),
         'technical_info' => json_encode($technical_info),
         'before_after' => json_encode([
-            'before' => $before_image ?: sanitize_input($data['before_image'] ?? ''),
-            'after' => $after_image ?: sanitize_input($data['after_image'] ?? '')
+            'before' => $before_image,
+            'after' => $after_image
         ]),
         'tags' => json_encode($tags),
         'status' => sanitize_input($data['status'] ?? 'active'),
@@ -173,10 +173,56 @@ function update_project($project_id, $data) {
         return ['success' => false, 'errors' => $errors];
     }
     
-    // Обработка галереи изображений
-    $gallery = [];
-    if (!empty($data['gallery_images'])) {
-        $gallery = array_filter(explode(',', $data['gallery_images']));
+    // Обработка загрузки главного изображения
+    $featured_image = $existing_project['featured_image'];
+    if (!empty($_FILES['featured_image']) && $_FILES['featured_image']['error'] !== UPLOAD_ERR_NO_FILE) {
+        $upload_result = handle_image_upload($_FILES['featured_image'], 'portfolio');
+        if ($upload_result['success']) {
+            $featured_image = $upload_result['filename'];
+        } else {
+            return ['success' => false, 'errors' => ['featured_image' => $upload_result['error']]];
+        }
+    }
+    
+    // Обработка загрузки галереи изображений
+    $gallery = json_decode($existing_project['gallery'], true) ?? [];
+    if (!empty($_FILES['gallery_images']) && $_FILES['gallery_images']['error'][0] !== UPLOAD_ERR_NO_FILE) {
+        $upload_result = handle_multiple_image_upload($_FILES['gallery_images'], 'portfolio');
+        if ($upload_result['success'] && !empty($upload_result['results'])) {
+            $new_gallery = array_column($upload_result['results'], 'filename');
+            $gallery = array_merge($gallery, $new_gallery);
+        } else {
+            return ['success' => false, 'errors' => ['gallery_images' => implode(', ', $upload_result['errors'])]];
+        }
+    }
+    
+    // Обработка удаления изображений из галереи
+    if (!empty($data['current_gallery'])) {
+        $current_gallery = json_decode($data['current_gallery'], true) ?? [];
+        $gallery = array_intersect($gallery, $current_gallery);
+    }
+    
+    // Обработка загрузки изображений "До" и "После"
+    $before_after = json_decode($existing_project['before_after'], true) ?? ['before' => '', 'after' => ''];
+    $before_image = $before_after['before'];
+    $after_image = $before_after['after'];
+    
+    if (!empty($_FILES['before_image']) && $_FILES['before_image']['error'] !== UPLOAD_ERR_NO_FILE) {
+        $upload_result = handle_image_upload($_FILES['before_image'], 'portfolio');
+        if ($upload_result['success']) {
+            $before_image = $upload_result['filename'];
+        } else {
+            return ['success' => false, 'errors' => ['before_image' => $upload_result['error']]];
+        }
+    }
+    
+    if (!empty($_FILES['after_image']) && $_FILES['after_image']['error'] !== UPLOAD_ERR_NO_FILE) {
+        $upload_result = handle_image_upload($_FILES['after_image'], 'portfolio');
+        if ($upload_result['success']) {
+            $after_image = $upload_result['filename'];
+        } else {
+            return ['success' => false, 'errors' => ['after_image' => $upload_result['error']]];
+        }
     }
     
     // Обработка технической информации
@@ -202,12 +248,12 @@ function update_project($project_id, $data) {
         'budget' => !empty($data['budget']) ? floatval($data['budget']) : null,
         'client_name' => sanitize_input($data['client_name'] ?? ''),
         'location' => sanitize_input($data['location'] ?? ''),
-        'featured_image' => sanitize_input($data['featured_image'] ?? ''),
+        'featured_image' => $featured_image,
         'gallery' => json_encode($gallery),
         'technical_info' => json_encode($technical_info),
         'before_after' => json_encode([
-            'before' => sanitize_input($data['before_image'] ?? ''),
-            'after' => sanitize_input($data['after_image'] ?? '')
+            'before' => $before_image,
+            'after' => $after_image
         ]),
         'tags' => json_encode($tags),
         'status' => sanitize_input($data['status'] ?? 'active'),
