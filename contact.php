@@ -18,7 +18,7 @@ ob_start();
 ?>
 
 <!-- Hero Section -->
-<section class="pt-16 bg-gradient-to-br from-gray-50 to-gray-100 py-20">
+<section class="pt-16 bg-gradient-to-br from-gray-50 to-gray-100 py-20 min-h-[50vh] flex items-center">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center">
             <h1 class="font-montserrat font-semibold text-4xl lg:text-5xl text-text-primary mb-6">
