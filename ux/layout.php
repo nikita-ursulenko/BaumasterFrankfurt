@@ -483,17 +483,10 @@ function render_frontend_navigation($active_page = '') {
     <!-- Navigation -->
     <nav class="bg-white shadow-sm fixed w-full z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Top row - Logo (visible on larger screens) -->
-            <div class="hidden xl:block py-3">
-                <div class="nav-logo font-montserrat font-semibold text-xl text-text-primary text-center">
-                    Frankfurt Innenausbau
-                </div>
-            </div>
-            
             <!-- Main navigation row -->
             <div class="flex justify-between items-center h-16">
-                <!-- Logo for smaller screens -->
-                <div class="xl:hidden nav-logo font-montserrat font-semibold text-lg text-text-primary">
+                <!-- Logo for all screens -->
+                <div class="nav-logo font-montserrat font-semibold text-lg xl:text-xl text-text-primary">
                     Frankfurt Innenausbau
                 </div>
                 
