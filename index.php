@@ -323,6 +323,13 @@ ob_start();
 </section>
 
 
+<!-- Service Modal -->
+<div id="serviceModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center p-4">
+    <div id="serviceModalContent" class="bg-white rounded-lg max-w-4xl mx-auto max-h-[90vh] overflow-y-auto w-full">
+        <!-- Modal content will be loaded here -->
+    </div>
+</div>
+
 <!-- Project Modal -->
 <div id="projectModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
     <div class="flex items-center justify-center min-h-screen p-4">
@@ -366,6 +373,110 @@ ob_start();
 <script>
 // Данные проектов для модальных окон
 const projects = <?php echo json_encode($portfolio); ?>;
+
+// Данные услуг для модальных окон
+const servicesData = <?php echo json_encode($services); ?>;
+
+// Service modal functions
+function openServiceModal(serviceId) {
+    const service = servicesData.find(s => s.id == serviceId);
+    if (!service) return;
+    
+    const modal = document.getElementById('serviceModal');
+    const modalContent = document.getElementById('serviceModalContent');
+    
+    modalContent.innerHTML = `
+        <div class="bg-white rounded-lg max-w-4xl mx-auto max-h-[90vh] overflow-y-auto">
+            <!-- Header -->
+            <div class="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
+                <h2 class="text-2xl font-semibold text-gray-900">${service.title}</h2>
+                <button onclick="closeServiceModal()" class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Content -->
+            <div class="p-6">
+                <!-- Main Image -->
+                ${service.image ? `
+                <div class="mb-6">
+                    <img src="${service.image}" alt="${service.title}" class="w-full h-64 object-cover rounded-lg">
+                </div>
+                ` : ''}
+                
+                <!-- Service Info -->
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <h3 class="text-lg font-semibold mb-3">Информация об услуге</h3>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Категория:</span>
+                                <span class="font-medium">${service.category || 'Не указана'}</span>
+                            </div>
+                            ${service.price ? `
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Цена:</span>
+                                <span class="font-medium">от ${service.price} €</span>
+                            </div>
+                            ` : ''}
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Статус:</span>
+                                <span class="font-medium">${service.status === 'active' ? 'Активна' : 'Неактивна'}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-lg font-semibold mb-3">Описание</h3>
+                        <p class="text-gray-700">${service.description}</p>
+                    </div>
+                </div>
+                
+                <!-- Features -->
+                ${service.features && service.features.length > 0 ? `
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-3">Что входит в услугу</h3>
+                    <ul class="grid md:grid-cols-2 gap-2">
+                        ${service.features.map(feature => `
+                            <li class="flex items-center text-sm">
+                                <svg class="h-4 w-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                ${Array.isArray(feature) ? feature.join(', ') : feature}
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+                ` : ''}
+                
+                <!-- Gallery -->
+                ${service.gallery && service.gallery.length > 0 ? `
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-3">Галерея работ</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        ${service.gallery.map(image => `
+                            <img src="${image}" alt="Галерея" class="w-full h-32 object-cover rounded-lg cursor-pointer hover:opacity-75 transition-opacity" onclick="openImageModal('${image}')">
+                        `).join('')}
+                    </div>
+                </div>
+                ` : ''}
+            </div>
+        </div>
+    `;
+    
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeServiceModal() {
+    const modal = document.getElementById('serviceModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    document.body.style.overflow = 'auto';
+}
 
 function openProjectModal(projectId) {
     const project = projects.find(p => p.id == projectId);
@@ -510,8 +621,20 @@ function openImageModal(imageSrc) {
     window.open(imageSrc, '_blank');
 }
 
+// Close modals on escape key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeServiceModal();
+        closeProjectModal();
+        closeGallery();
+    }
+});
+
 // Закрытие модальных окон по клику вне их
 document.addEventListener('click', function(event) {
+    if (event.target.id === 'serviceModal') {
+        closeServiceModal();
+    }
     if (event.target.id === 'projectModal') {
         closeProjectModal();
     }
