@@ -508,7 +508,7 @@ function render_frontend_navigation($active_page = '') {
                 </div>
 
                 <!-- Right side controls -->
-                <div class="nav-controls flex items-center space-x-3">
+                <div class="nav-controls flex items-center space-x-3 ml-1">
                     <!-- Language Switcher Dropdown -->
                     <div class="hidden lg:block">
                         <div class="relative language-dropdown">
