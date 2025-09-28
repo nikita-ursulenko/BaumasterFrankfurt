@@ -16,8 +16,8 @@ if (!has_permission('settings.edit', $current_user)) {
 }
 
 // Настройки страницы
-$page_title = __('settings.title', 'Настройки сайта');
-$page_description = __('settings.description', 'Управление основными настройками сайта и компании');
+$page_title = __('settings.title', 'О компании');
+$page_description = __('settings.description', 'Управление информацией о компании');
 $active_menu = 'settings';
 
 // Инициализация переменных
@@ -119,27 +119,8 @@ ob_start();
 
 
 <!-- Вкладки настроек -->
-<div class="bg-white rounded-lg shadow-sm mb-6">
-    <div class="border-b border-gray-200">
-        <nav class="-mb-px flex space-x-8 px-6" aria-label="Tabs">
-            <button class="settings-tab-btn active py-4 px-1 border-b-2 border-primary-500 font-medium text-sm text-primary-600 flex items-center" data-tab="company">
-                <?php echo get_icon('building', 'w-5 h-5 mr-2'); ?>
-                <?php echo __('settings.tab_company', 'Компания'); ?>
-            </button>
-            <button class="settings-tab-btn py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 flex items-center" data-tab="seo">
-                <?php echo get_icon('search', 'w-5 h-5 mr-2'); ?>
-                <?php echo __('settings.tab_seo', 'SEO'); ?>
-            </button>
-            <button class="settings-tab-btn py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 flex items-center" data-tab="site">
-                <?php echo get_icon('cog', 'w-5 h-5 mr-2'); ?>
-                <?php echo __('settings.tab_site', 'Сайт'); ?>
-            </button>
-        </nav>
-    </div>
-</div>
 
 <!-- Информация о компании -->
-<div class="settings-tab-content" data-tab="company">
     <div class="bg-white shadow-sm rounded-lg border border-gray-200 p-6">
         <h3 class="text-lg font-medium text-gray-900 mb-4">
             <?php echo __('settings.company_info', 'Информация о компании'); ?>
@@ -285,190 +266,8 @@ ob_start();
     </div>
 </div>
 
-<!-- SEO настройки -->
-<div class="settings-tab-content hidden" data-tab="seo">
-    <div class="space-y-6">
-        <!-- Общие SEO настройки -->
-    <div class="bg-white shadow-sm rounded-lg border border-gray-200 p-6">
-        <h3 class="text-lg font-medium text-gray-900 mb-4">
-                <?php echo __('settings.seo_general', 'Общие SEO настройки'); ?>
-        </h3>
-        
-        <form method="POST" class="space-y-4">
-            <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
-            <input type="hidden" name="category" value="seo">
-            
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <?php render_form_field([
-                'type' => 'text',
-                'name' => 'settings[site_title]',
-                'label' => __('settings.site_title', 'Заголовок сайта'),
-                'value' => $settings['seo']['site_title']['setting_value'] ?? '',
-                'required' => true,
-                'help' => __('settings.site_title_help', 'Отображается в заголовке браузера и поисковых системах')
-            ]); ?>
-                    
-                    <?php render_form_field([
-                        'type' => 'text',
-                        'name' => 'settings[site_tagline]',
-                        'label' => __('settings.site_tagline', 'Слоган сайта'),
-                        'value' => $settings['seo']['site_tagline']['setting_value'] ?? '',
-                        'help' => __('settings.site_tagline_help', 'Краткий слоган компании')
-                    ]); ?>
-                </div>
-            
-            <?php render_form_field([
-                'type' => 'textarea',
-                'name' => 'settings[site_description]',
-                'label' => __('settings.site_description', 'Описание сайта'),
-                'value' => $settings['seo']['site_description']['setting_value'] ?? '',
-                'rows' => 3,
-                'help' => __('settings.site_description_help', 'Краткое описание для поисковых систем (до 160 символов)')
-            ]); ?>
-            
-            <?php render_form_field([
-                'type' => 'textarea',
-                'name' => 'settings[site_keywords]',
-                'label' => __('settings.site_keywords', 'Ключевые слова'),
-                'value' => $settings['seo']['site_keywords']['setting_value'] ?? '',
-                'rows' => 2,
-                'help' => __('settings.site_keywords_help', 'Ключевые слова через запятую')
-            ]); ?>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <?php render_form_field([
-                        'type' => 'text',
-                        'name' => 'settings[site_author]',
-                        'label' => __('settings.site_author', 'Автор сайта'),
-                        'value' => $settings['seo']['site_author']['setting_value'] ?? '',
-                        'help' => __('settings.site_author_help', 'Имя автора или компании')
-                    ]); ?>
-                    
-                    <?php render_form_field([
-                        'type' => 'text',
-                        'name' => 'settings[site_copyright]',
-                        'label' => __('settings.site_copyright', 'Копирайт'),
-                        'value' => $settings['seo']['site_copyright']['setting_value'] ?? '',
-                        'help' => __('settings.site_copyright_help', 'Информация об авторских правах')
-                    ]); ?>
-                </div>
-                
-                <div class="flex justify-end">
-                    <?php render_button([
-                        'type' => 'submit',
-                        'text' => __('common.save', 'Сохранить'),
-                        'variant' => 'primary'
-                    ]); ?>
-                </div>
-            </form>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-<!-- Настройки сайта -->
-<div class="settings-tab-content hidden" data-tab="site">
-    <div class="bg-white shadow-sm rounded-lg border border-gray-200 p-6">
-        <h3 class="text-lg font-medium text-gray-900 mb-4">
-            <?php echo __('settings.site_settings', 'Настройки сайта'); ?>
-        </h3>
-        
-        <form method="POST" class="space-y-4">
-            <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
-            <input type="hidden" name="category" value="site">
-            
-            <div>
-                <?php render_dropdown_field([
-                    'name' => 'settings[default_language]',
-                    'label' => __('settings.default_language', 'Язык по умолчанию'),
-                    'value' => $settings['site']['default_language']['setting_value'] ?? 'ru',
-                    'options' => [
-                        ['value' => 'ru', 'text' => 'Русский'],
-                        ['value' => 'de', 'text' => 'Deutsch'],
-                        ['value' => 'en', 'text' => 'English']
-                    ],
-                    'placeholder' => 'Выберите язык'
-                ]); ?>
-            </div>
-            
-            <div class="flex justify-end">
-                <?php render_button([
-                    'type' => 'submit',
-                    'text' => __('common.save', 'Сохранить'),
-                    'variant' => 'primary'
-                ]); ?>
-            </div>
-        </form>
-    </div>
-</div>
-
-
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Управление вкладками
-    const tabButtons = document.querySelectorAll('.settings-tab-btn');
-    const tabContents = document.querySelectorAll('.settings-tab-content');
-    
-    console.log('Tab buttons found:', tabButtons.length);
-    console.log('Tab contents found:', tabContents.length);
-    
-    // Функция переключения вкладки
-    function switchToTab(targetTab) {
-            console.log('Switching to tab:', targetTab);
-            
-            // Убрать активный класс и стили со всех кнопок
-            tabButtons.forEach(btn => {
-                btn.classList.remove('active');
-                // Убираем активные стили
-                btn.classList.remove('border-primary-500', 'text-primary-600');
-                btn.classList.add('border-transparent', 'text-gray-500');
-            });
-            
-            // Скрыть все контенты
-            tabContents.forEach(content => {
-                content.classList.add('hidden');
-                console.log('Hiding content:', content.getAttribute('data-tab'));
-            });
-        
-        // Найти и активировать нужную кнопку
-        const targetButton = document.querySelector(`.settings-tab-btn[data-tab="${targetTab}"]`);
-        if (targetButton) {
-            targetButton.classList.add('active');
-            // Добавляем активные стили
-            targetButton.classList.remove('border-transparent', 'text-gray-500');
-            targetButton.classList.add('border-primary-500', 'text-primary-600');
-        }
-            
-            // Показать целевой контент
-            const targetContent = document.querySelector(`.settings-tab-content[data-tab="${targetTab}"]`);
-            if (targetContent) {
-                targetContent.classList.remove('hidden');
-                console.log('Showing content:', targetTab);
-            } else {
-                console.error('Target content not found for tab:', targetTab);
-            }
-    }
-    
-    // Проверяем URL параметры для автоматического переключения вкладки
-    const urlParams = new URLSearchParams(window.location.search);
-    const pageParam = urlParams.get('page');
-    
-    if (pageParam) {
-        // Автоматически переключаемся на нужную вкладку
-        switchToTab(pageParam);
-    }
-    
-    tabButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            const targetTab = this.getAttribute('data-tab');
-            switchToTab(targetTab);
-        });
-    });
-    
-    
     // Функция показа уведомлений
     window.showNotification = function(message, type = 'info') {
         const notification = document.createElement('div');
@@ -546,28 +345,6 @@ document.addEventListener('DOMContentLoaded', function() {
     updateWorkingHoursPreview();
 });
 </script>
-
-<style>
-.settings-tab-btn {
-    @apply transition-all duration-200 ease-in-out focus:outline-none;
-}
-
-.settings-tab-btn:hover svg {
-    @apply text-gray-700;
-}
-
-.settings-tab-content {
-    @apply transition-all duration-300 ease-in-out;
-}
-
-.settings-tab-content.hidden {
-    @apply opacity-0 transform translate-y-2 pointer-events-none;
-}
-
-.settings-tab-content:not(.hidden) {
-    @apply opacity-100 transform translate-y-0;
-}
-</style>
 
 <?php
 $page_content = ob_get_clean();
