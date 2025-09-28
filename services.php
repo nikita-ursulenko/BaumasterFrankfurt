@@ -18,7 +18,7 @@ ob_start();
 ?>
 
 <!-- Hero Section -->
-<section class="pt-16 bg-cover bg-center bg-no-repeat relative min-h-screen flex items-center" style="background-image: url('/assets/images/preview/services.png');">
+<section id="hero" class="pt-16 bg-cover bg-center bg-no-repeat relative min-h-screen flex items-center" style="background-image: url('/assets/images/preview/services.png');">
     <!-- Overlay for better text readability -->
     <div class="hero-overlay absolute inset-0 bg-black bg-opacity-30"></div>
     
