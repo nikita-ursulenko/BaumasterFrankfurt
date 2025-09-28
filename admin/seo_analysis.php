@@ -27,6 +27,9 @@ $active_menu = 'seo';
 $db = get_database();
 $analysis_results = [];
 
+// Генерация CSRF токена (должно быть в начале для корректной работы)
+$csrf_token = generate_csrf_token();
+
 // Обработка AJAX запросов для SEO настроек
 if (isset($_GET['ajax']) && $_GET['ajax'] === 'load_seo_data') {
     $page_key = $_GET['page_key'] ?? '';
@@ -191,7 +194,7 @@ if ($_POST && verify_csrf_token($_POST['csrf_token'] ?? '')) {
     // Обработка других действий
     switch ($action) {
         case 'analyze_pages':
-            $analysis_results = analyze_all_pages();
+            $analysis_results['analyze_pages'] = analyze_all_pages();
             break;
             
         case 'optimize_images':
@@ -241,8 +244,7 @@ foreach ($all_settings as $setting) {
     $settings[$setting['category']][$setting['setting_key']] = $setting;
 }
 
-// Генерация CSRF токена
-$csrf_token = generate_csrf_token();
+// CSRF токен уже сгенерирован выше
 
 // Начало контента
 ob_start();
