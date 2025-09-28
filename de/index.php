@@ -16,8 +16,8 @@ define('CURRENT_LANG', 'de');
 
 // Получение данных
 $seo = get_seo_data()['home'];
-$services = get_services_data();
-$portfolio = array_slice(get_portfolio_data(), 0, 3); // Показываем только первые 3
+$services = get_services_data_with_translations('de');
+$portfolio = array_slice(get_portfolio_data_translated('de'), 0, 3); // Показываем только первые 3
 $reviews = array_slice(get_reviews_data(), 0, 4); // Показываем только первые 4
 $statistics = get_statistics('de');
 
