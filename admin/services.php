@@ -9,6 +9,7 @@ require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/../database.php';
 require_once __DIR__ . '/../functions.php';
 require_once COMPONENTS_PATH . 'admin_layout.php';
+require_once COMPONENTS_PATH . 'confirmation_modal.php';
 require_once __DIR__ . '/../integrations/translation/TranslationManager.php';
 
 // Настройки страницы
@@ -726,17 +727,12 @@ ob_start();
                                             <?php echo $service['status'] === 'active' ? __('services.deactivate', 'Скрыть') : __('services.activate', 'Показать'); ?>
                                         </button>
                                         
-                                        <form method="POST" class="inline-block" onsubmit="return confirmDelete('<?php echo __('services.confirm_delete', 'Вы уверены, что хотите удалить эту услугу?'); ?>');">
-                                            <input type="hidden" name="action" value="delete">
-                                            <input type="hidden" name="id" value="<?php echo $service['id']; ?>">
-                                            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
-                                            <?php render_button([
-                                                'type' => 'submit',
-                                                'text' => __('common.delete', 'Удалить'),
-                                                'variant' => 'danger',
-                                                'size' => 'sm'
-                                            ]); ?>
-                                        </form>
+                                        <button type="button" onclick="confirmDeleteService(<?php echo $service['id']; ?>, '<?php echo htmlspecialchars($service['title']); ?>')" class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                            <?php echo __('common.delete', 'Удалить'); ?>
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
@@ -1025,13 +1021,61 @@ function previewImage(input) {
     }
 }
 
-function confirmDelete(message) {
-    return confirm(message);
+async function confirmDelete(message) {
+    const result = await showConfirmationModal(message, 'Удаление услуги');
+    return result;
+}
+
+async function confirmDeleteService(serviceId, serviceTitle) {
+    const message = `Вы уверены, что хотите удалить услугу "${serviceTitle}"? Это действие нельзя отменить.`;
+    const confirmed = await showConfirmationModal(message, 'Удаление услуги');
+    
+    if (confirmed) {
+        // Создаем форму для отправки
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.style.display = 'none';
+        
+        const actionInput = document.createElement('input');
+        actionInput.type = 'hidden';
+        actionInput.name = 'action';
+        actionInput.value = 'delete';
+        
+        const idInput = document.createElement('input');
+        idInput.type = 'hidden';
+        idInput.name = 'id';
+        idInput.value = serviceId;
+        
+        const csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = 'csrf_token';
+        csrfInput.value = '<?php echo $csrf_token; ?>';
+        
+        form.appendChild(actionInput);
+        form.appendChild(idInput);
+        form.appendChild(csrfInput);
+        
+        document.body.appendChild(form);
+        form.submit();
+    }
 }
 
 </script>
 
 <?php endif; ?>
+
+<?php 
+// Добавляем модальное окно подтверждения
+render_confirmation_modal([
+    'id' => 'deleteServiceModal',
+    'title' => 'Удаление услуги',
+    'message' => 'Вы уверены, что хотите удалить эту услугу? Это действие нельзя отменить.',
+    'confirm_text' => 'Да, удалить',
+    'cancel_text' => 'Отмена',
+    'confirm_variant' => 'danger',
+    'icon' => 'warning'
+]);
+?>
 
 <?php
 $page_content = ob_get_clean();
