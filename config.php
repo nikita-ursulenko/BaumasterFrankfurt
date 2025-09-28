@@ -15,6 +15,18 @@ define('SITE_URL', 'http://5.61.34.176');
 define('ADMIN_URL', SITE_URL . '/admin/');
 define('VERSION', '1.0.0');
 
+// Безопасные настройки сессий
+ini_set('session.cookie_httponly', '1');
+ini_set('session.use_strict_mode', '1');
+ini_set('session.cookie_samesite', 'Strict');
+
+// Автоматическая настройка HTTPS для cookie_secure
+if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+    ini_set('session.cookie_secure', '1');
+} else {
+    ini_set('session.cookie_secure', '0');
+}
+
 // Пути к папкам
 define('ADMIN_PATH', ABSPATH . 'admin/');
 define('COMPONENTS_PATH', ABSPATH . 'components/');

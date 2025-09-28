@@ -333,6 +333,64 @@ function render_frontend_head($title = '', $meta_description = '', $active_page 
         .prose em {
             font-style: italic;
         }
+        
+        /* Language dropdown styles */
+        .language-dropdown button:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(44, 62, 80, 0.2);
+        }
+        
+        .mobile-language-dropdown button:focus {
+            outline: none;
+            box-shadow: 0 0 0 1px rgba(44, 62, 80, 0.2);
+        }
+        
+        /* Smooth transitions for dropdown */
+        .language-dropdown-menu,
+        .mobile-language-dropdown-menu {
+            animation: fadeInDown 0.2s ease-out;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Rotate animation for arrow */
+        .rotate-180 {
+            transform: rotate(180deg);
+        }
+        
+        /* Navigation responsive improvements */
+        @media (max-width: 1280px) {
+            .nav-menu-item {
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 1024px) {
+            .nav-menu-item {
+                font-size: 0.85rem;
+            }
+        }
+        
+        /* Ensure navigation doesn't break on medium screens */
+        @media (min-width: 1024px) and (max-width: 1279px) {
+            .nav-menu-container {
+                gap: 1rem;
+            }
+        }
+        
+        /* Smooth transitions for navigation changes */
+        .nav-logo, .nav-menu-item, .nav-controls {
+            transition: all 0.3s ease;
+        }
     </style>
     <?php
 }
@@ -403,53 +461,105 @@ function render_frontend_navigation($active_page = '') {
     <!-- Navigation -->
     <nav class="bg-white shadow-sm fixed w-full z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Top row - Logo (visible on larger screens) -->
+            <div class="hidden xl:block py-3">
+                <div class="nav-logo font-montserrat font-semibold text-xl text-text-primary text-center">
+                    Frankfurt Innenausbau
+                </div>
+            </div>
+            
+            <!-- Main navigation row -->
             <div class="flex justify-between items-center h-16">
-                <div class="font-montserrat font-semibold text-xl text-text-primary">
+                <!-- Logo for smaller screens -->
+                <div class="xl:hidden nav-logo font-montserrat font-semibold text-lg text-text-primary">
                     Frankfurt Innenausbau
                 </div>
                 
                 <!-- Desktop Navigation -->
-                <div class="hidden lg:flex space-x-8">
+                <div class="hidden lg:flex space-x-6 xl:space-x-8 nav-menu-container">
                     <?php foreach ($menu_items as $page => $item): ?>
                         <?php $is_active = $active_page === $page; ?>
-                        <a href="<?php echo $item['url']; ?>" class="<?php echo $is_active ? 'text-accent-blue font-medium' : 'text-text-secondary hover:text-accent-blue'; ?> transition-colors">
+                        <a href="<?php echo $item['url']; ?>" class="nav-menu-item <?php echo $is_active ? 'text-accent-blue font-medium' : 'text-text-secondary hover:text-accent-blue'; ?> transition-colors whitespace-nowrap">
                             <?php echo htmlspecialchars($item['title']); ?>
                         </a>
                     <?php endforeach; ?>
                 </div>
 
-                <!-- Language Switcher -->
-                <div class="hidden lg:flex items-center space-x-2 mr-4">
-                    <a href="<?php echo get_language_switch_url('ru'); ?>" class="px-3 py-1 text-sm rounded <?php echo !defined('CURRENT_LANG') || CURRENT_LANG !== 'de' ? 'bg-accent-blue text-white' : 'text-text-secondary hover:text-accent-blue'; ?> transition-colors">
-                        RU
+                <!-- Right side controls -->
+                <div class="nav-controls flex items-center space-x-3">
+                    <!-- Language Switcher Dropdown -->
+                    <div class="hidden lg:block">
+                        <div class="relative language-dropdown">
+                            <button id="language-dropdown-button" class="flex items-center space-x-2 px-3 py-2 text-sm bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-accent-blue focus:border-accent-blue transition-colors">
+                                <span class="language-flag">
+                                    <?php echo defined('CURRENT_LANG') && CURRENT_LANG === 'de' ? '🇩🇪' : '🇷🇺'; ?>
+                                </span>
+                                <span class="language-code">
+                                    <?php echo defined('CURRENT_LANG') && CURRENT_LANG === 'de' ? 'DE' : 'RU'; ?>
+                                </span>
+                                <svg class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            
+                            <div id="language-dropdown-menu" class="absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded-md shadow-lg z-50 hidden">
+                                <div class="py-1">
+                                    <a href="<?php echo get_language_switch_url('ru'); ?>" class="flex items-center space-x-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors <?php echo !defined('CURRENT_LANG') || CURRENT_LANG !== 'de' ? 'bg-gray-100' : ''; ?>">
+                                        <span class="text-lg">🇷🇺</span>
+                                        <span>Русский</span>
+                                    </a>
+                                    <a href="<?php echo get_language_switch_url('de'); ?>" class="flex items-center space-x-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors <?php echo defined('CURRENT_LANG') && CURRENT_LANG === 'de' ? 'bg-gray-100' : ''; ?>">
+                                        <span class="text-lg">🇩🇪</span>
+                                        <span>Deutsch</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Desktop Call Button -->
+                    <a href="tel:<?php echo str_replace([' ', '(', ')', '-'], '', $contact_info['phone']); ?>" 
+                       class="hidden lg:block bg-accent-blue text-white px-4 py-2 rounded hover:bg-opacity-90 transition-colors text-center whitespace-nowrap">
+                        <?php echo defined('CURRENT_LANG') && CURRENT_LANG === 'de' ? 'Anrufen' : 'Позвонить'; ?>
                     </a>
-                    <a href="<?php echo get_language_switch_url('de'); ?>" class="px-3 py-1 text-sm rounded <?php echo defined('CURRENT_LANG') && CURRENT_LANG === 'de' ? 'bg-accent-blue text-white' : 'text-text-secondary hover:text-accent-blue'; ?> transition-colors">
-                        DE
-                    </a>
+
+                    <!-- Mobile Language Switcher -->
+                    <div class="lg:hidden">
+                        <div class="relative mobile-language-dropdown">
+                            <button id="mobile-language-dropdown-button" class="flex items-center space-x-1 px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-accent-blue transition-colors">
+                                <span class="language-flag text-sm">
+                                    <?php echo defined('CURRENT_LANG') && CURRENT_LANG === 'de' ? '🇩🇪' : '🇷🇺'; ?>
+                                </span>
+                                <span class="language-code">
+                                    <?php echo defined('CURRENT_LANG') && CURRENT_LANG === 'de' ? 'DE' : 'RU'; ?>
+                                </span>
+                                <svg class="w-3 h-3 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            
+                            <div id="mobile-language-dropdown-menu" class="absolute right-0 mt-1 w-24 bg-white border border-gray-200 rounded shadow-lg z-50 hidden">
+                                <div class="py-1">
+                                    <a href="<?php echo get_language_switch_url('ru'); ?>" class="flex items-center space-x-2 px-2 py-1 text-xs text-gray-700 hover:bg-gray-100 transition-colors <?php echo !defined('CURRENT_LANG') || CURRENT_LANG !== 'de' ? 'bg-gray-100' : ''; ?>">
+                                        <span class="text-sm">🇷🇺</span>
+                                        <span>RU</span>
+                                    </a>
+                                    <a href="<?php echo get_language_switch_url('de'); ?>" class="flex items-center space-x-2 px-2 py-1 text-xs text-gray-700 hover:bg-gray-100 transition-colors <?php echo defined('CURRENT_LANG') && CURRENT_LANG === 'de' ? 'bg-gray-100' : ''; ?>">
+                                        <span class="text-sm">🇩🇪</span>
+                                        <span>DE</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mobile menu button -->
+                    <button id="mobile-menu-button" class="lg:hidden p-2 rounded-md text-text-secondary hover:text-accent-blue focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
                 </div>
-
-                <!-- Desktop Call Button -->
-                <a href="tel:<?php echo str_replace([' ', '(', ')', '-'], '', $contact_info['phone']); ?>" 
-                   class="hidden lg:block bg-accent-blue text-white px-4 py-2 rounded hover:bg-opacity-90 transition-colors text-center">
-                    <?php echo defined('CURRENT_LANG') && CURRENT_LANG === 'de' ? 'Anrufen' : 'Позвонить'; ?>
-                </a>
-
-                <!-- Mobile Language Switcher -->
-                <div class="lg:hidden flex items-center space-x-2 mr-2">
-                    <a href="<?php echo get_language_switch_url('ru'); ?>" class="px-2 py-1 text-xs rounded <?php echo !defined('CURRENT_LANG') || CURRENT_LANG !== 'de' ? 'bg-accent-blue text-white' : 'text-text-secondary'; ?> transition-colors">
-                        RU
-                    </a>
-                    <a href="<?php echo get_language_switch_url('de'); ?>" class="px-2 py-1 text-xs rounded <?php echo defined('CURRENT_LANG') && CURRENT_LANG === 'de' ? 'bg-accent-blue text-white' : 'text-text-secondary'; ?> transition-colors">
-                        DE
-                    </a>
-                </div>
-
-                <!-- Mobile menu button -->
-                <button id="mobile-menu-button" class="lg:hidden p-2 rounded-md text-text-secondary hover:text-accent-blue focus:outline-none">
-                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                </button>
             </div>
         </div>
 
@@ -690,6 +800,60 @@ function render_frontend_scripts() {
             // Переходим на новую страницу
             window.location.href = targetUrl;
         }
+
+        // Language dropdown functionality
+        const languageDropdownButton = document.getElementById('language-dropdown-button');
+        const languageDropdownMenu = document.getElementById('language-dropdown-menu');
+        const mobileLanguageDropdownButton = document.getElementById('mobile-language-dropdown-button');
+        const mobileLanguageDropdownMenu = document.getElementById('mobile-language-dropdown-menu');
+
+        // Desktop language dropdown
+        if (languageDropdownButton && languageDropdownMenu) {
+            languageDropdownButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                languageDropdownMenu.classList.toggle('hidden');
+                
+                // Rotate arrow icon
+                const arrow = this.querySelector('svg');
+                arrow.classList.toggle('rotate-180');
+            });
+        }
+
+        // Mobile language dropdown
+        if (mobileLanguageDropdownButton && mobileLanguageDropdownMenu) {
+            mobileLanguageDropdownButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                mobileLanguageDropdownMenu.classList.toggle('hidden');
+                
+                // Rotate arrow icon
+                const arrow = this.querySelector('svg');
+                arrow.classList.toggle('rotate-180');
+            });
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(e) {
+            if (languageDropdownMenu && !languageDropdownButton.contains(e.target) && !languageDropdownMenu.contains(e.target)) {
+                languageDropdownMenu.classList.add('hidden');
+                const arrow = languageDropdownButton.querySelector('svg');
+                arrow.classList.remove('rotate-180');
+            }
+            
+            if (mobileLanguageDropdownMenu && !mobileLanguageDropdownButton.contains(e.target) && !mobileLanguageDropdownMenu.contains(e.target)) {
+                mobileLanguageDropdownMenu.classList.add('hidden');
+                const arrow = mobileLanguageDropdownButton.querySelector('svg');
+                arrow.classList.remove('rotate-180');
+            }
+        });
+
+        // Close dropdowns when mobile menu is opened
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            if (mobileLanguageDropdownMenu) {
+                mobileLanguageDropdownMenu.classList.add('hidden');
+                const arrow = mobileLanguageDropdownButton.querySelector('svg');
+                arrow.classList.remove('rotate-180');
+            }
+        });
 
         // Добавляем обработчики для переключателей языков
         document.querySelectorAll('a[href*="get_language_switch_url"]').forEach(link => {

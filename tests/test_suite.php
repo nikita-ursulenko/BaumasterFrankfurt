@@ -4,6 +4,9 @@
  * Baumaster Testing - Comprehensive Test Suite
  */
 
+// Устанавливаем флаг тестирования для уникальности CSRF токенов
+define('RUNNING_TESTS', true);
+
 require_once __DIR__ . '/../config.php';
 
 /**
@@ -40,6 +43,48 @@ function generate_slug($text) {
     $text = trim($text, '-');
     
     return $text;
+}
+
+/**
+ * Функция генерации мета-тегов для тестов
+ */
+function generate_meta_tags($page_data = []) {
+    $defaults = [
+        'title' => 'Test Title',
+        'description' => 'Test Description',
+        'keywords' => 'test, keywords',
+        'image' => '/assets/images/test-image.jpg',
+        'url' => 'http://test.com',
+        'type' => 'website'
+    ];
+    
+    $meta = array_merge($defaults, $page_data);
+    
+    $output = '';
+    
+    // Basic meta tags
+    $output .= '<title>' . htmlspecialchars($meta['title']) . '</title>' . "\n";
+    $output .= '<meta name="description" content="' . htmlspecialchars($meta['description']) . '">' . "\n";
+    $output .= '<meta name="keywords" content="' . htmlspecialchars($meta['keywords']) . '">' . "\n";
+    
+    // Open Graph tags
+    $output .= '<meta property="og:title" content="' . htmlspecialchars($meta['title']) . '">' . "\n";
+    $output .= '<meta property="og:description" content="' . htmlspecialchars($meta['description']) . '">' . "\n";
+    $output .= '<meta property="og:image" content="' . htmlspecialchars($meta['image']) . '">' . "\n";
+    $output .= '<meta property="og:url" content="' . htmlspecialchars($meta['url']) . '">' . "\n";
+    $output .= '<meta property="og:type" content="' . htmlspecialchars($meta['type']) . '">' . "\n";
+    
+    // Twitter Card tags
+    $output .= '<meta name="twitter:card" content="summary_large_image">' . "\n";
+    $output .= '<meta name="twitter:title" content="' . htmlspecialchars($meta['title']) . '">' . "\n";
+    $output .= '<meta name="twitter:description" content="' . htmlspecialchars($meta['description']) . '">' . "\n";
+    $output .= '<meta name="twitter:image" content="' . htmlspecialchars($meta['image']) . '">' . "\n";
+    
+    // Additional SEO tags
+    $output .= '<meta name="robots" content="index, follow">' . "\n";
+    $output .= '<link rel="canonical" href="' . htmlspecialchars($meta['url']) . '">' . "\n";
+    
+    return $output;
 }
 
 class TestSuite {

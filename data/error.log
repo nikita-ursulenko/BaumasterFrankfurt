@@ -67,3 +67,8 @@
 [2025-09-29 00:15:17] [INFO] FILES received: []
 [2025-09-29 00:15:17] [WARNING] Service deleted: Покраска стен и потолков (ID: 15)
 [2025-09-29 00:21:58] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 no such column: featured
+[2025-09-29 00:27:21] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 no such column: featured
+[2025-09-29 00:41:53] [INFO] User root logged out
+[2025-09-29 00:42:46] [INFO] User root logged in
+[2025-09-29 00:43:57] [INFO] User root logged in
+[2025-09-29 00:47:26] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 no such column: featured

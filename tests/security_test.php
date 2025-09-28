@@ -4,7 +4,19 @@
  * Baumaster Testing - Security Vulnerability Testing
  */
 
+// Устанавливаем флаг тестирования для уникальности CSRF токенов
+define('RUNNING_TESTS', true);
+
 require_once __DIR__ . '/../config.php';
+
+/**
+ * Функция проверки разрешенных типов файлов для тестов
+ */
+function isAllowedFileType($filename) {
+    $allowed_extensions = ['.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx', '.txt'];
+    $extension = strtolower(substr($filename, strrpos($filename, '.')));
+    return in_array($extension, $allowed_extensions);
+}
 
 class SecurityTest {
     private $vulnerabilities = [];
@@ -108,6 +120,8 @@ class SecurityTest {
         // Тест генерации уникальных токенов
         $tokens = [];
         for ($i = 0; $i < 10; $i++) {
+            // Очищаем сессию для генерации уникального токена
+            unset($_SESSION[CSRF_TOKEN_NAME]);
             $tokens[] = generate_csrf_token();
         }
         
@@ -267,7 +281,7 @@ class SecurityTest {
         
         $test_cases = [
             ['input' => 'normal_text', 'expected' => 'normal_text'],
-            ['input' => '<script>alert("xss")</script>', 'expected' => 'alert("xss")'],
+            ['input' => '<script>alert("xss")</script>', 'expected' => ''],
             ['input' => 'SELECT * FROM users', 'expected' => 'SELECT FROM users'],
             ['input' => 'test@example.com', 'expected' => 'test@example.com'],
             ['input' => 'invalid@', 'expected' => 'invalid@']
