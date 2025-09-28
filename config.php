@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
 
 // Основные настройки
 define('SITE_NAME', 'Baumaster - Строительные услуги во Франкфурте');
-define('SITE_URL', 'http://localhost');
+define('SITE_URL', 'http://5.61.34.176');
 define('ADMIN_URL', SITE_URL . '/admin/');
 define('VERSION', '1.0.0');
 
