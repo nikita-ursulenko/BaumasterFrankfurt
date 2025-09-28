@@ -1260,58 +1260,60 @@ document.addEventListener('DOMContentLoaded', function() {
                 button.disabled = false;
             });
     };
-    
-    // Управление выбором страниц для анализа
-    function updateSelectedCount() {
-        const checkboxes = document.querySelectorAll('.page-checkbox:checked');
-        const countElement = document.getElementById('selected-count');
-        if (countElement) {
-            countElement.textContent = checkboxes.length;
-        }
+});
+</script>
+
+<script>
+// Управление выбором страниц для анализа
+window.updateSelectedCount = function() {
+    const checkboxes = document.querySelectorAll('.page-checkbox:checked');
+    const countElement = document.getElementById('selected-count');
+    if (countElement) {
+        countElement.textContent = checkboxes.length;
     }
-    
-    function selectAllPages() {
-        const checkboxes = document.querySelectorAll('.page-checkbox');
-        checkboxes.forEach(checkbox => {
-            checkbox.checked = true;
-        });
-        updateSelectedCount();
-    }
-    
-    function selectRussianPages() {
-        const checkboxes = document.querySelectorAll('.page-checkbox:not(.german-page)');
-        checkboxes.forEach(checkbox => {
-            checkbox.checked = true;
-        });
-        updateSelectedCount();
-    }
-    
-    function selectGermanPages() {
-        const checkboxes = document.querySelectorAll('.page-checkbox.german-page');
-        checkboxes.forEach(checkbox => {
-            checkbox.checked = true;
-        });
-        updateSelectedCount();
-    }
-    
-    function clearAllPages() {
-        const checkboxes = document.querySelectorAll('.page-checkbox');
-        checkboxes.forEach(checkbox => {
-            checkbox.checked = false;
-        });
-        updateSelectedCount();
-    }
-    
-    // Добавляем обработчики событий для чекбоксов
-    document.addEventListener('DOMContentLoaded', function() {
-        const checkboxes = document.querySelectorAll('.page-checkbox');
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', updateSelectedCount);
-        });
-        
-        // Обновляем счетчик при загрузке страницы
-        updateSelectedCount();
+};
+
+window.selectAllPages = function() {
+    const checkboxes = document.querySelectorAll('.page-checkbox');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = true;
     });
+    updateSelectedCount();
+};
+
+window.selectRussianPages = function() {
+    const checkboxes = document.querySelectorAll('.page-checkbox:not(.german-page)');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = true;
+    });
+    updateSelectedCount();
+};
+
+window.selectGermanPages = function() {
+    const checkboxes = document.querySelectorAll('.page-checkbox.german-page');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = true;
+    });
+    updateSelectedCount();
+};
+
+window.clearAllPages = function() {
+    const checkboxes = document.querySelectorAll('.page-checkbox');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = false;
+    });
+    updateSelectedCount();
+};
+
+// Добавляем обработчики событий для чекбоксов
+document.addEventListener('DOMContentLoaded', function() {
+    const checkboxes = document.querySelectorAll('.page-checkbox');
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', updateSelectedCount);
+    });
+    
+    // Обновляем счетчик при загрузке страницы
+    updateSelectedCount();
 });
 </script>
 

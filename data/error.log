@@ -55,3 +55,15 @@
 [2025-09-28 19:13:30] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 no such column: featured
 [2025-09-28 19:14:43] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 no such column: featured
 [2025-09-28 19:19:46] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 no such column: featured
+[2025-09-28 23:32:05] [INFO] User root logged in
+[2025-09-28 23:32:10] [WARNING] Portfolio project deleted: тест новый проект (ID: 64)
+[2025-09-28 23:38:16] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 no such column: featured
+[2025-09-28 23:39:32] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 no such column: featured
+[2025-09-28 23:56:01] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 no such column: featured
+[2025-09-29 00:08:01] [INFO] POST request received: {"action":"delete","csrf_token":"eb324590591d89b9b95e54ad7ff103bdafa58bcbbf2beb1402bbc60ec66fe092","id":"6"}
+[2025-09-29 00:08:01] [INFO] FILES received: []
+[2025-09-29 00:08:01] [WARNING] Service deleted: Комплексный ремонт (ID: 6)
+[2025-09-29 00:15:17] [INFO] POST request received: {"action":"delete","id":"15","csrf_token":"eb324590591d89b9b95e54ad7ff103bdafa58bcbbf2beb1402bbc60ec66fe092"}
+[2025-09-29 00:15:17] [INFO] FILES received: []
+[2025-09-29 00:15:17] [WARNING] Service deleted: Покраска стен и потолков (ID: 15)
+[2025-09-29 00:21:58] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 no such column: featured
