@@ -690,6 +690,35 @@ $content = ob_get_clean();
     </div>
 </div>
 
+<!-- Project Modal -->
+<div id="projectModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+    <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-2xl font-semibold" id="modalTitle">Projekt</h3>
+                    <button onclick="closeProjectModal()" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div id="modalContent">
+                    <!-- Project content will be loaded here -->
+                </div>
+                <div class="flex justify-end gap-4 mt-6">
+                    <button onclick="closeProjectModal()" class="px-6 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 transition-colors">
+                        Schließen
+                    </button>
+                    <button onclick="closeProjectModal(); openGallery()" id="galleryButton" class="px-6 py-2 bg-accent-blue text-white rounded hover:bg-blue-600 transition-colors hidden">
+                        Galerie öffnen
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Gallery Modal -->
 <div id="galleryModal" class="fixed inset-0 bg-black bg-opacity-50 z-[9998] hidden items-center justify-center p-4">
     <div id="galleryModalContent" class="bg-white rounded-lg max-w-6xl mx-auto max-h-[90vh] overflow-y-auto w-full">
@@ -712,6 +741,9 @@ $content = ob_get_clean();
 <script>
 // Получаем данные услуг из PHP
 const servicesData = <?php echo json_encode($services); ?>;
+
+// Получаем данные портфолио из PHP
+const projects = <?php echo json_encode($portfolio); ?>;
 
 // Service modal
 function openServiceModal(serviceId) {
@@ -883,6 +915,8 @@ document.addEventListener('keydown', function(event) {
         closeServiceModal();
         closeGalleryModal();
         closeImageModal();
+        closeProjectModal();
+        closeGallery();
     }
 });
 
@@ -893,7 +927,121 @@ document.addEventListener('click', function(event) {
         closeGalleryModal();
         closeImageModal();
     }
+    if (event.target.id === 'projectModal') {
+        closeProjectModal();
+    }
+    if (event.target.id === 'galleryModal') {
+        closeGallery();
+    }
 });
+
+// Project modal functions
+function openProjectModal(projectId) {
+    const project = projects.find(p => p.id == projectId);
+    if (!project) return;
+    
+    document.getElementById('modalTitle').textContent = project.title;
+    
+    const modalContent = document.getElementById('modalContent');
+    modalContent.innerHTML = `
+        <div class="mb-6">
+            <img src="${project.image}" alt="${project.title}" class="w-full h-64 object-cover rounded-lg">
+        </div>
+        <div class="grid md:grid-cols-2 gap-6 mb-6">
+            <div>
+                <h3 class="text-lg font-semibold mb-3">Projektinformationen</h3>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Fläche:</span>
+                        <span class="font-medium">${project.area}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Dauer:</span>
+                        <span class="font-medium">${project.duration}</span>
+                    </div>
+                    ${project.budget ? `
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Budget:</span>
+                        <span class="font-medium">€${project.budget.toLocaleString()}</span>
+                    </div>
+                    ` : ''}
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Kategorie:</span>
+                        <span class="font-medium">${project.category}</span>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold mb-3">Beschreibung</h3>
+                <p class="text-gray-700">${project.description}</p>
+            </div>
+        </div>
+        ${project.tags && project.tags.length > 0 ? `
+        <div class="mb-6">
+            <h3 class="text-lg font-semibold mb-3">Tags</h3>
+            <div class="flex flex-wrap gap-2">
+                ${project.tags.map(tag => `
+                    <span class="inline-block px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">
+                        ${tag}
+                    </span>
+                `).join('')}
+            </div>
+        </div>
+        ` : ''}
+    `;
+    
+    // Show/hide gallery button
+    const galleryButton = document.getElementById('galleryButton');
+    if (project.gallery && project.gallery.length > 0) {
+        galleryButton.classList.remove('hidden');
+        galleryButton.setAttribute('onclick', `closeProjectModal(); openGallery(${project.id})`);
+    } else {
+        galleryButton.classList.add('hidden');
+    }
+    
+    document.getElementById('projectModal').classList.remove('hidden');
+}
+
+function closeProjectModal() {
+    document.getElementById('projectModal').classList.add('hidden');
+}
+
+function openGallery(projectId) {
+    const project = projects.find(p => p.id == projectId);
+    if (!project || !project.gallery) return;
+    
+    const galleryContent = document.getElementById('galleryModalContent');
+    galleryContent.innerHTML = `
+        <div class="bg-white rounded-lg max-w-6xl mx-auto max-h-[90vh] overflow-y-auto">
+            <!-- Header -->
+            <div class="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
+                <h2 class="text-2xl font-semibold text-gray-900">Galerie: ${project.title}</h2>
+                <button onclick="closeGallery()" class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Gallery Grid -->
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    ${project.gallery.map(image => `
+                        <div class="aspect-square overflow-hidden rounded-lg">
+                            <img src="${image}" alt="Projektgalerie" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300 cursor-pointer" onclick="openImageModal('${image}')">
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.getElementById('galleryModal').classList.remove('hidden');
+}
+
+function closeGallery() {
+    document.getElementById('galleryModal').classList.add('hidden');
+}
 
 // Scroll-triggered animations
 function isElementPartiallyInViewport(el) {
