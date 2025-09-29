@@ -31,6 +31,33 @@ ob_start();
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
+
+/* Grid alignment for equal height cards */
+.grid {
+    align-items: stretch;
+}
+
+/* Portfolio card content layout */
+.portfolio-item {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.portfolio-item .p-6 {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.portfolio-item .p-6 > p {
+    flex-grow: 1;
+    margin-bottom: 1rem;
+}
+
+.portfolio-item .p-6 > div:last-child {
+    margin-top: auto;
+}
 </style>
 
 <!-- Hero Section -->
@@ -185,7 +212,7 @@ ob_start();
 <!-- Portfolio Grid -->
 <section class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 align-items-stretch">
             <?php foreach ($portfolio as $project): ?>
                 <?php 
                 // Получаем переводы для проекта
@@ -194,7 +221,7 @@ ob_start();
                     $project = array_merge($project, $translated_project);
                 }
                 ?>
-                <div class="portfolio-item bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden" 
+                <div class="portfolio-item bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden h-full flex flex-col" 
                      data-category="<?php echo strtolower(str_replace(' ', '-', $project['category'])); ?>">
                     
                     <!-- Featured Image -->
@@ -223,11 +250,11 @@ ob_start();
                     </div>
                     
                     <!-- Project Info -->
-                    <div class="p-6">
+                    <div class="p-6 flex flex-col flex-grow">
                         <h3 class="font-semibold text-xl text-text-primary mb-3">
                             <?php echo htmlspecialchars($project['title']); ?>
                         </h3>
-                        <p class="text-text-secondary mb-4 line-clamp-3">
+                        <p class="text-text-secondary mb-4 line-clamp-3 flex-grow">
                             <?php echo htmlspecialchars($project['description']); ?>
                         </p>
                         
@@ -279,7 +306,7 @@ ob_start();
                         <?php endif; ?>
                         
                         <!-- Action Buttons -->
-                        <div class="flex gap-2">
+                        <div class="flex gap-2 mt-auto">
                             <button onclick="openProjectModal(<?php echo $project['id']; ?>)" 
                                     class="flex-1 bg-accent-blue text-white px-4 py-2 rounded font-medium hover:bg-blue-600 transition-colors">
                                 Mehr erfahren
