@@ -481,60 +481,6 @@ h1, h2, h3, h4, h5, h6, p, span, div {
                     </div>
 </section>
 
-<!-- Testimonials Video -->
-<section class="py-20 bg-accent-blue text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-            <h2 id="video-reviews-title" class="font-montserrat font-semibold text-3xl lg:text-4xl mb-4 fade-in-up">
-                Video-Bewertungen von Kunden
-            </h2>
-            <p id="video-reviews-subtitle" class="text-xl opacity-90 max-w-3xl mx-auto fade-in-up">
-                Sehen Sie, was unsere Kunden über die Qualität der ausgeführten Arbeiten sagen
-            </p>
-        </div>
-        
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div class="bg-white bg-opacity-10 rounded-lg p-6 text-center video-review-item fade-in-up" style="animation-delay: 0s;">
-                <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="h-8 w-8" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z"/>
-                    </svg>
-                </div>
-                <h3 class="font-semibold text-lg mb-2">Anna M.</h3>
-                <p class="text-sm opacity-75 mb-4">Wohnungsrenovierung in Sachsenhausen</p>
-                <button class="text-sm bg-white text-accent-blue px-4 py-2 rounded hover:bg-opacity-90 transition-colors">
-                    Video ansehen
-                </button>
-            </div>
-            
-            <div class="bg-white bg-opacity-10 rounded-lg p-6 text-center video-review-item fade-in-up" style="animation-delay: 0.2s;">
-                <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="h-8 w-8" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z"/>
-                    </svg>
-                </div>
-                <h3 class="font-semibold text-lg mb-2">Michael Sch.</h3>
-                <p class="text-sm opacity-75 mb-4">Bodenverlegung im Büro</p>
-                <button class="text-sm bg-white text-accent-blue px-4 py-2 rounded hover:bg-opacity-90 transition-colors">
-                    Video ansehen
-                </button>
-                    </div>
-            
-            <div class="bg-white bg-opacity-10 rounded-lg p-6 text-center video-review-item fade-in-up" style="animation-delay: 0.4s;">
-                <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="h-8 w-8" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z"/>
-                    </svg>
-                </div>
-                <h3 class="font-semibold text-lg mb-2">Thomas B.</h3>
-                <p class="text-sm opacity-75 mb-4">Badezimmerrenovierung schlüsselfertig</p>
-                <button class="text-sm bg-white text-accent-blue px-4 py-2 rounded hover:bg-opacity-90 transition-colors">
-                    Video ansehen
-                </button>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- CTA Section -->
 <section class="py-20 bg-white">
@@ -733,17 +679,6 @@ function animateOnScroll() {
     if (reviewFormTitle) animateElement(reviewFormTitle, 0);
     if (reviewFormSubtitle) animateElement(reviewFormSubtitle, 200);
     
-    // Animate video reviews section
-    const videoReviewsTitle = document.getElementById('video-reviews-title');
-    const videoReviewsSubtitle = document.getElementById('video-reviews-subtitle');
-    const videoReviewItems = document.querySelectorAll('.video-review-item');
-    
-    if (videoReviewsTitle) animateElement(videoReviewsTitle, 0);
-    if (videoReviewsSubtitle) animateElement(videoReviewsSubtitle, 200);
-    
-    videoReviewItems.forEach((item, index) => {
-        animateElement(item, 400 + (index * 100));
-    });
     
     // Animate CTA section
     const ctaTitle = document.getElementById('cta-title');
