@@ -556,7 +556,7 @@ ob_start();
                 <div class="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group">
                     
                     <!-- Featured Image -->
-                    <div class="relative h-64 bg-gray-200 overflow-hidden group">
+                    <div class="relative h-64 bg-gray-200 overflow-hidden">
                         <img src="<?php echo htmlspecialchars($project['image']); ?>" 
                              alt="<?php echo htmlspecialchars($project['title']); ?>" 
                              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
