@@ -233,6 +233,10 @@ ob_start();
     transform: scale(1.05);
 }
 
+.service-card-animate .bg-white img {
+    transition: transform 0.3s ease;
+}
+
 /* Service card content layout */
 .service-card-animate .bg-white > div:last-child {
     display: flex;
@@ -259,6 +263,14 @@ ob_start();
 .pricing-card-animate .bg-white:hover {
     transform: translateY(-5px);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.pricing-card-animate .bg-white img {
+    transition: transform 0.3s ease;
+}
+
+.pricing-card-animate .bg-white:hover img {
+    transform: scale(1.05);
 }
 
 /* Grid alignment for equal height cards */
