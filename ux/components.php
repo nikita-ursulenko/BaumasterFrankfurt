@@ -290,7 +290,7 @@ function render_service_card($service) {
  */
 function render_review_card($review) {
     ?>
-    <div class="bg-white p-6 rounded-lg shadow-lg">
+    <div class="bg-white p-6 rounded-lg shadow-lg review-card">
         <div class="flex items-center mb-4">
             <div class="flex-shrink-0">
                 <?php if (!empty($review['client_photo'])): ?>
