@@ -285,6 +285,9 @@ ob_start();
 /* Service card hover effects */
 .service-card-animate .bg-white {
     transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .service-card-animate:hover .bg-white {
@@ -298,6 +301,28 @@ ob_start();
 
 .service-card-animate .bg-white img {
     transition: transform 0.3s ease;
+}
+
+/* Service card content layout */
+.service-card-animate .bg-white > div:last-child {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 1.5rem;
+}
+
+.service-card-animate .bg-white > div:last-child > p {
+    flex-grow: 1;
+    margin-bottom: 1rem;
+}
+
+.service-card-animate .bg-white > div:last-child > ul {
+    margin-bottom: 1rem;
+}
+
+.service-card-animate .bg-white > div:last-child > div:last-child {
+    margin-top: auto;
+    padding-top: 1rem;
 }
 
 /* Portfolio Section Animations */
@@ -338,6 +363,9 @@ ob_start();
 /* Portfolio card hover effects */
 .portfolio-card-animate .bg-white {
     transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .portfolio-card-animate:hover .bg-white {
@@ -351,6 +379,24 @@ ob_start();
 
 .portfolio-card-animate .bg-white img {
     transition: transform 0.3s ease;
+}
+
+/* Portfolio card content layout */
+.portfolio-card-animate .bg-white > div:last-child {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 1.5rem;
+}
+
+.portfolio-card-animate .bg-white > div:last-child > p {
+    flex-grow: 1;
+    margin-bottom: 1rem;
+}
+
+.portfolio-card-animate .bg-white > div:last-child > div:last-child {
+    margin-top: auto;
+    padding-top: 1rem;
 }
 
 /* About Section Animations */
@@ -414,11 +460,50 @@ ob_start();
 /* Review card hover effects */
 .review-card-animate .bg-white {
     transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .review-card-animate:hover .bg-white {
     transform: translateY(-5px);
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Review card content layout */
+.review-card-animate .bg-white {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.review-card-animate .bg-white > div:last-child {
+    margin-top: auto;
+    padding-top: 1rem;
+}
+
+/* Grid layout for equal height cards */
+.grid.md\\:grid-cols-2.lg\\:grid-cols-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    align-items: stretch;
+}
+
+.grid.md\\:grid-cols-2.lg\\:grid-cols-4 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    align-items: stretch;
+}
+
+/* Ensure all card containers have equal height */
+.service-card-animate,
+.portfolio-card-animate,
+.review-card-animate {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 </style>
 
