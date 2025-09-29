@@ -369,7 +369,6 @@ ob_start();
     transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
-    height: 100%;
 }
 
 .portfolio-card-animate:hover .bg-white {
