@@ -195,13 +195,13 @@ ob_start();
 /* Process step animations */
 .process-step-animate {
     opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.6s ease-out;
+    transform: translateX(-50px);
+    transition: all 0.8s ease-out;
 }
 
 .process-step-animate.animate {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(0);
 }
 
 /* Pricing card animations */
@@ -310,17 +310,17 @@ ob_start();
                 <h3 class="font-semibold text-xl text-text-primary mb-3">Anfrage</h3>
                 <p class="text-text-secondary">Hinterlassen Sie eine Anfrage auf der Website oder rufen Sie uns an. Wir antworten innerhalb von 15 Minuten.</p>
             </div>
-            <div class="text-center process-step-animate" data-delay="0.2">
+            <div class="text-center process-step-animate" data-delay="0.4">
                 <div class="w-16 h-16 bg-accent-blue text-white rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">2</div>
                 <h3 class="font-semibold text-xl text-text-primary mb-3">Aufmaß</h3>
                 <p class="text-text-secondary">Wir kommen zum Objekt, nehmen Maß und erstellen eine detaillierte Kostenvoranschlag. Kostenlos.</p>
             </div>
-            <div class="text-center process-step-animate" data-delay="0.4">
+            <div class="text-center process-step-animate" data-delay="0.8">
                 <div class="w-16 h-16 bg-accent-blue text-white rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">3</div>
                 <h3 class="font-semibold text-xl text-text-primary mb-3">Vertrag</h3>
                 <p class="text-text-secondary">Wir schließen einen Vertrag mit festen Preisen und Ausführungsfristen ab.</p>
             </div>
-            <div class="text-center process-step-animate" data-delay="0.6">
+            <div class="text-center process-step-animate" data-delay="1.2">
                 <div class="w-16 h-16 bg-accent-blue text-white rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">4</div>
                 <h3 class="font-semibold text-xl text-text-primary mb-3">Arbeiten</h3>
                 <p class="text-text-secondary">Wir führen die Arbeiten termingerecht aus, räumen auf und übergeben das Objekt schlüsselfertig.</p>
