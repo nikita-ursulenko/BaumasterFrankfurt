@@ -365,7 +365,7 @@ ob_start();
     transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
-    /* height: 100%; */
+    height: 100%;
 }
 
 .portfolio-card-animate:hover .bg-white {
@@ -397,6 +397,11 @@ ob_start();
 .portfolio-card-animate .bg-white > div:last-child > div:last-child {
     margin-top: auto;
     padding-top: 1rem;
+}
+
+/* Grid alignment for equal height cards */
+.grid {
+    align-items: stretch;
 }
 
 /* About Section Animations */
@@ -553,7 +558,7 @@ ob_start();
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             <?php foreach ($portfolio as $index => $project): ?>
                 <div class="portfolio-card-animate" data-delay="<?php echo $index * 0.15; ?>">
-                <div class="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group">
+                <div class="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group h-full flex flex-col">
                     
                     <!-- Featured Image -->
                     <div class="relative h-64 bg-gray-200 overflow-hidden">
@@ -581,11 +586,11 @@ ob_start();
                     </div>
                     
                     <!-- Project Info -->
-                    <div class="p-6">
+                    <div class="p-6 flex flex-col flex-grow">
                         <h3 class="font-semibold text-xl text-text-primary mb-3">
                             <?php echo htmlspecialchars($project['title']); ?>
                         </h3>
-                        <p class="text-text-secondary mb-4 leading-relaxed line-clamp-3">
+                        <p class="text-text-secondary mb-4 leading-relaxed line-clamp-3 flex-grow">
                             <?php 
                             $description = $project['description'];
                             if (strlen($description) > 200) {
@@ -644,7 +649,7 @@ ob_start();
                         <?php endif; ?>
                         
                         <!-- Action Buttons -->
-                        <div class="flex gap-2">
+                        <div class="flex gap-2 mt-auto">
                             <button onclick="openProjectModal(<?php echo $project['id']; ?>)" 
                                     class="flex-1 bg-accent-blue text-white px-4 py-2 rounded font-medium hover:bg-blue-600 transition-colors">
                                 Подробнее
