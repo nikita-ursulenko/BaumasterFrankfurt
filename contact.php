@@ -21,16 +21,127 @@ ob_start();
 <section class="pt-16 bg-gradient-to-br from-gray-50 to-gray-100 py-20 min-h-[50vh] flex items-center">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center">
-            <h1 class="font-montserrat font-semibold text-4xl lg:text-5xl text-text-primary mb-6">
-                Свяжитесь с нами
+            <h1 id="hero-title" class="font-montserrat font-semibold text-4xl lg:text-5xl text-text-primary mb-6">
+                <?php 
+                $title = 'Свяжитесь с нами';
+                $words = explode(' ', $title);
+                $directions = ['left', 'right', 'top', 'bottom'];
+                foreach ($words as $index => $word) {
+                    $direction = $directions[$index % count($directions)];
+                    echo '<span class="hero-word hero-word-' . $direction . ' inline-block opacity-0" style="animation-delay: ' . ($index * 0.15) . 's;">' . htmlspecialchars($word) . '</span>';
+                    if ($index < count($words) - 1) {
+                        echo ' ';
+                    }
+                }
+                ?>
             </h1>
-            <p class="text-xl text-text-secondary max-w-4xl mx-auto">
+            <p id="hero-subtitle" class="text-xl text-text-secondary max-w-4xl mx-auto hero-subtitle-animate">
                 Готовы обсудить ваш проект? Мы всегда рады ответить на вопросы и предоставить 
                 бесплатную консультацию по любым видам внутренних работ.
             </p>
         </div>
     </div>
 </section>
+
+<style>
+/* Hero word animations from different directions */
+.hero-word {
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+/* Word from left */
+.hero-word-left {
+    transform: translateX(-50px);
+    animation: slideInFromLeft 0.8s ease-out forwards;
+}
+
+/* Word from right */
+.hero-word-right {
+    transform: translateX(50px);
+    animation: slideInFromRight 0.8s ease-out forwards;
+}
+
+/* Word from top */
+.hero-word-top {
+    transform: translateY(-30px);
+    animation: slideInFromTop 0.8s ease-out forwards;
+}
+
+/* Word from bottom */
+.hero-word-bottom {
+    transform: translateY(30px);
+    animation: slideInFromBottom 0.8s ease-out forwards;
+}
+
+/* Keyframes for different directions */
+@keyframes slideInFromLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInFromRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInFromTop {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInFromBottom {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Ensure proper spacing between words */
+.hero-word + .hero-word {
+    margin-left: 0.1em;
+}
+
+/* Subtitle animation */
+.hero-subtitle-animate {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease-out forwards;
+    animation-delay: 0.8s;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
 
 <!-- Contact Info -->
 <section class="py-8 bg-white">
