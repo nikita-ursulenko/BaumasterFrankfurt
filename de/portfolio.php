@@ -216,6 +216,38 @@ h1, h2, h3, h4, h5, h6, p, span, div {
 .transform, .translateY, .scale, .rotate {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+/* Fade in up animations */
+.fade-in-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fade-in-up.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Process steps animation - left to right sequence */
+.process-step {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.process-step.animate {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Staggered delays for process steps */
+.process-step:nth-child(1) { transition-delay: 0s; }
+.process-step:nth-child(2) { transition-delay: 0.2s; }
+.process-step:nth-child(3) { transition-delay: 0.4s; }
+.process-step:nth-child(4) { transition-delay: 0.6s; }
+.process-step:nth-child(5) { transition-delay: 0.8s; }
+.process-step:nth-child(6) { transition-delay: 1s; }
 </style>
 
 <!-- Hero Section -->
@@ -487,16 +519,16 @@ h1, h2, h3, h4, h5, h6, p, span, div {
 <section class="py-20 bg-premium-gray">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
-            <h2 class="font-montserrat font-semibold text-3xl lg:text-4xl text-text-primary mb-4">
+            <h2 id="process-title" class="font-montserrat font-semibold text-3xl lg:text-4xl text-text-primary mb-4 fade-in-up">
                 Projektphasen
             </h2>
-            <p class="text-xl text-text-secondary max-w-3xl mx-auto">
+            <p id="process-subtitle" class="text-xl text-text-secondary max-w-3xl mx-auto fade-in-up">
                 Jedes unserer Projekte durchläuft sorgfältig durchdachte Phasen für ein perfektes Ergebnis
             </p>
         </div>
         
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div class="text-center">
+            <div class="text-center process-step">
                 <div class="w-20 h-20 bg-accent-blue text-white rounded-full flex items-center justify-center mx-auto mb-4">
                     <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
@@ -506,7 +538,7 @@ h1, h2, h3, h4, h5, h6, p, span, div {
                 <p class="text-text-secondary">Wir besprechen Details, erstellen einen Arbeitsplan, wählen Materialien aus und vereinbaren Termine.</p>
             </div>
             
-            <div class="text-center">
+            <div class="text-center process-step">
                 <div class="w-20 h-20 bg-accent-blue text-white rounded-full flex items-center justify-center mx-auto mb-4">
                     <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
@@ -516,7 +548,7 @@ h1, h2, h3, h4, h5, h6, p, span, div {
                 <p class="text-text-secondary">Abbruch alter Beschichtungen, Oberflächenvorbereitung, Schutz von Möbeln und Interieur.</p>
             </div>
             
-            <div class="text-center">
+            <div class="text-center process-step">
                 <div class="w-20 h-20 bg-accent-blue text-white rounded-full flex items-center justify-center mx-auto mb-4">
                     <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
@@ -526,7 +558,7 @@ h1, h2, h3, h4, h5, h6, p, span, div {
                 <p class="text-text-secondary">Hauptarbeiten: Montage, Veredelung, Malerei. Regelmäßige Qualitätskontrolle in jeder Phase.</p>
             </div>
             
-            <div class="text-center">
+            <div class="text-center process-step">
                 <div class="w-20 h-20 bg-accent-blue text-white rounded-full flex items-center justify-center mx-auto mb-4">
                     <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
@@ -924,6 +956,52 @@ function closeImageModal() {
     modal.classList.remove('flex');
     document.body.style.overflow = 'auto';
 }
+
+// Animation functions
+function isElementPartiallyInViewport(el) {
+    const rect = el.getBoundingClientRect();
+    return (
+        rect.top < window.innerHeight &&
+        rect.bottom > 0
+    );
+}
+
+function animateElement(element, delay = 0) {
+    if (element && isElementPartiallyInViewport(element) && !element.classList.contains('animate')) {
+        setTimeout(() => {
+            element.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+            element.classList.add('animate');
+        }, delay);
+    }
+}
+
+function animateOnScroll() {
+    // Animate process section
+    const processTitle = document.getElementById('process-title');
+    const processSubtitle = document.getElementById('process-subtitle');
+    const processSteps = document.querySelectorAll('.process-step');
+    
+    if (processTitle) animateElement(processTitle, 0);
+    if (processSubtitle) animateElement(processSubtitle, 200);
+    
+    processSteps.forEach((step, index) => {
+        animateElement(step, 400 + (index * 200));
+    });
+}
+
+// Throttled scroll event listener
+let scrollTimeout;
+window.addEventListener('scroll', function() {
+    if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+    }
+    scrollTimeout = setTimeout(animateOnScroll, 10);
+});
+
+// Initial check on page load
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(animateOnScroll, 100);
+});
 </script>
 
 <?php
