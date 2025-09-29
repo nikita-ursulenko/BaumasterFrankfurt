@@ -150,14 +150,120 @@ ob_start();
         transform: translateY(0);
     }
 }
+
+/* Scroll-triggered animations for sections */
+.process-title-animate,
+.process-subtitle-animate,
+.pricing-title-animate,
+.pricing-subtitle-animate {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease-out;
+}
+
+.process-title-animate.animate,
+.process-subtitle-animate.animate,
+.pricing-title-animate.animate,
+.pricing-subtitle-animate.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Service card animations */
+.service-card-animate {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease-out;
+}
+
+.service-card-animate.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Process step animations */
+.process-step-animate {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease-out;
+}
+
+.process-step-animate.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Pricing card animations */
+.pricing-card-animate {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease-out;
+}
+
+.pricing-card-animate.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Service card hover effects */
+.service-card-animate .bg-white {
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.service-card-animate .bg-white:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.service-card-animate .bg-white:hover img {
+    transform: scale(1.05);
+}
+
+/* Service card content layout */
+.service-card-animate .bg-white > div:last-child {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 1.5rem;
+}
+
+.service-card-animate .bg-white > div:last-child > p {
+    flex-grow: 1;
+    margin-bottom: 1rem;
+}
+
+.service-card-animate .bg-white > div:last-child > ul {
+    margin-bottom: 1rem;
+}
+
+.service-card-animate .bg-white > div:last-child > div:last-child {
+    margin-top: auto;
+    padding-top: 1rem;
+}
+
+/* Pricing card hover effects */
+.pricing-card-animate .bg-white:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Grid alignment for equal height cards */
+.align-items-stretch {
+    align-items: stretch;
+}
 </style>
 
 <!-- Services Grid -->
 <section class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <?php foreach ($services as $service): ?>
-                <?php render_service_card($service); ?>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 align-items-stretch">
+            <?php foreach ($services as $index => $service): ?>
+                <div class="service-card-animate" data-delay="<?php echo $index * 0.2; ?>">
+                    <?php render_service_card($service); ?>
+                </div>
             <?php endforeach; ?>
         </div>
     </div>
@@ -167,31 +273,31 @@ ob_start();
 <section class="py-20 bg-premium-gray">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
-            <h2 class="font-montserrat font-semibold text-3xl lg:text-4xl text-text-primary mb-4">
+            <h2 id="process-title" class="font-montserrat font-semibold text-3xl lg:text-4xl text-text-primary mb-4 process-title-animate">
                 Как мы работаем
             </h2>
-            <p class="text-xl text-text-secondary max-w-3xl mx-auto">
+            <p id="process-subtitle" class="text-xl text-text-secondary max-w-3xl mx-auto process-subtitle-animate">
                 Простой и понятный процесс от заявки до сдачи объекта
             </p>
         </div>
         
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div class="text-center">
+            <div class="text-center process-step-animate" data-delay="0">
                 <div class="w-16 h-16 bg-accent-blue text-white rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">1</div>
                 <h3 class="font-semibold text-xl text-text-primary mb-3">Заявка</h3>
                 <p class="text-text-secondary">Оставьте заявку на сайте или позвоните нам. Ответим в течение 15 минут.</p>
             </div>
-            <div class="text-center">
+            <div class="text-center process-step-animate" data-delay="0.2">
                 <div class="w-16 h-16 bg-accent-blue text-white rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">2</div>
                 <h3 class="font-semibold text-xl text-text-primary mb-3">Замер</h3>
                 <p class="text-text-secondary">Выезжаем на объект, делаем замеры и составляем подробную смету. Бесплатно.</p>
             </div>
-            <div class="text-center">
+            <div class="text-center process-step-animate" data-delay="0.4">
                 <div class="w-16 h-16 bg-accent-blue text-white rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">3</div>
                 <h3 class="font-semibold text-xl text-text-primary mb-3">Договор</h3>
                 <p class="text-text-secondary">Заключаем договор с фиксированными ценами и сроками выполнения работ.</p>
             </div>
-            <div class="text-center">
+            <div class="text-center process-step-animate" data-delay="0.6">
                 <div class="w-16 h-16 bg-accent-blue text-white rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">4</div>
                 <h3 class="font-semibold text-xl text-text-primary mb-3">Работы</h3>
                 <p class="text-text-secondary">Выполняем работы в срок, убираем мусор, сдаём объект под ключ.</p>
@@ -204,67 +310,79 @@ ob_start();
 <section class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
-            <h2 class="font-montserrat font-semibold text-3xl lg:text-4xl text-text-primary mb-4">
+            <h2 id="pricing-title" class="font-montserrat font-semibold text-3xl lg:text-4xl text-text-primary mb-4 pricing-title-animate">
                 Прозрачные цены
             </h2>
-            <p class="text-xl text-text-secondary max-w-3xl mx-auto">
+            <p id="pricing-subtitle" class="text-xl text-text-secondary max-w-3xl mx-auto pricing-subtitle-animate">
                 Все цены указаны за квадратный метр работы. Окончательная стоимость рассчитывается после замера.
             </p>
         </div>
         
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div class="bg-white border-2 border-gray-200 rounded-lg p-8 text-center hover:border-accent-blue transition-colors">
-                <h3 class="font-semibold text-2xl text-text-primary mb-4">Малярные работы</h3>
-                <div class="text-4xl font-bold text-accent-blue mb-2">от 25€</div>
-                <div class="text-text-secondary mb-6">за м²</div>
-                <ul class="text-left space-y-2 text-text-secondary mb-8">
-                    <li>• Подготовка поверхности</li>
-                    <li>• Грунтовка</li>
-                    <li>• Покраска в 2 слоя</li>
-                    <li>• Материалы включены</li>
-                </ul>
-                <?php render_frontend_button([
-                    'text' => 'Заказать',
-                    'variant' => 'outline',
-                    'class' => 'w-full'
-                ]); ?>
-            </div>
-            
-            <div class="bg-white border-2 border-accent-blue rounded-lg p-8 text-center relative">
-                <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <span class="bg-accent-blue text-white px-4 py-2 rounded-full text-sm">Популярно</span>
+            <div class="pricing-card-animate" data-delay="0">
+                <div class="bg-white border-2 border-gray-200 rounded-lg p-8 text-center hover:border-accent-blue transition-colors h-full flex flex-col">
+                    <h3 class="font-semibold text-2xl text-text-primary mb-4">Малярные работы</h3>
+                    <div class="text-4xl font-bold text-accent-blue mb-2">от 25€</div>
+                    <div class="text-text-secondary mb-6">за м²</div>
+                    <ul class="text-left space-y-2 text-text-secondary mb-8 flex-grow">
+                        <li>• Подготовка поверхности</li>
+                        <li>• Грунтовка</li>
+                        <li>• Покраска в 2 слоя</li>
+                        <li>• Материалы включены</li>
+                    </ul>
+                    <div class="mt-auto">
+                        <?php render_frontend_button([
+                            'text' => 'Заказать',
+                            'variant' => 'outline',
+                            'class' => 'w-full'
+                        ]); ?>
+                    </div>
                 </div>
-                <h3 class="font-semibold text-2xl text-text-primary mb-4">Укладка полов</h3>
-                <div class="text-4xl font-bold text-accent-blue mb-2">от 35€</div>
-                <div class="text-text-secondary mb-6">за м²</div>
-                <ul class="text-left space-y-2 text-text-secondary mb-8">
-                    <li>• Демонтаж старого покрытия</li>
-                    <li>• Выравнивание основания</li>
-                    <li>• Укладка покрытия</li>
-                    <li>• Плинтусы в подарок</li>
-                </ul>
-                <?php render_frontend_button([
-                    'text' => 'Заказать',
-                    'variant' => 'primary',
-                    'class' => 'w-full'
-                ]); ?>
             </div>
             
-            <div class="bg-white border-2 border-gray-200 rounded-lg p-8 text-center hover:border-accent-blue transition-colors">
-                <h3 class="font-semibold text-2xl text-text-primary mb-4">Ремонт ванной</h3>
-                <div class="text-4xl font-bold text-accent-blue mb-2">от 150€</div>
-                <div class="text-text-secondary mb-6">за м²</div>
-                <ul class="text-left space-y-2 text-text-secondary mb-8">
-                    <li>• Демонтаж и подготовка</li>
-                    <li>• Гидроизоляция</li>
-                    <li>• Укладка плитки</li>
-                    <li>• Установка сантехники</li>
-                </ul>
-                <?php render_frontend_button([
-                    'text' => 'Заказать',
-                    'variant' => 'outline',
-                    'class' => 'w-full'
-                ]); ?>
+            <div class="pricing-card-animate" data-delay="0.2">
+                <div class="bg-white border-2 border-accent-blue rounded-lg p-8 text-center relative h-full flex flex-col">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                        <span class="bg-accent-blue text-white px-4 py-2 rounded-full text-sm">Популярно</span>
+                    </div>
+                    <h3 class="font-semibold text-2xl text-text-primary mb-4">Укладка полов</h3>
+                    <div class="text-4xl font-bold text-accent-blue mb-2">от 35€</div>
+                    <div class="text-text-secondary mb-6">за м²</div>
+                    <ul class="text-left space-y-2 text-text-secondary mb-8 flex-grow">
+                        <li>• Демонтаж старого покрытия</li>
+                        <li>• Выравнивание основания</li>
+                        <li>• Укладка покрытия</li>
+                        <li>• Плинтусы в подарок</li>
+                    </ul>
+                    <div class="mt-auto">
+                        <?php render_frontend_button([
+                            'text' => 'Заказать',
+                            'variant' => 'primary',
+                            'class' => 'w-full'
+                        ]); ?>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pricing-card-animate" data-delay="0.4">
+                <div class="bg-white border-2 border-gray-200 rounded-lg p-8 text-center hover:border-accent-blue transition-colors h-full flex flex-col">
+                    <h3 class="font-semibold text-2xl text-text-primary mb-4">Ремонт ванной</h3>
+                    <div class="text-4xl font-bold text-accent-blue mb-2">от 150€</div>
+                    <div class="text-text-secondary mb-6">за м²</div>
+                    <ul class="text-left space-y-2 text-text-secondary mb-8 flex-grow">
+                        <li>• Демонтаж и подготовка</li>
+                        <li>• Гидроизоляция</li>
+                        <li>• Укладка плитки</li>
+                        <li>• Установка сантехники</li>
+                    </ul>
+                    <div class="mt-auto">
+                        <?php render_frontend_button([
+                            'text' => 'Заказать',
+                            'variant' => 'outline',
+                            'class' => 'w-full'
+                        ]); ?>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -495,6 +613,69 @@ document.addEventListener('click', function(event) {
         closeGalleryModal();
         closeImageModal();
     }
+});
+
+// Scroll-triggered animations
+function isElementPartiallyInViewport(el) {
+    const rect = el.getBoundingClientRect();
+    return (
+        rect.top < window.innerHeight &&
+        rect.bottom > 0
+    );
+}
+
+function animateSection(titleId, subtitleId, cardsSelector) {
+    // Animate title
+    const title = document.getElementById(titleId);
+    if (title && isElementPartiallyInViewport(title) && !title.classList.contains('animate')) {
+        title.classList.add('animate');
+        
+        // Animate subtitle after title
+        if (subtitleId) {
+            setTimeout(() => {
+                const subtitle = document.getElementById(subtitleId);
+                if (subtitle && !subtitle.classList.contains('animate')) {
+                    subtitle.classList.add('animate');
+                }
+            }, 300);
+        }
+    }
+    
+    // Animate cards
+    const cards = document.querySelectorAll(cardsSelector);
+    cards.forEach((card, index) => {
+        if (isElementPartiallyInViewport(card) && !card.classList.contains('animate')) {
+            const delay = parseFloat(card.getAttribute('data-delay')) * 1000;
+            setTimeout(() => {
+                card.classList.add('animate');
+            }, delay);
+        }
+    });
+}
+
+function animateOnScroll() {
+    // Animate services section
+    animateSection(null, null, '.service-card-animate');
+    
+    // Animate process section
+    animateSection('process-title', 'process-subtitle', '.process-step-animate');
+    
+    // Animate pricing section
+    animateSection('pricing-title', 'pricing-subtitle', '.pricing-card-animate');
+}
+
+// Throttled scroll event listener
+let scrollTimeout;
+window.addEventListener('scroll', function() {
+    if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+    }
+    scrollTimeout = setTimeout(animateOnScroll, 10);
+});
+
+// Initial check on page load
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(animateOnScroll, 100);
 });
 </script>
 
