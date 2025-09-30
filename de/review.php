@@ -419,7 +419,7 @@ h1, h2, h3, h4, h5, h6, p, span, div {
         </div>
         
         <div class="bg-white p-8 rounded-lg shadow-xl border border-gray-200">
-            <form action="../add-review.php" method="POST" class="space-y-6">
+            <form action="../add-review.php" method="POST" class="space-y-6" id="review-form">
                 <div class="grid md:grid-cols-2 gap-6">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Ihr Name *</label>
@@ -434,24 +434,6 @@ h1, h2, h3, h4, h5, h6, p, span, div {
                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-blue focus:border-accent-blue transition-colors"
                                placeholder="ihre@email.com">
                     </div>
-                </div>
-
-                <div>
-                    <?php render_dropdown_field([
-                        'name' => 'service',
-                        'label' => 'Dienstleistung',
-                        'placeholder' => 'Dienstleistung wählen',
-                        'options' => [
-                            ['value' => '', 'text' => 'Dienstleistung wählen'],
-                            ['value' => 'painting', 'text' => 'Malerarbeiten'],
-                            ['value' => 'flooring', 'text' => 'Bodenverlegung'],
-                            ['value' => 'bathroom', 'text' => 'Badezimmerrenovierung'],
-                            ['value' => 'drywall', 'text' => 'Trockenbau'],
-                            ['value' => 'tiling', 'text' => 'Fliesenverlegung'],
-                            ['value' => 'renovation', 'text' => 'Komplettrenovierung']
-                        ],
-                        'class' => 'w-full'
-                    ]); ?>
                 </div>
                 
                         <div>
@@ -712,6 +694,47 @@ window.addEventListener('scroll', function() {
 // Initial check on page load
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(animateOnScroll, 100);
+});
+
+// Обработка отправки формы
+document.getElementById('review-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const submitButton = this.querySelector('button[type="submit"]');
+    const originalText = submitButton.textContent;
+    
+    // Показываем загрузку
+    submitButton.disabled = true;
+    submitButton.textContent = 'Wird gesendet...';
+    
+    try {
+        const response = await fetch('../add-review.php', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            showMessage(result.message, 'success');
+            this.reset();
+            // Сбрасываем рейтинг на 5 звезд
+            document.querySelectorAll('.star').forEach(star => {
+                star.classList.remove('text-gray-300');
+                star.classList.add('text-yellow-400');
+            });
+            document.getElementById('rating-input').value = '5';
+        } else {
+            showMessage(result.message, 'error');
+        }
+    } catch (error) {
+        showMessage('Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.', 'error');
+    } finally {
+        // Восстанавливаем кнопку
+        submitButton.disabled = false;
+        submitButton.textContent = originalText;
+    }
 });
 </script>
 

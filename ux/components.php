@@ -341,15 +341,6 @@ function render_review_card($review) {
             echo htmlspecialchars($text); 
             ?>"
         </p>
-        
-        <?php if (!empty($review['service'])): ?>
-            <div class="text-sm text-accent-blue font-medium">
-                <?php 
-                $service_label = (defined('CURRENT_LANG') && CURRENT_LANG === 'de') ? 'Dienstleistung' : 'Услуга';
-                echo $service_label . ': ' . htmlspecialchars($review['service']); 
-                ?>
-            </div>
-        <?php endif; ?>
     </div>
     <?php
 }
