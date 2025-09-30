@@ -562,13 +562,6 @@ ob_start();
                 'class' => 'w-full sm:w-auto'
             ]); ?>
             
-            <?php render_button([
-                'href' => 'portfolio_export.php',
-                'text' => __('portfolio.export', 'Экспорт в CSV'),
-                'variant' => 'secondary',
-                'icon' => get_icon('download', 'w-4 h-4 mr-2'),
-                'class' => 'w-full sm:w-auto'
-            ]); ?>
         </div>
     </div>
 
