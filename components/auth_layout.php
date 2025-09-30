@@ -75,13 +75,6 @@ function render_auth_layout($options = []) {
             <?php echo $opts['additional_js']; ?>
         <?php endif; ?>
 
-        <?php if (is_debug()): ?>
-        <!-- Отладочная информация -->
-        <div class="fixed bottom-4 left-4 bg-black text-white text-xs p-2 rounded opacity-50">
-            Debug: <?php echo get_current_language(); ?> | 
-            Default admin: root/root
-        </div>
-        <?php endif; ?>
 
     </body>
     </html>

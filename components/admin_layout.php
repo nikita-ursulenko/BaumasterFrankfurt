@@ -82,14 +82,6 @@ function render_admin_layout($options = []) {
             <?php echo $opts['additional_js']; ?>
         <?php endif; ?>
 
-        <?php if (is_debug()): ?>
-        <!-- Отладочная информация -->
-        <div class="fixed bottom-4 right-4 bg-black text-white text-xs p-2 rounded opacity-50 z-50">
-            Debug: <?php echo get_current_language(); ?> | 
-            User: <?php echo $current_user['username']; ?> (<?php echo $current_user['role']; ?>) |
-            Memory: <?php echo round(memory_get_usage() / 1024 / 1024, 2); ?>MB
-        </div>
-        <?php endif; ?>
     </body>
     </html>
     <?php
