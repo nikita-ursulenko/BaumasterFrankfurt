@@ -558,14 +558,16 @@ ob_start();
                 'href' => '?action=create',
                 'text' => __('portfolio.add_new', 'Добавить проект'),
                 'variant' => 'primary',
-                'icon' => get_icon('plus', 'w-4 h-4 mr-2')
+                'icon' => get_icon('plus', 'w-4 h-4 mr-2'),
+                'class' => 'w-full sm:w-auto'
             ]); ?>
             
             <?php render_button([
                 'href' => 'portfolio_export.php',
                 'text' => __('portfolio.export', 'Экспорт в CSV'),
                 'variant' => 'secondary',
-                'icon' => get_icon('download', 'w-4 h-4 mr-2')
+                'icon' => get_icon('download', 'w-4 h-4 mr-2'),
+                'class' => 'w-full sm:w-auto'
             ]); ?>
         </div>
     </div>

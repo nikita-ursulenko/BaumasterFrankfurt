@@ -555,10 +555,6 @@ ob_start();
                     <?php echo __('services.add_new', 'Добавить услугу'); ?>
                 </a>
                 
-                <a href="services_export.php" class="w-full inline-flex items-center justify-center px-4 py-3 bg-white text-gray-700 border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition duration-200 font-medium">
-                    <?php echo get_icon('download', 'w-5 h-5 mr-2'); ?>
-                    <?php echo __('services.export', 'Экспорт в CSV'); ?>
-                </a>
             </div>
         </div>
         
@@ -597,12 +593,6 @@ ob_start();
                     'icon' => get_icon('plus', 'w-4 h-4 mr-2')
                 ]); ?>
                 
-                <?php render_button([
-                    'href' => 'services_export.php',
-                    'text' => __('services.export', 'Экспорт в CSV'),
-                    'variant' => 'secondary',
-                    'icon' => get_icon('download', 'w-4 h-4 mr-2')
-                ]); ?>
             </div>
         </div>
     </div>
