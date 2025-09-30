@@ -303,7 +303,7 @@ function render_admin_sidebar($menu_items, $current_user) {
  */
 function render_admin_header($page_title, $page_description = '') {
     ?>
-    <header class="bg-white shadow-sm border-b border-gray-200">
+    <header class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-40">
         <div class="px-6 py-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4">
