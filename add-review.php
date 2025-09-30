@@ -21,24 +21,17 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 // Функция для отправки ответа
 function sendResponse($success, $message, $data = []) {
-    // Получаем URL страницы, откуда пришел запрос
-    $referer = $_SERVER['HTTP_REFERER'] ?? '/';
-    
-    // Определяем параметры для URL
-    $params = [
-        'success' => $success ? '1' : '0',
-        'message' => urlencode($message)
+    $response = [
+        'success' => $success,
+        'message' => $message
     ];
     
     if (!empty($data)) {
-        $params['data'] = urlencode(json_encode($data));
+        $response['data'] = $data;
     }
     
-    // Формируем URL с параметрами
-    $redirect_url = $referer . '?' . http_build_query($params);
-    
-    // Перенаправляем обратно на страницу
-    header('Location: ' . $redirect_url);
+    // Отправляем JSON ответ
+    echo json_encode($response, JSON_UNESCAPED_UNICODE);
     exit;
 }
 

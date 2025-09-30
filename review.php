@@ -437,24 +437,6 @@ h1, h2, h3, h4, h5, h6, p, span, div {
                 </div>
                 
                 <div>
-                    <?php render_dropdown_field([
-                        'name' => 'service',
-                        'label' => 'Услуга',
-                        'placeholder' => 'Выберите услугу',
-                        'options' => [
-                            ['value' => '', 'text' => 'Выберите услугу'],
-                            ['value' => 'painting', 'text' => 'Малярные работы'],
-                            ['value' => 'flooring', 'text' => 'Укладка полов'],
-                            ['value' => 'bathroom', 'text' => 'Ремонт ванной'],
-                            ['value' => 'drywall', 'text' => 'Гипсокартон'],
-                            ['value' => 'tiling', 'text' => 'Плитка'],
-                            ['value' => 'renovation', 'text' => 'Комплексный ремонт']
-                        ],
-                        'class' => 'w-full'
-                    ]); ?>
-                </div>
-                
-                <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Оценка *</label>
                     <div class="flex space-x-2" id="rating">
                         <button type="button" class="star text-3xl text-gray-300 hover:text-yellow-400 transition-colors" data-rating="1">★</button>
