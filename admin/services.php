@@ -496,13 +496,13 @@ ob_start();
         <!-- Мобильная версия статистики -->
         <div class="lg:hidden">
             <div class="grid grid-cols-2 gap-3 mb-4">
-                <?php 
-                // Подсчет статистики
-                $total_services = count($services);
-                $active_services = count(array_filter($services, function($service) {
-                    return $service['status'] === 'active';
-                }));
-                $inactive_services = $total_services - $active_services;
+            <?php 
+            // Подсчет статистики
+            $total_services = count($services);
+            $active_services = count(array_filter($services, function($service) {
+                return $service['status'] === 'active';
+            }));
+            $inactive_services = $total_services - $active_services;
                 ?>
                 
                 <!-- Общее количество -->
@@ -561,38 +561,38 @@ ob_start();
         <!-- Десктопная версия статистики -->
         <div class="hidden lg:flex lg:flex-row justify-between items-center">
             <div class="flex items-center space-x-4" >
-                <div class="bg-white shadow-sm rounded-lg border border-gray-200 p-4 min-w-[200px]">
-                    <div class="flex items-center">
-                        <div class="flex-shrink-0">
-                            <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
-                                <?php echo get_icon('services', 'w-5 h-5 text-white'); ?>
-                            </div>
+            <div class="bg-white shadow-sm rounded-lg border border-gray-200 p-4 min-w-[200px]">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
+                            <?php echo get_icon('services', 'w-5 h-5 text-white'); ?>
                         </div>
-                        <div class="ml-4 flex-1">
-                            <p class="text-sm font-medium text-gray-500">
-                                <?php echo __('services.total_count', 'Всего услуг'); ?>
-                            </p>
-                            <p class="text-2xl font-semibold text-gray-900">
-                                <?php echo $total_services; ?>
-                            </p>
-                            <?php if ($active_services > 0): ?>
-                            <p class="text-xs text-green-600 mt-1">
-                                <?php echo $active_services; ?> активных
-                            </p>
-                            <?php endif; ?>
-                        </div>
+                    </div>
+                    <div class="ml-4 flex-1">
+                        <p class="text-sm font-medium text-gray-500">
+                            <?php echo __('services.total_count', 'Всего услуг'); ?>
+                        </p>
+                        <p class="text-2xl font-semibold text-gray-900">
+                            <?php echo $total_services; ?>
+                        </p>
+                        <?php if ($active_services > 0): ?>
+                        <p class="text-xs text-green-600 mt-1">
+                            <?php echo $active_services; ?> активных
+                        </p>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
+        </div>
+        
+        <div class="flex flex-col sm:flex-row gap-2">
+            <?php render_button([
+                'href' => '?action=create',
+                'text' => __('services.add_new', 'Добавить услугу'),
+                'variant' => 'primary',
+                'icon' => get_icon('plus', 'w-4 h-4 mr-2')
+            ]); ?>
             
-            <div class="flex flex-col sm:flex-row gap-2">
-                <?php render_button([
-                    'href' => '?action=create',
-                    'text' => __('services.add_new', 'Добавить услугу'),
-                    'variant' => 'primary',
-                    'icon' => get_icon('plus', 'w-4 h-4 mr-2')
-                ]); ?>
-                
             </div>
         </div>
     </div>
@@ -643,14 +643,14 @@ ob_start();
                     <!-- Статус -->
                     <div>
                         <?php render_dropdown_field([
-                            'name' => 'status',
-                            'label' => __('services.status', 'Статус'),
-                            'value' => $status_filter,
-                            'options' => [
-                                ['value' => '', 'text' => __('common.all', 'Все')],
-                                ['value' => 'active', 'text' => __('services.status_active', 'Активные')],
-                                ['value' => 'inactive', 'text' => __('services.status_inactive', 'Неактивные')]
-                            ],
+                    'name' => 'status',
+                    'label' => __('services.status', 'Статус'),
+                    'value' => $status_filter,
+                    'options' => [
+                        ['value' => '', 'text' => __('common.all', 'Все')],
+                        ['value' => 'active', 'text' => __('services.status_active', 'Активные')],
+                        ['value' => 'inactive', 'text' => __('services.status_inactive', 'Неактивные')]
+                    ],
                             'placeholder' => __('common.all', 'Все'),
                             'class' => 'w-full'
                         ]); ?>
@@ -659,23 +659,23 @@ ob_start();
                     <!-- Категория -->
                     <div>
                         <?php render_dropdown_field([
-                            'name' => 'category',
-                            'label' => __('services.category', 'Категория'),
-                            'value' => $category_filter,
-                            'options' => [
-                                ['value' => '', 'text' => __('common.all', 'Все')],
-                                ['value' => 'painting', 'text' => __('services.category_painting', 'Малярные работы')],
-                                ['value' => 'flooring', 'text' => __('services.category_flooring', 'Укладка полов')],
-                                ['value' => 'bathroom', 'text' => __('services.category_bathroom', 'Ремонт ванных')],
-                                ['value' => 'drywall', 'text' => __('services.category_drywall', 'Гипсокартон')],
-                                ['value' => 'tiling', 'text' => __('services.category_tiling', 'Плитка')],
-                                ['value' => 'renovation', 'text' => __('services.category_renovation', 'Комплексный ремонт')]
-                            ],
+                    'name' => 'category',
+                    'label' => __('services.category', 'Категория'),
+                    'value' => $category_filter,
+                    'options' => [
+                        ['value' => '', 'text' => __('common.all', 'Все')],
+                        ['value' => 'painting', 'text' => __('services.category_painting', 'Малярные работы')],
+                        ['value' => 'flooring', 'text' => __('services.category_flooring', 'Укладка полов')],
+                        ['value' => 'bathroom', 'text' => __('services.category_bathroom', 'Ремонт ванных')],
+                        ['value' => 'drywall', 'text' => __('services.category_drywall', 'Гипсокартон')],
+                        ['value' => 'tiling', 'text' => __('services.category_tiling', 'Плитка')],
+                        ['value' => 'renovation', 'text' => __('services.category_renovation', 'Комплексный ремонт')]
+                    ],
                             'placeholder' => __('common.all', 'Все'),
                             'class' => 'w-full'
                         ]); ?>
-                    </div>
-                    
+    </div>
+
                     <!-- Кнопки действий -->
                     <div class="flex space-x-3">
                         <button 
@@ -801,7 +801,7 @@ ob_start();
                 <div class="bg-gray-50 px-4 py-3 border-b border-gray-200">
                     <!-- Мобильная версия панели -->
                     <div class="lg:hidden space-y-3">
-                        <div class="flex items-center justify-between">
+                    <div class="flex items-center justify-between">
                             <label class="flex items-center">
                                 <input type="checkbox" id="select-all-mobile" class="w-4 h-4 rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                                 <span class="ml-2 text-sm font-medium text-gray-700"><?php echo __('common.select_all', 'Выбрать все'); ?></span>
@@ -934,96 +934,96 @@ ob_start();
                                 <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[200px]">
                                     <?php echo __('services.service', 'Услуга'); ?>
                                 </th>
-                                <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[120px]">
-                                    <?php echo __('services.category', 'Категория'); ?>
-                                </th>
-                                <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[100px]">
-                                    <?php echo __('services.price', 'Цена'); ?>
-                                </th>
-                                <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[100px]">
-                                    <?php echo __('services.status', 'Статус'); ?>
-                                </th>
-                                <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[80px]">
-                                    <?php echo __('services.priority', 'Приоритет'); ?>
-                                </th>
-                                <th class="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[300px]">
-                                    <?php echo __('common.actions', 'Действия'); ?>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            <?php foreach ($services as $service): ?>
-                                <tr class="hover:bg-gray-50">
-                                    <td class="px-3 py-4">
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[120px]">
+                                <?php echo __('services.category', 'Категория'); ?>
+                            </th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[100px]">
+                                <?php echo __('services.price', 'Цена'); ?>
+                            </th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[100px]">
+                                <?php echo __('services.status', 'Статус'); ?>
+                            </th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[80px]">
+                                <?php echo __('services.priority', 'Приоритет'); ?>
+                            </th>
+                            <th class="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[300px]">
+                                <?php echo __('common.actions', 'Действия'); ?>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <?php foreach ($services as $service): ?>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-3 py-4">
                                         <input type="checkbox" name="selected_items[]" value="<?php echo $service['id']; ?>" class="item-checkbox-desktop rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                                    </td>
-                                    <td class="px-3 py-4">
-                                        <div class="flex items-center">
-                                            <?php if (!empty($service['image'])): ?>
-                                                <div class="flex-shrink-0 h-10 w-10">
-                                                    <img class="h-10 w-10 rounded-full object-cover" src="<?php echo htmlspecialchars($service['image']); ?>" alt="">
-                                                </div>
-                                                <div class="ml-4">
-                                            <?php else: ?>
-                                                <div>
-                                            <?php endif; ?>
-                                                <div class="text-sm font-medium text-gray-900">
-                                                    <?php echo htmlspecialchars($service['title']); ?>
-                                                </div>
-                                                <div class="text-sm text-gray-500">
-                                                    <?php echo htmlspecialchars(substr($service['description'], 0, 60)); ?><?php echo strlen($service['description']) > 60 ? '...' : ''; ?>
-                                                </div>
+                                </td>
+                                <td class="px-3 py-4">
+                                    <div class="flex items-center">
+                                        <?php if (!empty($service['image'])): ?>
+                                            <div class="flex-shrink-0 h-10 w-10">
+                                                <img class="h-10 w-10 rounded-full object-cover" src="<?php echo htmlspecialchars($service['image']); ?>" alt="">
+                                            </div>
+                                            <div class="ml-4">
+                                        <?php else: ?>
+                                            <div>
+                                        <?php endif; ?>
+                                            <div class="text-sm font-medium text-gray-900">
+                                                <?php echo htmlspecialchars($service['title']); ?>
+                                            </div>
+                                            <div class="text-sm text-gray-500">
+                                                <?php echo htmlspecialchars(substr($service['description'], 0, 60)); ?><?php echo strlen($service['description']) > 60 ? '...' : ''; ?>
                                             </div>
                                         </div>
-                                    </td>
-                                    <td class="px-3 py-4 whitespace-nowrap">
-                                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
-                                            <?php echo htmlspecialchars(ucfirst($service['category'])); ?>
-                                        </span>
-                                    </td>
-                                    <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        <?php if ($service['price'] > 0): ?>
-                                            <?php echo number_format($service['price'], 0, ',', ' '); ?> €
-                                            <?php if ($service['price_type'] === 'per_m2'): ?>
-                                                /м²
-                                            <?php endif; ?>
-                                        <?php else: ?>
-                                            <span class="text-gray-500">По договорённости</span>
+                                    </div>
+                                </td>
+                                <td class="px-3 py-4 whitespace-nowrap">
+                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                                        <?php echo htmlspecialchars(ucfirst($service['category'])); ?>
+                                    </span>
+                                </td>
+                                <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    <?php if ($service['price'] > 0): ?>
+                                        <?php echo number_format($service['price'], 0, ',', ' '); ?> €
+                                        <?php if ($service['price_type'] === 'per_m2'): ?>
+                                            /м²
                                         <?php endif; ?>
-                                    </td>
-                                    <td class="px-3 py-4 whitespace-nowrap">
-                                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full 
-                                            <?php echo $service['status'] === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'; ?>">
-                                            <?php echo $service['status'] === 'active' ? __('services.status_active', 'Активна') : __('services.status_inactive', 'Неактивна'); ?>
-                                        </span>
-                                    </td>
-                                    <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        <?php echo intval($service['priority']); ?>
-                                    </td>
-                                    <td class="px-3 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <div class="flex flex-wrap gap-2 justify-end">
-                                            <?php render_button([
-                                                'href' => '?action=edit&id=' . $service['id'],
-                                                'text' => __('common.edit', 'Редактировать'),
-                                                'variant' => 'secondary',
-                                                'size' => 'sm'
-                                            ]); ?>
-                                            
-                                            <button type="button" onclick="toggleServiceStatus(<?php echo $service['id']; ?>)" class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                                <?php echo $service['status'] === 'active' ? __('services.deactivate', 'Скрыть') : __('services.activate', 'Показать'); ?>
-                                            </button>
-                                            
-                                            <button type="button" onclick="confirmDeleteService(<?php echo $service['id']; ?>, '<?php echo htmlspecialchars($service['title']); ?>')" class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                                </svg>
-                                                <?php echo __('common.delete', 'Удалить'); ?>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
+                                    <?php else: ?>
+                                        <span class="text-gray-500">По договорённости</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td class="px-3 py-4 whitespace-nowrap">
+                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full 
+                                        <?php echo $service['status'] === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'; ?>">
+                                        <?php echo $service['status'] === 'active' ? __('services.status_active', 'Активна') : __('services.status_inactive', 'Неактивна'); ?>
+                                    </span>
+                                </td>
+                                <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    <?php echo intval($service['priority']); ?>
+                                </td>
+                                <td class="px-3 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <div class="flex flex-wrap gap-2 justify-end">
+                                        <?php render_button([
+                                            'href' => '?action=edit&id=' . $service['id'],
+                                            'text' => __('common.edit', 'Редактировать'),
+                                            'variant' => 'secondary',
+                                            'size' => 'sm'
+                                        ]); ?>
+                                        
+                                        <button type="button" onclick="toggleServiceStatus(<?php echo $service['id']; ?>)" class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                            <?php echo $service['status'] === 'active' ? __('services.deactivate', 'Скрыть') : __('services.activate', 'Показать'); ?>
+                                        </button>
+                                        
+                                        <button type="button" onclick="confirmDeleteService(<?php echo $service['id']; ?>, '<?php echo htmlspecialchars($service['title']); ?>')" class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                            <?php echo __('common.delete', 'Удалить'); ?>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
                     </table>
                 </div>
             </form>
@@ -1529,30 +1529,30 @@ document.addEventListener('DOMContentLoaded', function() {
             btn.addEventListener('click', function(e) {
                 console.log(`${index === 0 ? 'Desktop' : 'Mobile'} bulk delete button clicked`);
                 const selectedItems = document.querySelectorAll('.item-checkbox-desktop:checked, .item-checkbox-mobile:checked');
-                console.log('Selected items count:', selectedItems.length);
-                
-                if (selectedItems.length === 0) {
-                    e.preventDefault();
-                    alert('Не выбрано ни одного элемента');
-                    return;
-                }
-                
-                if (!confirm('Вы уверены, что хотите удалить выбранные элементы? Это действие нельзя отменить.')) {
-                    e.preventDefault();
-                    console.log('Confirmation cancelled');
-                    return;
-                }
-                
-                console.log('Confirmation accepted, form will submit');
-                
-                // Проверяем данные формы
-                const formData = new FormData(bulkForm);
-                console.log('Form data:');
-                for (let [key, value] of formData.entries()) {
-                    console.log(key, value);
-                }
-            });
-        }
+            console.log('Selected items count:', selectedItems.length);
+            
+            if (selectedItems.length === 0) {
+                e.preventDefault();
+                alert('Не выбрано ни одного элемента');
+                return;
+            }
+            
+            if (!confirm('Вы уверены, что хотите удалить выбранные элементы? Это действие нельзя отменить.')) {
+                e.preventDefault();
+                console.log('Confirmation cancelled');
+                return;
+            }
+            
+            console.log('Confirmation accepted, form will submit');
+            
+            // Проверяем данные формы
+            const formData = new FormData(bulkForm);
+            console.log('Form data:');
+            for (let [key, value] of formData.entries()) {
+                console.log(key, value);
+            }
+        });
+    }
     });
     
     // Инициализация счетчика
