@@ -333,19 +333,6 @@ function render_admin_header($page_title, $page_description = '') {
                         ]); ?>
                     </div>
                     
-                    <!-- Языки -->
-                    <div class="relative">
-                        <select 
-                            onchange="changeLanguage(this.value)"
-                            class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md"
-                        >
-                            <?php foreach (AVAILABLE_LANGS as $lang): ?>
-                                <option value="<?php echo $lang; ?>" <?php echo $lang === get_current_language() ? 'selected' : ''; ?>>
-                                    <?php echo strtoupper($lang); ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
                 </div>
             </div>
         </div>

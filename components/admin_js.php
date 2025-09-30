@@ -15,23 +15,6 @@ if (!defined('ABSPATH')) {
 function render_admin_javascript() {
     ?>
     <script>
-        // Функция смены языка
-        function changeLanguage(lang) {
-            // Отправка AJAX запроса для смены языка
-            fetch('?action=change_language', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: 'language=' + encodeURIComponent(lang) + '&csrf_token=' + getCsrfToken()
-            })
-            .then(() => {
-                location.reload();
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        }
 
         // Получение CSRF токена
         function getCsrfToken() {

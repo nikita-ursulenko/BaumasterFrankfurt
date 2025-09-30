@@ -15,16 +15,6 @@ $page_title = __('dashboard.title', 'Панель управления');
 $page_description = __('dashboard.description', 'Обзор системы и основная статистика');
 $active_menu = 'dashboard';
 
-// Обработка смены языка
-if ($_POST && isset($_POST['action']) && $_POST['action'] === 'change_language') {
-    if (verify_csrf_token($_POST['csrf_token'] ?? '')) {
-        $new_lang = $_POST['language'] ?? '';
-        if (set_language($new_lang)) {
-            json_response(['success' => true]);
-        }
-    }
-    json_response(['success' => false]);
-}
 
 // Получение статистических данных
 function get_dashboard_stats() {
