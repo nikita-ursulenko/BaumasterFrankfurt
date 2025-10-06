@@ -14,7 +14,8 @@ function get_services_data() {
     
     try {
         $db = get_database();
-        $services = $db->select('services');
+        // Получаем услуги, отсортированные по дате создания (последние первыми)
+        $services = $db->select('services', ['status' => 'active'], ['order' => 'created_at DESC']);
         
         // Преобразуем данные из базы в нужный формат
         $formatted_services = [];
@@ -66,7 +67,8 @@ function get_services_data_with_translations($lang = 'de') {
     try {
         $db = get_database();
         $translation_manager = new TranslationManager();
-        $services = $db->select('services');
+        // Получаем услуги, отсортированные по дате создания (последние первыми)
+        $services = $db->select('services', ['status' => 'active'], ['order' => 'created_at DESC']);
         
         // Преобразуем данные из базы в нужный формат
         $formatted_services = [];

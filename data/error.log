@@ -236,3 +236,52 @@
 [2025-09-30 17:46:26] [INFO] Translation saved: reviews.review_text (ID: 64)
 [2025-09-30 17:46:26] [INFO] Отзыв ID 64 переведен при одобрении с ru на de
 [2025-09-30 17:46:26] [INFO] Review moderated: никита (ID: 64) -> published
+[2025-10-01 11:43:06] [INFO] User root logged in
+[2025-10-06 20:34:18] [INFO] User root logged in
+[2025-10-06 20:38:04] [INFO] User root logged in
+[2025-10-06 20:41:00] [INFO] POST request received: {"action":"create","csrf_token":"b85666436919c07ca60dc34c76417959a6ff35e0a9be8d8cdd0b3e58cc8ee16a","title":"\u041f\u043b\u0438\u0442\u043a\u0430","category":"tiling","description":"\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435 \u043f\u043e\u0442\u043e\u0447\u043d\u043e\u0439 \u0440\u0430\u0431\u043e\u0442\u044b ","price":"20","price_type":"fixed","status":"active","priority":"0","meta_title":"","meta_description":"","keywords":""}
+[2025-10-06 20:41:00] [INFO] FILES received: {"image":{"name":"IMG_3401.jpeg","full_path":"IMG_3401.jpeg","type":"","tmp_name":"","error":1,"size":0},"gallery":{"name":["IMG_3453.jpeg","2bd28ed9-c594-4a61-92f9-7d5f190730f2.jpeg","19064d1a-f229-4bd2-88ba-dbfa538df7b4.jpeg"],"full_path":["IMG_3453.jpeg","2bd28ed9-c594-4a61-92f9-7d5f190730f2.jpeg","19064d1a-f229-4bd2-88ba-dbfa538df7b4.jpeg"],"type":["image\/jpeg","image\/jpeg","image\/jpeg"],"tmp_name":["\/tmp\/phpy6RVBl","\/tmp\/phpcDIIXJ","\/tmp\/phpAZzcsi"],"error":[0,0,0],"size":[1146207,163204,92718]}}
+[2025-10-06 20:41:00] [INFO] Creating service with data: {"action":"create","csrf_token":"b85666436919c07ca60dc34c76417959a6ff35e0a9be8d8cdd0b3e58cc8ee16a","title":"\u041f\u043b\u0438\u0442\u043a\u0430","category":"tiling","description":"\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435 \u043f\u043e\u0442\u043e\u0447\u043d\u043e\u0439 \u0440\u0430\u0431\u043e\u0442\u044b ","price":"20","price_type":"fixed","status":"active","priority":"0","meta_title":"","meta_description":"","keywords":""}
+[2025-10-06 20:41:00] [INFO] Translation saved: services.title (ID: 40)
+[2025-10-06 20:41:01] [INFO] Translation saved: services.description (ID: 40)
+[2025-10-06 20:41:01] [INFO] Auto-translation completed for service ID: 40
+[2025-10-06 20:41:01] [INFO] New service created: Плитка (ID: 40)
+[2025-10-06 20:41:01] [INFO] Create service result: {"success":true,"service_id":"40","message":"\u0423\u0441\u043b\u0443\u0433\u0430 \u0443\u0441\u043f\u0435\u0448\u043d\u043e \u0441\u043e\u0437\u0434\u0430\u043d\u0430"}
+[2025-10-06 20:42:36] [INFO] Translation saved: portfolio.title (ID: 67)
+[2025-10-06 20:42:38] [INFO] Translation saved: portfolio.description (ID: 67)
+[2025-10-06 20:42:38] [INFO] Auto-translation completed for portfolio project ID: 67
+[2025-10-06 20:42:38] [INFO] New portfolio project created: Современный дизайн Франкфурт (ID: 67)
+[2025-10-06 20:46:07] [INFO] Новый отзыв создан: ID 65, Имя: Nikita, Рейтинг: 5
+[2025-10-06 20:46:09] [INFO] Translation saved: reviews.review_text (ID: 65)
+[2025-10-06 20:46:09] [INFO] Отзыв ID 65 переведен с ru на de
+[2025-10-06 20:46:38] [INFO] Translation saved: reviews.review_text (ID: 65)
+[2025-10-06 20:46:38] [INFO] Отзыв ID 65 переведен при одобрении с ru на de
+[2025-10-06 20:46:38] [INFO] Review moderated: Nikita (ID: 65) -> published
+[2025-10-06 20:48:47] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 no such column: featured
+[2025-10-07 00:02:03] [INFO] User root logged in
+[2025-10-07 00:04:10] [INFO] POST request received: {"action":"update","csrf_token":"ce25433a556b4a38024a884dfe36628e074580419637fef829871bedfb5194ba","title":"\u041f\u043b\u0438\u0442\u043a\u0430","category":"tiling","description":"\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435 \u043f\u043e\u0442\u043e\u0447\u043d\u043e\u0439 \u0440\u0430\u0431\u043e\u0442\u044b","price":"20","price_type":"fixed","status":"active","priority":"0","meta_title":"","meta_description":"","keywords":""}
+[2025-10-07 00:04:10] [INFO] FILES received: {"image":{"name":"\u0421\u043d\u0438\u043c\u043e\u043a \u044d\u043a\u0440\u0430\u043d\u0430 2025-10-07 \u0432 00.03.59.png","full_path":"\u0421\u043d\u0438\u043c\u043e\u043a \u044d\u043a\u0440\u0430\u043d\u0430 2025-10-07 \u0432 00.03.59.png","type":"image\/png","tmp_name":"\/tmp\/phpmIq0ql","error":0,"size":376984},"gallery":{"name":[""],"full_path":[""],"type":[""],"tmp_name":[""],"error":[4],"size":[0]}}
+[2025-10-07 00:04:10] [INFO] Service updated: Плитка (ID: 40)
+[2025-10-07 00:07:54] [INFO] User root logged in
+[2025-10-07 00:09:07] [INFO] POST request received: []
+[2025-10-07 00:09:07] [INFO] FILES received: []
+[2025-10-07 00:09:15] [INFO] POST request received: []
+[2025-10-07 00:09:15] [INFO] FILES received: []
+[2025-10-07 00:10:29] [INFO] POST request received: []
+[2025-10-07 00:10:29] [INFO] FILES received: []
+[2025-10-07 00:11:02] [INFO] POST request received: {"action":"delete","id":"40","csrf_token":"fc79c2f5b9f01d0b29df965c9b1091bec5fb7a77628922707f9a2d05150afb40"}
+[2025-10-07 00:11:02] [INFO] FILES received: []
+[2025-10-07 00:11:02] [WARNING] Service deleted: Плитка (ID: 40)
+[2025-10-07 00:11:37] [INFO] POST request received: []
+[2025-10-07 00:11:37] [INFO] FILES received: []
+[2025-10-07 00:14:36] [INFO] New user created: baumaster (ID: 2)
+[2025-10-07 00:14:50] [INFO] User root logged out
+[2025-10-07 00:14:58] [INFO] User baumaster logged in
+[2025-10-07 00:15:12] [INFO] User root logged out
+[2025-10-07 00:15:34] [INFO] User baumaster logged in
+[2025-10-07 00:16:25] [INFO] POST request received: []
+[2025-10-07 00:16:25] [INFO] FILES received: []
+[2025-10-07 00:34:27] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 no such column: featured
+[2025-10-07 00:53:08] [ERROR] Select error: SQLSTATE[HY000]: General error: 1 no such column: featured
+[2025-10-07 00:58:13] [INFO] User root logged in
+[2025-10-07 01:00:16] [INFO] User root logged in

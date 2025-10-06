@@ -1518,7 +1518,7 @@ h1, h2, h3, h4, h5, h6, p, span, div {
         </div>
         
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 align-items-stretch">
-            <?php foreach (array_slice($services, 0, 6) as $index => $service): ?>
+            <?php foreach (array_slice($services, 0, 3) as $index => $service): ?>
                 <div class="service-card-animate" data-delay="<?php echo $index * 0.2; ?>">
                     <?php render_service_card($service); ?>
                 </div>

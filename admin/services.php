@@ -643,14 +643,15 @@ ob_start();
                     <!-- Статус -->
                     <div>
                         <?php render_dropdown_field([
-                    'name' => 'status',
-                    'label' => __('services.status', 'Статус'),
-                    'value' => $status_filter,
-                    'options' => [
-                        ['value' => '', 'text' => __('common.all', 'Все')],
-                        ['value' => 'active', 'text' => __('services.status_active', 'Активные')],
-                        ['value' => 'inactive', 'text' => __('services.status_inactive', 'Неактивные')]
-                    ],
+                            'name' => 'status',
+                            'id' => 'status_mobile',
+                            'label' => __('services.status', 'Статус'),
+                            'value' => $status_filter,
+                            'options' => [
+                                ['value' => '', 'text' => __('common.all', 'Все')],
+                                ['value' => 'active', 'text' => __('services.status_active', 'Активные')],
+                                ['value' => 'inactive', 'text' => __('services.status_inactive', 'Неактивные')]
+                            ],
                             'placeholder' => __('common.all', 'Все'),
                             'class' => 'w-full'
                         ]); ?>
@@ -659,18 +660,19 @@ ob_start();
                     <!-- Категория -->
                     <div>
                         <?php render_dropdown_field([
-                    'name' => 'category',
-                    'label' => __('services.category', 'Категория'),
-                    'value' => $category_filter,
-                    'options' => [
-                        ['value' => '', 'text' => __('common.all', 'Все')],
-                        ['value' => 'painting', 'text' => __('services.category_painting', 'Малярные работы')],
-                        ['value' => 'flooring', 'text' => __('services.category_flooring', 'Укладка полов')],
-                        ['value' => 'bathroom', 'text' => __('services.category_bathroom', 'Ремонт ванных')],
-                        ['value' => 'drywall', 'text' => __('services.category_drywall', 'Гипсокартон')],
-                        ['value' => 'tiling', 'text' => __('services.category_tiling', 'Плитка')],
-                        ['value' => 'renovation', 'text' => __('services.category_renovation', 'Комплексный ремонт')]
-                    ],
+                            'name' => 'category',
+                            'id' => 'category_mobile',
+                            'label' => __('services.category', 'Категория'),
+                            'value' => $category_filter,
+                            'options' => [
+                                ['value' => '', 'text' => __('common.all', 'Все')],
+                                ['value' => 'painting', 'text' => __('services.category_painting', 'Малярные работы')],
+                                ['value' => 'flooring', 'text' => __('services.category_flooring', 'Укладка полов')],
+                                ['value' => 'bathroom', 'text' => __('services.category_bathroom', 'Ремонт ванных')],
+                                ['value' => 'drywall', 'text' => __('services.category_drywall', 'Гипсокартон')],
+                                ['value' => 'tiling', 'text' => __('services.category_tiling', 'Плитка')],
+                                ['value' => 'renovation', 'text' => __('services.category_renovation', 'Комплексный ремонт')]
+                            ],
                             'placeholder' => __('common.all', 'Все'),
                             'class' => 'w-full'
                         ]); ?>
@@ -720,46 +722,40 @@ ob_start();
                 
                 <!-- Статус -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                        <?php echo __('services.status', 'Статус'); ?>
-                    </label>
-                    <select name="status" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition duration-200">
-                        <option value=""><?php echo __('common.all', 'Все'); ?></option>
-                        <option value="active" <?php echo $status_filter === 'active' ? 'selected' : ''; ?>>
-                            <?php echo __('services.status_active', 'Активные'); ?>
-                        </option>
-                        <option value="inactive" <?php echo $status_filter === 'inactive' ? 'selected' : ''; ?>>
-                            <?php echo __('services.status_inactive', 'Неактивные'); ?>
-                        </option>
-                    </select>
+                    <?php render_dropdown_field([
+                        'name' => 'status',
+                        'id' => 'status',
+                        'label' => __('services.status', 'Статус'),
+                        'value' => $status_filter,
+                        'options' => [
+                            ['value' => '', 'text' => __('common.all', 'Все')],
+                            ['value' => 'active', 'text' => __('services.status_active', 'Активные')],
+                            ['value' => 'inactive', 'text' => __('services.status_inactive', 'Неактивные')]
+                        ],
+                        'placeholder' => __('common.all', 'Все'),
+                        'class' => 'w-full'
+                    ]); ?>
                 </div>
                 
                 <!-- Категория -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                        <?php echo __('services.category', 'Категория'); ?>
-                    </label>
-                    <select name="category" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition duration-200">
-                        <option value=""><?php echo __('common.all', 'Все'); ?></option>
-                        <option value="painting" <?php echo $category_filter === 'painting' ? 'selected' : ''; ?>>
-                            <?php echo __('services.category_painting', 'Малярные работы'); ?>
-                        </option>
-                        <option value="flooring" <?php echo $category_filter === 'flooring' ? 'selected' : ''; ?>>
-                            <?php echo __('services.category_flooring', 'Укладка полов'); ?>
-                        </option>
-                        <option value="bathroom" <?php echo $category_filter === 'bathroom' ? 'selected' : ''; ?>>
-                            <?php echo __('services.category_bathroom', 'Ремонт ванных'); ?>
-                        </option>
-                        <option value="drywall" <?php echo $category_filter === 'drywall' ? 'selected' : ''; ?>>
-                            <?php echo __('services.category_drywall', 'Гипсокартон'); ?>
-                        </option>
-                        <option value="tiling" <?php echo $category_filter === 'tiling' ? 'selected' : ''; ?>>
-                            <?php echo __('services.category_tiling', 'Плитка'); ?>
-                        </option>
-                        <option value="renovation" <?php echo $category_filter === 'renovation' ? 'selected' : ''; ?>>
-                            <?php echo __('services.category_renovation', 'Комплексный ремонт'); ?>
-                        </option>
-                    </select>
+                    <?php render_dropdown_field([
+                        'name' => 'category',
+                        'id' => 'category',
+                        'label' => __('services.category', 'Категория'),
+                        'value' => $category_filter,
+                        'options' => [
+                            ['value' => '', 'text' => __('common.all', 'Все')],
+                            ['value' => 'painting', 'text' => __('services.category_painting', 'Малярные работы')],
+                            ['value' => 'flooring', 'text' => __('services.category_flooring', 'Укладка полов')],
+                            ['value' => 'bathroom', 'text' => __('services.category_bathroom', 'Ремонт ванных')],
+                            ['value' => 'drywall', 'text' => __('services.category_drywall', 'Гипсокартон')],
+                            ['value' => 'tiling', 'text' => __('services.category_tiling', 'Плитка')],
+                            ['value' => 'renovation', 'text' => __('services.category_renovation', 'Комплексный ремонт')]
+                        ],
+                        'placeholder' => __('common.all', 'Все'),
+                        'class' => 'w-full'
+                    ]); ?>
                 </div>
                 
                 <!-- Кнопка фильтра -->

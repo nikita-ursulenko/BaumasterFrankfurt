@@ -282,6 +282,39 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST') 
             }
         }
     }
+    
+    // Обработка сохранения социальных сетей
+    if (isset($_POST['save_social'])) {
+        $category = $_POST['category'] ?? '';
+        $settings_data = $_POST['settings'] ?? [];
+        
+        try {
+            // Обработка настроек социальных сетей
+            foreach ($settings_data as $key => $value) {
+                $existing = $db->select('settings', ['setting_key' => $key], ['limit' => 1]);
+                
+                if ($existing) {
+                    $db->update('settings', 
+                        ['setting_value' => $value, 'updated_at' => date('Y-m-d H:i:s')], 
+                        ['setting_key' => $key]
+                    );
+                } else {
+                    $db->insert('settings', [
+                        'setting_key' => $key,
+                        'setting_value' => $value,
+                        'category' => $category
+                    ]);
+                }
+            }
+            
+            $success_message = 'Социальные сети успешно обновлены';
+            log_user_activity('social_update', 'settings', 0);
+            
+        } catch (Exception $e) {
+            $error_message = 'Ошибка при обновлении социальных сетей';
+            write_log("Social networks update error: " . $e->getMessage(), 'ERROR');
+        }
+    }
 
 // Загрузка данных для отображения
 $history_data = get_about_content('history');
@@ -289,6 +322,7 @@ $team_members = get_team_members();
 $statistics = get_statistics();
 
 // Загрузка настроек компании
+$db = get_database();
 $settings = [];
 $all_settings = $db->select('settings', [], ['order' => 'category, setting_key']);
 
@@ -351,6 +385,9 @@ ob_start();
                 </button>
                 <button class="tab-button py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="contacts">
                     Контакты компании
+                </button>
+                <button class="tab-button py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="social">
+                    Социальные сети
                 </button>
             </nav>
         </div>
@@ -674,6 +711,152 @@ ob_start();
                     </div>
                 </form>
             </div>
+
+            <!-- Вкладка "Социальные сети" -->
+            <div id="tab-social" class="tab-content hidden">
+                <form method="POST" class="space-y-6">
+                    <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+                    <input type="hidden" name="category" value="social">
+                    
+                    <div class="space-y-6">
+                        <h3 class="text-lg font-medium text-gray-900">Социальные сети и мессенджеры</h3>
+                        <p class="text-sm text-gray-600">Управление ссылками на социальные сети и контактными данными для мессенджеров</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Facebook -->
+                            <div class="bg-gray-50 rounded-lg p-6">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center mr-3">
+                                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium text-gray-900">Facebook</h4>
+                                        <p class="text-sm text-gray-500">Официальная страница компании</p>
+                                    </div>
+                                </div>
+                                <input type="url" name="settings[facebook_url]" 
+                                       value="<?php echo htmlspecialchars($settings['social']['facebook_url']['setting_value'] ?? ''); ?>"
+                                       placeholder="https://www.facebook.com/yourpage"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                            </div>
+                            
+                            <!-- Instagram -->
+                            <div class="bg-gray-50 rounded-lg p-6">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mr-3">
+                                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 6.62 5.367 11.987 11.988 11.987s11.987-5.367 11.987-11.987C24.014 5.367 18.647.001 12.017.001zM8.449 16.988c-1.297 0-2.448-.49-3.323-1.297C4.198 14.895 3.708 13.744 3.708 12.447s.49-2.448 1.418-3.323c.875-.807 2.026-1.297 3.323-1.297s2.448.49 3.323 1.297c.928.875 1.418 2.026 1.418 3.323s-.49 2.448-1.418 3.244c-.875.807-2.026 1.297-3.323 1.297zm7.83-9.281c-.49 0-.928-.175-1.297-.49-.368-.315-.49-.753-.49-1.243 0-.49.122-.928.49-1.243.369-.315.807-.49 1.297-.49s.928.175 1.297.49c.368.315.49.753.49 1.243 0 .49-.122.928-.49 1.243-.369.315-.807.49-1.297.49z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium text-gray-900">Instagram</h4>
+                                        <p class="text-sm text-gray-500">Фото и видео проектов</p>
+                                    </div>
+                                </div>
+                                <input type="url" name="settings[instagram_url]" 
+                                       value="<?php echo htmlspecialchars($settings['social']['instagram_url']['setting_value'] ?? ''); ?>"
+                                       placeholder="https://www.instagram.com/yourpage"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                            </div>
+                            
+                            <!-- LinkedIn -->
+                            <div class="bg-gray-50 rounded-lg p-6">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-10 h-10 bg-blue-700 rounded-lg flex items-center justify-center mr-3">
+                                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium text-gray-900">LinkedIn</h4>
+                                        <p class="text-sm text-gray-500">Профессиональная сеть</p>
+                                    </div>
+                                </div>
+                                <input type="url" name="settings[linkedin_url]" 
+                                       value="<?php echo htmlspecialchars($settings['social']['linkedin_url']['setting_value'] ?? ''); ?>"
+                                       placeholder="https://www.linkedin.com/company/yourcompany"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                            </div>
+                            
+                            <!-- WhatsApp -->
+                            <div class="bg-gray-50 rounded-lg p-6">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center mr-3">
+                                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.688z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium text-gray-900">WhatsApp</h4>
+                                        <p class="text-sm text-gray-500">Быстрая связь с клиентами</p>
+                                    </div>
+                                </div>
+                                <input type="text" name="settings[whatsapp]" 
+                                       value="<?php echo htmlspecialchars($settings['social']['whatsapp']['setting_value'] ?? ''); ?>"
+                                       placeholder="+4969123456789"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                                <p class="text-xs text-gray-500 mt-1">Номер телефона в международном формате</p>
+                            </div>
+                            
+                            <!-- Telegram -->
+                            <div class="bg-gray-50 rounded-lg p-6">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center mr-3">
+                                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium text-gray-900">Telegram</h4>
+                                        <p class="text-sm text-gray-500">Мессенджер для консультаций</p>
+                                    </div>
+                                </div>
+                                <input type="text" name="settings[telegram]" 
+                                       value="<?php echo htmlspecialchars($settings['social']['telegram']['setting_value'] ?? ''); ?>"
+                                       placeholder="@baumaster_frankfurt"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                                <p class="text-xs text-gray-500 mt-1">Username в Telegram (с @ или без)</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Предварительный просмотр -->
+                        <div class="bg-blue-50 rounded-lg p-6">
+                            <h4 class="font-medium text-gray-900 mb-3">Предварительный просмотр</h4>
+                            <p class="text-sm text-gray-600 mb-4">Так будут отображаться ссылки на социальные сети в футере сайта:</p>
+                            <div class="flex flex-wrap gap-3">
+                                <span class="text-xs text-gray-500">Социальные сети:</span>
+                                <span id="preview-facebook" class="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">
+                                    <?php echo !empty($settings['social']['facebook_url']['setting_value']) ? 'Facebook ✓' : 'Facebook'; ?>
+                                </span>
+                                <span id="preview-instagram" class="px-2 py-1 bg-purple-100 text-purple-700 rounded text-xs">
+                                    <?php echo !empty($settings['social']['instagram_url']['setting_value']) ? 'Instagram ✓' : 'Instagram'; ?>
+                                </span>
+                                <span id="preview-linkedin" class="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">
+                                    <?php echo !empty($settings['social']['linkedin_url']['setting_value']) ? 'LinkedIn ✓' : 'LinkedIn'; ?>
+                                </span>
+                                <span id="preview-whatsapp" class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs">
+                                    <?php echo !empty($settings['social']['whatsapp']['setting_value']) ? 'WhatsApp ✓' : 'WhatsApp'; ?>
+                                </span>
+                                <span id="preview-telegram" class="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">
+                                    <?php echo !empty($settings['social']['telegram']['setting_value']) ? 'Telegram ✓' : 'Telegram'; ?>
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-end">
+                            <button type="submit" name="save_social" 
+                                    class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                Сохранить социальные сети
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
@@ -861,6 +1044,62 @@ timeInputs.forEach(input => {
 
 // Инициализация предварительного просмотра
 updateWorkingHoursPreview();
+
+// Обновление предварительного просмотра социальных сетей
+function updateSocialPreview() {
+    const facebookInput = document.querySelector('input[name="settings[facebook_url]"]');
+    const instagramInput = document.querySelector('input[name="settings[instagram_url]"]');
+    const linkedinInput = document.querySelector('input[name="settings[linkedin_url]"]');
+    const whatsappInput = document.querySelector('input[name="settings[whatsapp]"]');
+    const telegramInput = document.querySelector('input[name="settings[telegram]"]');
+    
+    const facebookPreview = document.getElementById('preview-facebook');
+    const instagramPreview = document.getElementById('preview-instagram');
+    const linkedinPreview = document.getElementById('preview-linkedin');
+    const whatsappPreview = document.getElementById('preview-whatsapp');
+    const telegramPreview = document.getElementById('preview-telegram');
+    
+    if (facebookInput && facebookPreview) {
+        facebookPreview.textContent = facebookInput.value ? 'Facebook ✓' : 'Facebook';
+        facebookPreview.className = facebookInput.value ? 'px-2 py-1 bg-green-100 text-green-700 rounded text-xs' : 'px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs';
+    }
+    
+    if (instagramInput && instagramPreview) {
+        instagramPreview.textContent = instagramInput.value ? 'Instagram ✓' : 'Instagram';
+        instagramPreview.className = instagramInput.value ? 'px-2 py-1 bg-green-100 text-green-700 rounded text-xs' : 'px-2 py-1 bg-purple-100 text-purple-700 rounded text-xs';
+    }
+    
+    if (linkedinInput && linkedinPreview) {
+        linkedinPreview.textContent = linkedinInput.value ? 'LinkedIn ✓' : 'LinkedIn';
+        linkedinPreview.className = linkedinInput.value ? 'px-2 py-1 bg-green-100 text-green-700 rounded text-xs' : 'px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs';
+    }
+    
+    if (whatsappInput && whatsappPreview) {
+        whatsappPreview.textContent = whatsappInput.value ? 'WhatsApp ✓' : 'WhatsApp';
+        whatsappPreview.className = whatsappInput.value ? 'px-2 py-1 bg-green-100 text-green-700 rounded text-xs' : 'px-2 py-1 bg-green-100 text-green-700 rounded text-xs';
+    }
+    
+    if (telegramInput && telegramPreview) {
+        telegramPreview.textContent = telegramInput.value ? 'Telegram ✓' : 'Telegram';
+        telegramPreview.className = telegramInput.value ? 'px-2 py-1 bg-green-100 text-green-700 rounded text-xs' : 'px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs';
+    }
+}
+
+// Добавляем обработчики для полей социальных сетей
+document.addEventListener('DOMContentLoaded', function() {
+    const socialInputs = document.querySelectorAll('input[name^="settings["]');
+    socialInputs.forEach(input => {
+        if (input.name.includes('facebook_url') || input.name.includes('instagram_url') || 
+            input.name.includes('linkedin_url') || input.name.includes('whatsapp') || 
+            input.name.includes('telegram')) {
+            input.addEventListener('input', updateSocialPreview);
+            input.addEventListener('change', updateSocialPreview);
+        }
+    });
+    
+    // Инициализация предварительного просмотра социальных сетей
+    updateSocialPreview();
+});
 </script>
 
 <?php

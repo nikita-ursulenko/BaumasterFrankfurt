@@ -410,6 +410,7 @@ ob_start();
                         <div>
                             <?php render_dropdown_field([
                                 'name' => 'status',
+                                'id' => 'status_mobile',
                                 'label' => __('faq.status', 'Статус'),
                                 'value' => $status_filter,
                                 'options' => [
@@ -426,6 +427,7 @@ ob_start();
                         <div>
                             <?php render_dropdown_field([
                                 'name' => 'category',
+                                'id' => 'category_mobile',
                                 'label' => __('faq.category', 'Категория'),
                                 'value' => $category_filter,
                                 'options' => [
@@ -443,15 +445,11 @@ ob_start();
                         </div>
                     </div>
                     
-                    <div class="flex gap-2 pt-4">
+                    <div class="pt-4">
                         <button type="submit" 
-                                class="flex-1 px-4 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition duration-200 font-medium">
+                                class="w-full px-4 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition duration-200 font-medium">
                             <?php echo __('common.apply_filters', 'Применить'); ?>
                         </button>
-                        <a href="?action=list" 
-                           class="px-4 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition duration-200 font-medium">
-                            <?php echo __('common.clear', 'Очистить'); ?>
-                        </a>
                     </div>
                 </form>
             </div>
@@ -465,46 +463,40 @@ ob_start();
                 
                 <!-- Статус -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                        <?php echo __('faq.status', 'Статус'); ?>
-                    </label>
-                    <select name="status" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition duration-200">
-                        <option value=""><?php echo __('common.all', 'Все'); ?></option>
-                        <option value="active" <?php echo $status_filter === 'active' ? 'selected' : ''; ?>>
-                            <?php echo __('faq.status_active', 'Активные'); ?>
-                        </option>
-                        <option value="inactive" <?php echo $status_filter === 'inactive' ? 'selected' : ''; ?>>
-                            <?php echo __('faq.status_inactive', 'Неактивные'); ?>
-                        </option>
-                    </select>
+                    <?php render_dropdown_field([
+                        'name' => 'status',
+                        'id' => 'status',
+                        'label' => __('faq.status', 'Статус'),
+                        'value' => $status_filter,
+                        'options' => [
+                            ['value' => '', 'text' => __('common.all', 'Все')],
+                            ['value' => 'active', 'text' => __('faq.status_active', 'Активные')],
+                            ['value' => 'inactive', 'text' => __('faq.status_inactive', 'Неактивные')]
+                        ],
+                        'placeholder' => __('common.all', 'Все'),
+                        'class' => 'w-full'
+                    ]); ?>
                 </div>
                 
                 <!-- Категория -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                        <?php echo __('faq.category', 'Категория'); ?>
-                    </label>
-                    <select name="category" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition duration-200">
-                        <option value=""><?php echo __('common.all', 'Все'); ?></option>
-                        <option value="general" <?php echo $category_filter === 'general' ? 'selected' : ''; ?>>
-                            <?php echo __('faq.category_general', 'Общие'); ?>
-                        </option>
-                        <option value="services" <?php echo $category_filter === 'services' ? 'selected' : ''; ?>>
-                            <?php echo __('faq.category_services', 'Услуги'); ?>
-                        </option>
-                        <option value="portfolio" <?php echo $category_filter === 'portfolio' ? 'selected' : ''; ?>>
-                            <?php echo __('faq.category_portfolio', 'Портфолио'); ?>
-                        </option>
-                        <option value="pricing" <?php echo $category_filter === 'pricing' ? 'selected' : ''; ?>>
-                            <?php echo __('faq.category_pricing', 'Цены'); ?>
-                        </option>
-                        <option value="technical" <?php echo $category_filter === 'technical' ? 'selected' : ''; ?>>
-                            <?php echo __('faq.category_technical', 'Технические'); ?>
-                        </option>
-                        <option value="support" <?php echo $category_filter === 'support' ? 'selected' : ''; ?>>
-                            <?php echo __('faq.category_support', 'Поддержка'); ?>
-                        </option>
-                    </select>
+                    <?php render_dropdown_field([
+                        'name' => 'category',
+                        'id' => 'category',
+                        'label' => __('faq.category', 'Категория'),
+                        'value' => $category_filter,
+                        'options' => [
+                            ['value' => '', 'text' => __('common.all', 'Все')],
+                            ['value' => 'general', 'text' => __('faq.category_general', 'Общие')],
+                            ['value' => 'services', 'text' => __('faq.category_services', 'Услуги')],
+                            ['value' => 'portfolio', 'text' => __('faq.category_portfolio', 'Портфолио')],
+                            ['value' => 'pricing', 'text' => __('faq.category_pricing', 'Цены')],
+                            ['value' => 'technical', 'text' => __('faq.category_technical', 'Технические')],
+                            ['value' => 'support', 'text' => __('faq.category_support', 'Поддержка')]
+                        ],
+                        'placeholder' => __('common.all', 'Все'),
+                        'class' => 'w-full'
+                    ]); ?>
                 </div>
                 
                 <!-- Кнопка фильтра -->

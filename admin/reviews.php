@@ -534,6 +534,7 @@ ob_start();
                         <div>
                             <?php render_dropdown_field([
                     'name' => 'status',
+                    'id' => 'status_mobile',
                     'label' => __('reviews.status', 'Статус'),
                     'value' => $status_filter,
                     'options' => [
@@ -559,6 +560,7 @@ ob_start();
                             
                             render_dropdown_field([
                     'name' => 'rating',
+                    'id' => 'rating_mobile',
                     'label' => __('reviews.rating', 'Рейтинг'),
                     'value' => $rating_filter,
                     'options' => $rating_options,
@@ -568,15 +570,11 @@ ob_start();
                         </div>
                     </div>
                     
-                    <div class="flex gap-2 pt-4">
+                    <div class="pt-4">
                         <button type="submit" 
-                                class="flex-1 px-4 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition duration-200 font-medium">
+                                class="w-full px-4 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition duration-200 font-medium">
                             <?php echo __('common.apply_filters', 'Применить'); ?>
                         </button>
-                        <a href="?action=list" 
-                           class="px-4 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition duration-200 font-medium">
-                            <?php echo __('common.clear', 'Очистить'); ?>
-                        </a>
                     </div>
                 </form>
             </div>
@@ -590,37 +588,41 @@ ob_start();
                 
                 <!-- Статус -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                        <?php echo __('reviews.status', 'Статус'); ?>
-                    </label>
-                    <select name="status" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition duration-200">
-                        <option value=""><?php echo __('common.all', 'Все'); ?></option>
-                        <option value="pending" <?php echo $status_filter === 'pending' ? 'selected' : ''; ?>>
-                            <?php echo __('reviews.status_pending', 'На модерации'); ?>
-                        </option>
-                        <option value="published" <?php echo $status_filter === 'published' ? 'selected' : ''; ?>>
-                            <?php echo __('reviews.status_published', 'Опубликованы'); ?>
-                        </option>
-                        <option value="rejected" <?php echo $status_filter === 'rejected' ? 'selected' : ''; ?>>
-                            <?php echo __('reviews.status_rejected', 'Отклонены'); ?>
-                        </option>
-                    </select>
+                    <?php render_dropdown_field([
+                        'name' => 'status',
+                        'id' => 'status',
+                        'label' => __('reviews.status', 'Статус'),
+                        'value' => $status_filter,
+                        'options' => [
+                            ['value' => '', 'text' => __('common.all', 'Все')],
+                            ['value' => 'pending', 'text' => __('reviews.status_pending', 'На модерации')],
+                            ['value' => 'published', 'text' => __('reviews.status_published', 'Опубликованы')],
+                            ['value' => 'rejected', 'text' => __('reviews.status_rejected', 'Отклонены')]
+                        ],
+                        'placeholder' => __('common.all', 'Все'),
+                        'class' => 'w-full'
+                    ]); ?>
                 </div>
                 
                 <!-- Рейтинг -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                        <?php echo __('reviews.rating', 'Рейтинг'); ?>
-                    </label>
-                    <select name="rating" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition duration-200">
-                        <option value=""><?php echo __('common.all', 'Все'); ?></option>
-                        <?php for ($i = 5; $i >= 1; $i--): ?>
-                            <?php $stars_text = $i . ' ' . ($i == 1 ? 'звезда' : ($i < 5 ? 'звезды' : 'звезд')); ?>
-                            <option value="<?php echo $i; ?>" <?php echo $rating_filter == $i ? 'selected' : ''; ?>>
-                                <?php echo $stars_text; ?>
-                            </option>
-                        <?php endfor; ?>
-                    </select>
+                    <?php 
+                    // Подготовка опций для рейтинга
+                    $rating_options = [['value' => '', 'text' => __('common.all', 'Все')]];
+                    for ($i = 5; $i >= 1; $i--) {
+                        $stars_text = $i . ' ' . ($i == 1 ? 'звезда' : ($i < 5 ? 'звезды' : 'звезд'));
+                        $rating_options[] = ['value' => $i, 'text' => $stars_text];
+                    }
+                    
+                    render_dropdown_field([
+                        'name' => 'rating',
+                        'id' => 'rating',
+                        'label' => __('reviews.rating', 'Рейтинг'),
+                        'value' => $rating_filter,
+                        'options' => $rating_options,
+                        'placeholder' => __('common.all', 'Все'),
+                        'class' => 'w-full'
+                    ]); ?>
                 </div>
                 
                 <!-- Кнопка фильтра -->

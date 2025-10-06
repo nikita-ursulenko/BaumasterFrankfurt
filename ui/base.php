@@ -423,8 +423,9 @@ function render_dropdown_field($options = []) {
     
     function selectDropdownOption(uniqueId, value, text) {
         const selectedSpan = document.getElementById('dropdown-selected-' + uniqueId);
-        // Получаем имя поля из uniqueId (все до первого подчеркивания)
-        const fieldName = uniqueId.substring(0, uniqueId.indexOf('_'));
+        // Получаем имя поля из uniqueId (убираем последний уникальный суффикс)
+        // uniqueId имеет формат "fieldname_uniqid", где uniqid это случайная строка из 13 символов
+        const fieldName = uniqueId.substring(0, uniqueId.lastIndexOf('_'));
         const hiddenInput = document.getElementById(fieldName);
         const menu = document.getElementById('dropdown-menu-' + uniqueId);
         const arrow = document.getElementById('dropdown-arrow-' + uniqueId);
@@ -432,6 +433,9 @@ function render_dropdown_field($options = []) {
         selectedSpan.textContent = text;
         if (hiddenInput) {
             hiddenInput.value = value;
+            console.log('Dropdown updated:', fieldName, '=', value);
+        } else {
+            console.error('Hidden input not found for field:', fieldName, '(uniqueId:', uniqueId + ')');
         }
         
         // Обновляем визуальное состояние опций

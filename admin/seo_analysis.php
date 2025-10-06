@@ -821,10 +821,10 @@ ob_start();
     </div>
 </div>
 
-<!-- Социальные сети и Open Graph -->
+<!-- Open Graph настройки -->
 <div class="bg-white shadow-sm rounded-lg border border-gray-200 p-6 mt-8">
     <h3 class="text-lg font-medium text-gray-900 mb-4">
-        Социальные сети и Open Graph
+        Open Graph настройки
     </h3>
     
     <form method="POST" class="space-y-4">
@@ -864,50 +864,6 @@ ob_start();
                        placeholder="@username"
                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
                 <p class="text-xs text-gray-500 mt-1">@username в Twitter</p>
-            </div>
-            
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Facebook URL</label>
-                <input type="url" name="settings[facebook_url]" 
-                       value="<?php echo htmlspecialchars($settings['social']['facebook_url']['setting_value'] ?? ''); ?>"
-                       placeholder="https://www.facebook.com/yourpage"
-                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
-            </div>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Instagram URL</label>
-                <input type="url" name="settings[instagram_url]" 
-                       value="<?php echo htmlspecialchars($settings['social']['instagram_url']['setting_value'] ?? ''); ?>"
-                       placeholder="https://www.instagram.com/yourpage"
-                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
-            </div>
-            
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">LinkedIn URL</label>
-                <input type="url" name="settings[linkedin_url]" 
-                       value="<?php echo htmlspecialchars($settings['social']['linkedin_url']['setting_value'] ?? ''); ?>"
-                       placeholder="https://www.linkedin.com/company/yourcompany"
-                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
-            </div>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">WhatsApp</label>
-                <input type="text" name="settings[whatsapp]" 
-                       value="<?php echo htmlspecialchars($settings['social']['whatsapp']['setting_value'] ?? ''); ?>"
-                       placeholder="+4969123456789"
-                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
-            </div>
-            
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Telegram</label>
-                <input type="text" name="settings[telegram]" 
-                       value="<?php echo htmlspecialchars($settings['social']['telegram']['setting_value'] ?? ''); ?>"
-                       placeholder="@baumaster_frankfurt"
-                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
             </div>
         </div>
         

@@ -500,34 +500,20 @@ function render_frontend_navigation($active_page = '') {
 
                 <!-- Right side controls -->
                 <div class="nav-controls flex items-center space-x-3 ml-1">
-                    <!-- Language Switcher Dropdown -->
+                    <!-- Language Switcher Button -->
                     <div class="hidden lg:block">
-                        <div class="relative language-dropdown">
-                            <button id="language-dropdown-button" class="flex items-center space-x-2 px-3 py-2 text-sm bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-accent-blue focus:border-accent-blue transition-colors">
-                                <span class="language-flag">
-                                    <?php echo defined('CURRENT_LANG') && CURRENT_LANG === 'de' ? '🇩🇪' : '🇷🇺'; ?>
-                                </span>
-                                <span class="language-code">
-                                    <?php echo defined('CURRENT_LANG') && CURRENT_LANG === 'de' ? 'DE' : 'RU'; ?>
-                                </span>
-                                <svg class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                </svg>
-                            </button>
-                            
-                            <div id="language-dropdown-menu" class="absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded-md shadow-lg z-50 hidden">
-                                <div class="py-1">
-                                    <a href="<?php echo get_language_switch_url('ru'); ?>" class="flex items-center space-x-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors <?php echo !defined('CURRENT_LANG') || CURRENT_LANG !== 'de' ? 'bg-gray-100' : ''; ?>">
-                                        <span class="text-lg">🇷🇺</span>
-                                        <span>Русский</span>
-                                    </a>
-                                    <a href="<?php echo get_language_switch_url('de'); ?>" class="flex items-center space-x-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors <?php echo defined('CURRENT_LANG') && CURRENT_LANG === 'de' ? 'bg-gray-100' : ''; ?>">
-                                        <span class="text-lg">🇩🇪</span>
-                                        <span>Deutsch</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+                        <?php 
+                        // Определяем альтернативный язык
+                        $current_lang = defined('CURRENT_LANG') && CURRENT_LANG === 'de' ? 'de' : 'ru';
+                        $alt_lang = $current_lang === 'de' ? 'ru' : 'de';
+                        $alt_flag = $alt_lang === 'de' ? '🇩🇪' : '🇷🇺';
+                        $alt_code = $alt_lang === 'de' ? 'DE' : 'RU';
+                        ?>
+                        <a href="<?php echo get_language_switch_url($alt_lang); ?>" 
+                           class="flex items-center space-x-2 px-3 py-2 text-sm bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-accent-blue focus:border-accent-blue transition-colors">
+                            <span class="text-lg"><?php echo $alt_flag; ?></span>
+                            <span class="font-medium"><?php echo $alt_code; ?></span>
+                        </a>
                     </div>
 
                     <!-- Desktop Call Button -->
@@ -536,34 +522,20 @@ function render_frontend_navigation($active_page = '') {
                         <?php echo defined('CURRENT_LANG') && CURRENT_LANG === 'de' ? 'Anrufen' : 'Позвонить'; ?>
                     </a>
 
-                    <!-- Mobile Language Switcher -->
+                    <!-- Mobile Language Switcher Button -->
                     <div class="lg:hidden">
-                        <div class="relative mobile-language-dropdown">
-                            <button id="mobile-language-dropdown-button" class="flex items-center space-x-1 px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-accent-blue transition-colors">
-                                <span class="language-flag text-sm">
-                                    <?php echo defined('CURRENT_LANG') && CURRENT_LANG === 'de' ? '🇩🇪' : '🇷🇺'; ?>
-                                </span>
-                                <span class="language-code">
-                                    <?php echo defined('CURRENT_LANG') && CURRENT_LANG === 'de' ? 'DE' : 'RU'; ?>
-                                </span>
-                                <svg class="w-3 h-3 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                </svg>
-                            </button>
-                            
-                            <div id="mobile-language-dropdown-menu" class="absolute right-0 mt-1 w-24 bg-white border border-gray-200 rounded shadow-lg z-50 hidden">
-                                <div class="py-1">
-                                    <a href="<?php echo get_language_switch_url('ru'); ?>" class="flex items-center space-x-2 px-2 py-1 text-xs text-gray-700 hover:bg-gray-100 transition-colors <?php echo !defined('CURRENT_LANG') || CURRENT_LANG !== 'de' ? 'bg-gray-100' : ''; ?>">
-                                        <span class="text-sm">🇷🇺</span>
-                                        <span>RU</span>
-                                    </a>
-                                    <a href="<?php echo get_language_switch_url('de'); ?>" class="flex items-center space-x-2 px-2 py-1 text-xs text-gray-700 hover:bg-gray-100 transition-colors <?php echo defined('CURRENT_LANG') && CURRENT_LANG === 'de' ? 'bg-gray-100' : ''; ?>">
-                                        <span class="text-sm">🇩🇪</span>
-                                        <span>DE</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+                        <?php 
+                        // Определяем альтернативный язык для мобильной версии
+                        $current_lang_mobile = defined('CURRENT_LANG') && CURRENT_LANG === 'de' ? 'de' : 'ru';
+                        $alt_lang_mobile = $current_lang_mobile === 'de' ? 'ru' : 'de';
+                        $alt_flag_mobile = $alt_lang_mobile === 'de' ? '🇩🇪' : '🇷🇺';
+                        $alt_code_mobile = $alt_lang_mobile === 'de' ? 'DE' : 'RU';
+                        ?>
+                        <a href="<?php echo get_language_switch_url($alt_lang_mobile); ?>" 
+                           class="flex items-center space-x-1 px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-accent-blue transition-colors">
+                            <span class="text-sm"><?php echo $alt_flag_mobile; ?></span>
+                            <span class="font-medium"><?php echo $alt_code_mobile; ?></span>
+                        </a>
                     </div>
 
                     <!-- Mobile menu button -->
@@ -830,60 +802,6 @@ function render_frontend_scripts() {
             window.location.href = targetUrl;
         }
 
-        // Language dropdown functionality
-        const languageDropdownButton = document.getElementById('language-dropdown-button');
-        const languageDropdownMenu = document.getElementById('language-dropdown-menu');
-        const mobileLanguageDropdownButton = document.getElementById('mobile-language-dropdown-button');
-        const mobileLanguageDropdownMenu = document.getElementById('mobile-language-dropdown-menu');
-
-        // Desktop language dropdown
-        if (languageDropdownButton && languageDropdownMenu) {
-            languageDropdownButton.addEventListener('click', function(e) {
-                e.stopPropagation();
-                languageDropdownMenu.classList.toggle('hidden');
-                
-                // Rotate arrow icon
-                const arrow = this.querySelector('svg');
-                arrow.classList.toggle('rotate-180');
-            });
-        }
-
-        // Mobile language dropdown
-        if (mobileLanguageDropdownButton && mobileLanguageDropdownMenu) {
-            mobileLanguageDropdownButton.addEventListener('click', function(e) {
-                e.stopPropagation();
-                mobileLanguageDropdownMenu.classList.toggle('hidden');
-                
-                // Rotate arrow icon
-                const arrow = this.querySelector('svg');
-                arrow.classList.toggle('rotate-180');
-            });
-        }
-
-        // Close dropdowns when clicking outside
-        document.addEventListener('click', function(e) {
-            if (languageDropdownMenu && !languageDropdownButton.contains(e.target) && !languageDropdownMenu.contains(e.target)) {
-                languageDropdownMenu.classList.add('hidden');
-                const arrow = languageDropdownButton.querySelector('svg');
-                arrow.classList.remove('rotate-180');
-            }
-            
-            if (mobileLanguageDropdownMenu && !mobileLanguageDropdownButton.contains(e.target) && !mobileLanguageDropdownMenu.contains(e.target)) {
-                mobileLanguageDropdownMenu.classList.add('hidden');
-                const arrow = mobileLanguageDropdownButton.querySelector('svg');
-                arrow.classList.remove('rotate-180');
-            }
-        });
-
-        // Close dropdowns when mobile menu is opened
-        document.getElementById('mobile-menu-button').addEventListener('click', function() {
-            if (mobileLanguageDropdownMenu) {
-                mobileLanguageDropdownMenu.classList.add('hidden');
-                const arrow = mobileLanguageDropdownButton.querySelector('svg');
-                arrow.classList.remove('rotate-180');
-            }
-        });
-
         // Добавляем обработчики для переключателей языков
         document.querySelectorAll('a[href*="get_language_switch_url"]').forEach(link => {
             link.addEventListener('click', function(e) {
@@ -896,7 +814,119 @@ function render_frontend_scripts() {
                 }
             });
         });
+        
+        // Scroll to top button functionality
+        function initScrollToTop() {
+            // Create scroll to top button
+            const scrollButton = document.createElement('button');
+            scrollButton.id = 'scroll-to-top';
+            scrollButton.innerHTML = `
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                </svg>
+            `;
+            scrollButton.setAttribute('aria-label', 'Прокрутить наверх');
+            document.body.appendChild(scrollButton);
+            
+            // Show/hide button based on scroll position
+            function toggleScrollButton() {
+                if (window.pageYOffset > 300) {
+                    scrollButton.classList.add('show');
+                } else {
+                    scrollButton.classList.remove('show');
+                }
+            }
+            
+            // Scroll to top when clicked
+            scrollButton.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Show/hide button on scroll
+            window.addEventListener('scroll', toggleScrollButton);
+            
+            // Initial check
+            toggleScrollButton();
+        }
+        
+        // Initialize scroll to top button when DOM is loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initScrollToTop);
+        } else {
+            initScrollToTop();
+        }
     </script>
+    
+    <!-- Scroll to Top Button Styles -->
+    <style>
+        #scroll-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 56px;
+            height: 56px;
+            background: #10b981;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #scroll-to-top:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+        }
+        
+        #scroll-to-top.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        #scroll-to-top svg {
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-3px);
+            }
+            60% {
+                transform: translateY(-2px);
+            }
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            #scroll-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 48px;
+                height: 48px;
+            }
+            
+            #scroll-to-top svg {
+                width: 20px;
+                height: 20px;
+            }
+        }
+    </style>
     <?php
 }
 ?>

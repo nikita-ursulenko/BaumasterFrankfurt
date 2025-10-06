@@ -208,7 +208,6 @@ button, .btn {
 
 button:hover, .btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 /* Link smooth transitions */
@@ -439,13 +438,13 @@ h1, h2, h3, h4, h5, h6, p, span, div {
                         <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Bewertung *</label>
                     <div class="flex space-x-2" id="rating">
-                        <button type="button" class="star text-3xl text-gray-300 hover:text-yellow-400 transition-colors" data-rating="1">★</button>
-                        <button type="button" class="star text-3xl text-gray-300 hover:text-yellow-400 transition-colors" data-rating="2">★</button>
-                        <button type="button" class="star text-3xl text-gray-300 hover:text-yellow-400 transition-colors" data-rating="3">★</button>
-                        <button type="button" class="star text-3xl text-gray-300 hover:text-yellow-400 transition-colors" data-rating="4">★</button>
-                        <button type="button" class="star text-3xl text-gray-300 hover:text-yellow-400 transition-colors" data-rating="5">★</button>
+                        <button type="button" class="star text-3xl text-gray-300 transition-colors cursor-pointer" data-rating="1">★</button>
+                        <button type="button" class="star text-3xl text-gray-300 transition-colors cursor-pointer" data-rating="2">★</button>
+                        <button type="button" class="star text-3xl text-gray-300 transition-colors cursor-pointer" data-rating="3">★</button>
+                        <button type="button" class="star text-3xl text-gray-300 transition-colors cursor-pointer" data-rating="4">★</button>
+                        <button type="button" class="star text-3xl text-gray-300 transition-colors cursor-pointer" data-rating="5">★</button>
                     </div>
-                    <input type="hidden" name="rating" id="rating-input" value="5">
+                    <input type="hidden" name="rating" id="rating-input" value="0" required>
                 </div>
 
                 <div>
@@ -497,28 +496,41 @@ h1, h2, h3, h4, h5, h6, p, span, div {
 
 <script>
 // Rating stars functionality
-document.querySelectorAll('.star').forEach(star => {
-    star.addEventListener('click', function() {
-        const rating = parseInt(this.dataset.rating);
-        document.getElementById('rating-input').value = rating;
-        
-        // Update visual state
-        document.querySelectorAll('.star').forEach((s, index) => {
-            if (index < rating) {
-                s.classList.remove('text-gray-300');
-                s.classList.add('text-yellow-400');
-            } else {
-                s.classList.remove('text-yellow-400');
-                s.classList.add('text-gray-300');
-            }
-        });
+const stars = document.querySelectorAll('.star');
+const ratingInput = document.getElementById('rating-input');
+let selectedRating = 0;
+
+// Функция для обновления визуального состояния звёзд
+function updateStars(rating) {
+    stars.forEach((star, index) => {
+        if (index < rating) {
+            star.classList.remove('text-gray-300');
+            star.classList.add('text-yellow-400');
+        } else {
+            star.classList.remove('text-yellow-400');
+            star.classList.add('text-gray-300');
+        }
+    });
+}
+
+// Hover эффект
+stars.forEach((star, index) => {
+    star.addEventListener('mouseenter', function() {
+        updateStars(index + 1);
+    });
+    
+    star.addEventListener('mouseleave', function() {
+        updateStars(selectedRating);
     });
 });
 
-// Set default 5-star rating
-document.querySelectorAll('.star').forEach(star => {
-    star.classList.remove('text-gray-300');
-    star.classList.add('text-yellow-400');
+// Клик по звезде
+stars.forEach((star, index) => {
+    star.addEventListener('click', function() {
+        selectedRating = index + 1;
+        ratingInput.value = selectedRating;
+        updateStars(selectedRating);
+    });
 });
 
 // Функция для показа всплывающих уведомлений
