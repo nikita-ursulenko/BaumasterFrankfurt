@@ -1,5 +1,6 @@
 # Настройки Baumaster Frankfurt
 RewriteEngine On
+Options -MultiViews
 RewriteBase /
 
 # 1. Скрытие расширения .php в адресной строке

@@ -73,7 +73,7 @@ ob_start();
         <!-- Breadcrumb -->
         <nav class="mb-8">
             <ol class="flex items-center space-x-2 text-sm text-gray-600">
-                <li><a href="index" class="hover:text-accent-blue">Главная</a></li>
+                <li><a href="/" class="hover:text-accent-blue">Главная</a></li>
                 <li>/</li>
                 <li><a href="blog" class="hover:text-accent-blue">Блог</a></li>
                 <li>/</li>
