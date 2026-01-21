@@ -1,6 +1,6 @@
 # Настройки Baumaster Frankfurt
 RewriteEngine On
-Options -MultiViews
+Options +MultiViews
 RewriteBase /
 
 # 1. Скрытие расширения .php в адресной строке
@@ -11,10 +11,18 @@ RewriteRule ^ %1 [R=301,L]
 # 2. Обработка админки (редирект /admin на /admin/ для корректной работы)
 RewriteRule ^admin$ admin/ [R=301,L]
 
-# 3. Внутренний маппинг: если файл без .php существует как .php, отдаем его
+# 3. Явный маппинг основных страниц (Explicit Rewrite Rules)
+RewriteRule ^services/?$ services.php [L]
+RewriteRule ^portfolio/?$ portfolio.php [L]
+RewriteRule ^about/?$ about.php [L]
+RewriteRule ^review/?$ review.php [L]
+RewriteRule ^blog/?$ blog.php [L]
+RewriteRule ^contact/?$ contact.php [L]
+
+# 4. Внутренний маппинг для остальных файлов (включая админку)
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}\.php -f
-RewriteRule ^(.*?)/?$ $1.php [L]
+RewriteRule ^(.+?)/?$ $1.php [L]
 
 # 4. Если папка не существует и файл не найден, пробуем index.php (для SPA-подобных роутов, если нужно)
 # RewriteCond %{REQUEST_FILENAME} !-f
