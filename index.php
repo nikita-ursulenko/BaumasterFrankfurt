@@ -27,7 +27,7 @@ ob_start();
 
 <!-- Hero Section -->
 <section id="hero" class="pt-16 bg-cover bg-center bg-no-repeat relative min-h-screen flex items-center"
-    style="background-image: url('/assets/images/preview/home.png'); background-size: cover; background-position: center center; background-attachment: scroll; -webkit-background-size: cover;">
+    style="background-image: url('/assets/images/preview/home.webp'); background-size: cover; background-position: center center; background-attachment: scroll; -webkit-background-size: cover;">
     <!-- Overlay for better text readability -->
     <div class="hero-overlay absolute inset-0 bg-black bg-opacity-30" style="z-index: 1;"></div>
 

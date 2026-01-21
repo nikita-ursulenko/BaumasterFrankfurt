@@ -26,7 +26,7 @@ ob_start();
 
 <!-- Hero Section -->
 <section id="hero" class="pt-16 bg-cover bg-center bg-no-repeat relative min-h-screen flex items-center"
-    style="background-image: url('/assets/images/preview/about.png'); background-size: cover; background-position: center center; background-attachment: scroll; -webkit-background-size: cover;">
+    style="background-image: url('/assets/images/preview/about.webp'); background-size: cover; background-position: center center; background-attachment: scroll; -webkit-background-size: cover;">
     <!-- Overlay for better text readability -->
     <div class="hero-overlay absolute inset-0 bg-black bg-opacity-30" style="z-index: 1;"></div>
 
@@ -525,7 +525,8 @@ ob_start();
                             <?php endif; ?>
                         </div>
                         <h3 class="font-semibold text-xl text-text-primary mb-2">
-                            <?php echo htmlspecialchars($member['name']); ?></h3>
+                            <?php echo htmlspecialchars($member['name']); ?>
+                        </h3>
                         <p class="text-accent-blue font-medium mb-3"><?php echo htmlspecialchars($member['position']); ?></p>
                         <p class="text-text-secondary text-sm"><?php echo htmlspecialchars($member['description']); ?></p>
                     </div>
