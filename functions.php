@@ -12,19 +12,6 @@ if (!defined('ABSPATH')) {
 require_once __DIR__ . '/database.php';
 
 /**
- * Получение инстанса базы данных
- * @return Database
- */
-function get_database()
-{
-    static $db = null;
-    if ($db === null) {
-        $db = new Database();
-    }
-    return $db;
-}
-
-/**
  * ФУНКЦИИ БЕЗОПАСНОСТИ
  */
 
