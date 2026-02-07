@@ -316,9 +316,9 @@ php tests/security_test.php
 
 ### Получение помощи
 
-- 📧 Email: support@baumaster-frankfurt.de
+- 📧 Email: 
 - 📱 Телефон: +49 69 123-456-789
-- 🌐 Сайт: https://baumaster-frankfurt.de
+- 🌐 Сайт: [https://baumaster-frankfurt.de](https://baumaster-frankfurt.up.railway.app/)
 
 ### Сообщение об ошибках
 
